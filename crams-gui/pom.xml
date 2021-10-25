@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.pahappa.systems</groupId>
-    <artifactId>uma-system</artifactId>
+    <groupId>com.handycredit.systems</groupId>
+    <artifactId>crams-gui</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>uma-system</name>
+    <name>crams-gui</name>
     <url>http://maven.apache.org</url>
     <dependencies>
       
@@ -17,27 +17,35 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
-        <!-- California theme dependency -->
-<!--        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>california</artifactId>
-            <version>2.0.1</version>
-        </dependency>-->
+        <!-- Custom CRAMS models Dependencies -->
+        <dependency>
+            <groupId>com.handycredit.systems</groupId>
+            <artifactId>crams-models</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Custom CRAMS services Dependencies -->
+        <dependency>
+            <groupId>com.handycredit.systems</groupId>
+            <artifactId>crams-services</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         
+         <!-- Custom CRAMS views Dependencies -->
+        <dependency>
+            <groupId>com.handycredit.systems</groupId>
+            <artifactId>crams-views</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         
-         <!-- Freya theme dependency -->
+        <!-- Freya theme dependency -->
         <dependency>
             <groupId>org.primefaces.themes</groupId>
             <artifactId>freya</artifactId>
             <version>1.0.1</version>
         </dependency>
 
-        <!-- end of custom dependency -->
-        <!-- Venture dependencies -->
-        <!-- <dependency> <groupId>org.primefaces.themes</groupId> <artifactId>venture</artifactId> 
-        <version>1.0-SNAPSHOT</version> </dependency> -->
-        <!-- Ultima dependencies -->
-
+     
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -407,7 +415,7 @@
             <version>4.0.3</version>
         </dependency>
 
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>net.sf.barcode4j</groupId>
             <artifactId>barcode4j-light</artifactId>
             <version>2.1</version>
@@ -516,7 +524,7 @@
             <type>jar</type>
         </dependency>
         
-         <!-- Export Demo Impl -->
+        <!-- Export Demo Impl -->
         <dependency>
             <groupId>com.lowagie</groupId>
             <artifactId>itext</artifactId>

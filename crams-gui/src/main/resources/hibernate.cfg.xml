@@ -7,10 +7,10 @@
 
     <session-factory>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost/uma_system</property>
+        <property name="connection.url">jdbc:mysql://localhost/crams</property>
         <!-- -->
-        <property name="connection.username">pahappa</property>
-        <property name="connection.password">pass@2020@Pahappa</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">root</property>
 
         <!-- JDBC connection pool (use the built-in) -->
         <!-- <property name="connection.pool_size">1</property> -->
@@ -37,9 +37,7 @@
         <mapping class="org.sers.webutils.model.security.User" />
         <mapping class="org.sers.webutils.model.security.Role" />
         <mapping class="org.sers.webutils.model.security.Permission" />
-        <mapping class="org.sers.webutils.model.Country" />
-        <mapping class="org.sers.webutils.model.Lookup" />
-        <mapping class="org.sers.webutils.model.LookupCategory" />
+       
         <mapping
             class="org.sers.webutils.model.bgtasks.BackgroundJobLog" />
         <mapping
@@ -53,21 +51,7 @@
       
      
         <mapping 
-            class="org.pahappa.systems.models.Manufacturer" />
-        <mapping 
-            class="org.pahappa.systems.models.Sector" />
-        <mapping 
-            class="org.pahappa.systems.models.CompanySize" />
-        <mapping 
-            class="org.pahappa.systems.models.Certification" />
-        <mapping 
-            class="org.pahappa.systems.models.ProductionChain" />
-        <mapping 
-            class="org.pahappa.systems.models.HumanResource" />
-        <mapping 
-            class="org.pahappa.systems.models.MailSetting" />
-        <mapping 
-            class="org.pahappa.systems.models.AppSetting" />
+            class="org.pahappa.systems.models.SystemSetting" />
        
           
             

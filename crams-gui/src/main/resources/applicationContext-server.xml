@@ -36,16 +36,16 @@
 
 	<!-- Project specific beans -->
 	<context:component-scan
-		base-package="org.pahappa.systems.core.services.impl" />
+		base-package="com.handycredit.systems.core.services.impl" />
 	<context:component-scan
-		base-package="org.pahappa.systems.core.dao.impl" />
+		base-package="com.handycredit.systems.core.dao.impl" />
 
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost/uma_system" />
-		<property name="username" value="pahappa" />
-		<property name="password" value="pass@2020@Pahappa" />
+		<property name="url" value="jdbc:mysql://localhost/crams" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
 	</bean>
 
 	<bean id="sessionFactory"
@@ -84,7 +84,7 @@
 				<value>org.sers.webutils.model.security</value>
 				<value>org.sers.webutils.model.migrations</value>
 				<value>org.sers.webutils.model.bgtasks</value>
-				<value>org.pahappa.systems.models</value>
+				<value>com.handycredit.systems.models</value>
 			</list>
 		</property>
 	</bean>
