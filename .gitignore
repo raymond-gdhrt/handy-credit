@@ -1,11 +1,54 @@
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-# https://github.com/takari/maven-wrapper#usage-without-binary-jar
-.mvn/wrapper/maven-wrapper.jar
+
+# BACKEND IGNORED FILES
+
+# Compiled class file
+hr-backend/*.class
+# Log file
+hr-backend/*.log
+
+# BlueJ files
+hr-backend/*.ctxt
+# Mobile Tools for Java (J2ME)
+hr-backend/.mtj.tmp/
+hr-backend/target/
+hr-backend/.settings/
+hr-backend/.classpath
+hr-backend/.project
+
+# Package Files #
+hr-backend/*.jar
+hr-backend/*.war
+hr-backend/*.nar
+hr-backend/*.ear
+hr-backend/*.zip
+hr-backend/*.tar.gz
+hr-backend/*.rar
+hr-backend/*.bat
+hr-backend/hs_err_pid*
+
+# FRONTEND IGNORED FILES
+
+# Compiled class file
+hr-frontend/*.class
+# Log file
+hr-frontend/*.log
+
+# BlueJ files
+hr-frontend/*.ctxt
+# Mobile Tools for Java (J2ME)
+hr-frontend/.mtj.tmp/
+hr-frontend/target/
+hr-frontend/.settings/
+hr-frontend/.classpath
+hr-frontend/.project
+
+# Package Files #
+hr-frontend/*.jar
+hr-frontend/*.war
+hr-frontend/*.nar
+hr-frontend/*.ear
+hr-frontend/*.zip
+hr-frontend/*.tar.gz
+hr-frontend/*.rar
+hr-frontend/*.bat
+hr-frontend/hs_err_pid*
