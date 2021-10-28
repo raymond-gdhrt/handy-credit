@@ -1,37 +1,45 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.handycredit.systems.core.services.impl;
 
+import com.handycredit.systems.core.services.GenericServiceImpl;
+import com.handycredit.systems.core.services.SystemSettingService;
+import com.handycredit.systems.models.SystemSetting;
+import java.util.List;
+import org.sers.webutils.model.exception.OperationFailedException;
 import org.sers.webutils.model.exception.ValidationFailedException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.handycredit.systems.core.dao.SystemSettingDao;
-import com.handycredit.systems.core.services.SystemSettingService;
-import com.handycredit.systems.models.SystemSetting;
-
+/**
+ *
+ * @author RayGdhrt
+ */
 @Service
 @Transactional
-public class SystemSettingServiceImpl implements SystemSettingService {
-
-    @Autowired
-    SystemSettingDao settingsDao;
-
-    @Override
-    public SystemSetting save(SystemSetting settings) throws ValidationFailedException {
-//    	if(settings.getPercentageCharge() > 0) {
-//    		settings.setPercentageCharge(settings.getPercentageCharge() * 0.01f);
-//    	}
-        return  settingsDao.save(settings);
-    }
+public class SystemSettingServiceImpl extends GenericServiceImpl<SystemSetting> implements SystemSettingService {
 
     @Override
     public SystemSetting getSystemSettings() {
-       
-        if(settingsDao.findAll()==null||settingsDao.findAll().isEmpty()){
-        	return null;
+
+        List<SystemSetting> systemSettings = super.findAll();
+        if (systemSettings.isEmpty()) {
+            return super.save(new SystemSetting());
         }
-        return settingsDao.findAll().get(0);
+        return super.findAll().get(0);
     }
 
-   
+    @Override
+    public boolean isDeletable(SystemSetting entity) throws OperationFailedException {
+        return false;
+    }
+
+    @Override
+    public SystemSetting saveInstance(SystemSetting instance) throws ValidationFailedException, OperationFailedException {
+        return super.save(instance);
+
+    }
 }

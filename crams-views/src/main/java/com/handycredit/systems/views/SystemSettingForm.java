@@ -5,8 +5,6 @@ import com.handycredit.systems.models.SystemSetting;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import com.handycredit.systems.security.HyperLinks;
-import org.primefaces.context.RequestContext;
-import org.sers.webutils.client.utils.UiUtils;
 import org.sers.webutils.client.views.presenters.ViewPath;
 import org.sers.webutils.client.views.presenters.WebFormView;
 import org.sers.webutils.server.core.utils.ApplicationContextProvider;
@@ -42,8 +40,8 @@ public class SystemSettingForm extends WebFormView<SystemSetting, SystemSettingF
 
     @Override
     public void persist() throws Exception {
-        this.appSettingService.save(super.model);
-        UiUtils.showMessageBox("App settings updated", "Action Successful", RequestContext.getCurrentInstance());
+        this.appSettingService.saveInstance(super.model);
+        UiUtils.showMessageBox("App settings updated", "Action Successful");
     }
 
     @Override
