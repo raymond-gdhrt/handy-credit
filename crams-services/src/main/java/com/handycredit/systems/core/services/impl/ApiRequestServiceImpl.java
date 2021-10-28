@@ -1,71 +1,65 @@
 package com.handycredit.systems.core.services.impl;
 
-import java.util.Date;
+import com.googlecode.genericdao.search.Filter;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import com.handycredit.systems.core.dao.ApiRequestDao;
 import com.handycredit.systems.core.services.ApiRequestService;
-import com.handycredit.systems.core.utils.CustomSearchUtils;
 import com.handycredit.systems.models.ApiRequest;
-import com.handycredit.systems.constants.EndPointCategory;
 import org.sers.webutils.model.RecordStatus;
 import org.sers.webutils.model.exception.ValidationFailedException;
 import org.sers.webutils.model.utils.SortField;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.search.Search;
+import com.handycredit.systems.core.services.GeneralSearchUtils;
+import com.handycredit.systems.core.services.GenericServiceImpl;
+import java.util.ArrayList;
+import org.apache.commons.lang.StringUtils;
+import org.sers.webutils.model.exception.OperationFailedException;
+import org.sers.webutils.model.utils.SearchField;
 
 @Service
 @Transactional
-public class ApiRequestServiceImpl implements ApiRequestService {
+public class ApiRequestServiceImpl extends GenericServiceImpl<ApiRequest> implements ApiRequestService  {
 
-	@Autowired
-	ApiRequestDao apiRequestDao;
-	
-	@Override
-	public ApiRequest save(ApiRequest apiRequest) {		
-		return apiRequestDao.save(apiRequest);
-	}
-
-	@Override
-	public List<ApiRequest> getApiRequests(String searchTerm, EndPointCategory category, Date dateFrom, 
-			Date dateTo, SortField sortField, int offset, int limit) {
-		Search search = CustomSearchUtils.genereateSearchObjectForApiRequests(searchTerm, category, dateFrom, dateTo, sortField);
-		search.setFirstResult(offset);
-		search.setMaxResults(limit);
-		return apiRequestDao.search(search);
-	}
 	
 
-	@Override
-	public int countApiRequest(String searchTerm, EndPointCategory category,Date dateFrom, Date dateTo,  SortField sortField) {
-		return apiRequestDao.count(CustomSearchUtils.genereateSearchObjectForApiRequests(searchTerm, category, dateFrom, dateTo, sortField));
-	}
-	
-	
-	@Override
-	public int countApiRequestByStatus(String searchTerm, boolean status) {
-		return apiRequestDao.count(CustomSearchUtils.genereateSearchObjectForApiRequestsByStatus(searchTerm, status));
-	}
-	
-	@Override
-	public int countCompanyApiRequest(String searchTerm, String companyName, Date dateFrom, Date dateTo, SortField sortField) {
-	
-		return apiRequestDao.count(CustomSearchUtils.genereateSearchObjectForCompanyApiRequests(searchTerm, companyName, dateFrom, dateTo, sortField));
-	}
 
-	@Override
-	public ApiRequest getApiRequestById(String businessAccountId) {
-		return apiRequestDao.searchUniqueByPropertyEqual("id", businessAccountId);
-	}
+    @Override
+    public boolean isDeletable(ApiRequest entity) throws OperationFailedException {
+       return true;
+    }
 
-	@Override
-	public void delete(ApiRequest businessAccount) throws ValidationFailedException {
-		businessAccount.setRecordStatus(RecordStatus.DELETED);
-		apiRequestDao.save(businessAccount);
-	}       
+    @Override
+    public ApiRequest saveInstance(ApiRequest instance) throws ValidationFailedException, OperationFailedException {
+        return super.save(instance);
+    
+    }
+    
+    /**
+	 * 
+	 * @param searchFields
+	 * @param query
+	 * @param sortField
+	 * @return
+	 */
+	public static final Search composeDBSearch(List<SearchField> searchFields, String query, SortField sortField) {
+		if (query == null)
+			query = "";
+
+		Search search = new Search();
+		search.addFilterEqual("recordStatus", RecordStatus.ACTIVE);
+
+		if (sortField != null)
+			search.addSort(sortField.getSort());
+
+		if (StringUtils.isNotBlank(query) && GeneralSearchUtils.searchTermSatisfiesQueryCriteria(query)) {
+			ArrayList<Filter> filters = new ArrayList<Filter>();
+			                 GeneralSearchUtils.generateSearchTerms(searchFields, query, filters);
+			search.addFilterAnd(filters.toArray(new Filter[filters.size()]));
+		}
+		return search;
+	}
         
 }
