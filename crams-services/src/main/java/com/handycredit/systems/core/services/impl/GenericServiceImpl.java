@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.handycredit.systems.core.services;
+package com.handycredit.systems.core.services.impl;
 
 import java.util.Date;
 import java.util.List;
@@ -13,6 +13,7 @@ import org.sers.webutils.server.core.dao.impl.BaseDAOImpl;
 import org.sers.webutils.server.shared.SharedAppData;
 
 import com.googlecode.genericdao.search.Search;
+import com.handycredit.systems.core.services.GenericService;
 
 /**
  * Provides for generic implementation of the {@link GenericService}.Concrete classes need to provide implementation of methods that are specific

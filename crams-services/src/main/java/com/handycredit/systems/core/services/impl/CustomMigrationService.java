@@ -24,14 +24,11 @@ public class CustomMigrationService extends MigrationTemplate {
 	SessionFactory sessionFactory;
 
 	@Autowired
-	CustomPermissionMigrations permissionMigrations;
+	CustomDataBaseMigrations permissionMigrations;
         
-        @Autowired
-	TransactionStatusUpdater transactionStatusUpdater;
- 
-
+      
 	private final List<Class<?>> migrationClasses = Arrays
-			.asList(new Class<?>[] { CustomPermissionMigrations.class,TransactionStatusUpdater.class});
+			.asList(new Class<?>[] { CustomDataBaseMigrations.class,});
 
 	public static boolean EXECUTED_MIGRATIONS = false;
 

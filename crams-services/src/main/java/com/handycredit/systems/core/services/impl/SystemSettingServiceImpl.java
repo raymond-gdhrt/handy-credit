@@ -5,7 +5,6 @@
  */
 package com.handycredit.systems.core.services.impl;
 
-import com.handycredit.systems.core.services.GenericServiceImpl;
 import com.handycredit.systems.core.services.SystemSettingService;
 import com.handycredit.systems.models.SystemSetting;
 import java.util.List;

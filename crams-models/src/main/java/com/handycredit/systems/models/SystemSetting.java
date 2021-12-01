@@ -7,8 +7,6 @@ package com.handycredit.systems.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import org.sers.webutils.model.BaseEntity;
 
@@ -18,15 +16,18 @@ import org.sers.webutils.model.BaseEntity;
  */
 @Entity
 @Table(name = "system_settings")
-public class SystemSetting extends BaseEntity{
+public class SystemSetting extends BaseEntity {
 
-    
     private String systemName;
-    private String systemServiceCode;
-    
-   
+    private String mailSenderSmtpHost = "smtp.sendgrid.net";
+    private String mailSenderSmtpPort = "587";
+    private String mailSenderAddress="apikey";
+    private String mailSenderPassword="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";
+    private String themeName = "blue";
+    private String defaultCurrencyCode = "USD";
+    private int defaultCurrencyDecimalPlaces = 1;
 
-    @Column(name = "system_name")
+    @Column(name = "system_name", length = 20)
     public String getSystemName() {
         return systemName;
     }
@@ -35,17 +36,58 @@ public class SystemSetting extends BaseEntity{
         this.systemName = systemName;
     }
 
-    
-
-     @Column(name = "service_code",length = 10)
-    public String getSystemServiceCode() {
-        return systemServiceCode;
+    @Column(name = "mail_sender_smtp_host", length = 20)
+    public String getMailSenderSmtpHost() {
+        return mailSenderSmtpHost;
     }
 
-    public void setSystemServiceCode(String systemServiceCode) {
-        this.systemServiceCode = systemServiceCode;
+    public void setMailSenderSmtpHost(String mailSenderSmtpHost) {
+        this.mailSenderSmtpHost = mailSenderSmtpHost;
     }
-    
-    
+
+    @Column(name = "mail_sender_smtp_port", length = 20)
+    public String getMailSenderSmtpPort() {
+        return mailSenderSmtpPort;
+    }
+
+    public void setMailSenderSmtpPort(String mailSenderSmtpPort) {
+        this.mailSenderSmtpPort = mailSenderSmtpPort;
+    }
+
+    @Column(name ="mail_sender_address",length = 50)
+    public String getMailSenderAddress() {
+        return mailSenderAddress;
+    }
+
+    public void setMailSenderAddress(String mailSenderAddress) {
+        this.mailSenderAddress = mailSenderAddress;
+    }
+
+     @Column(name ="mail_sender_password",length = 100)
+    public String getMailSenderPassword() {
+        return mailSenderPassword;
+    }
+
+    public void setMailSenderPassword(String mailSenderPassword) {
+        this.mailSenderPassword = mailSenderPassword;
+    }
+
+    @Column(name ="default_currency_code",length = 5)
+    public String getDefaultCurrencyCode() {
+        return defaultCurrencyCode;
+    }
+
+    public void setDefaultCurrencyCode(String defaultCurrencyCode) {
+        this.defaultCurrencyCode = defaultCurrencyCode;
+    }
+
+     @Column(name ="default_currency_decimal_places",length = 2)
+    public int getDefaultCurrencyDecimalPlaces() {
+        return defaultCurrencyDecimalPlaces;
+    }
+
+    public void setDefaultCurrencyDecimalPlaces(int defaultCurrencyDecimalPlaces) {
+        this.defaultCurrencyDecimalPlaces = defaultCurrencyDecimalPlaces;
+    }
 
 }

@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.search.Search;
-import com.handycredit.systems.core.services.GeneralSearchUtils;
-import com.handycredit.systems.core.services.GenericServiceImpl;
+import com.handycredit.systems.core.utils.GeneralSearchUtils;
 import java.util.ArrayList;
 import org.apache.commons.lang.StringUtils;
 import org.sers.webutils.model.exception.OperationFailedException;

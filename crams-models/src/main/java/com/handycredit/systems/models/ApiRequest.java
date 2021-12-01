@@ -12,7 +12,7 @@ import javax.persistence.Transient;
 import org.sers.webutils.model.BaseEntity;
 
 @Entity
-@Table(name = "payment_api_requests")
+@Table(name = "api_requests")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class ApiRequest extends BaseEntity {
 	/**
