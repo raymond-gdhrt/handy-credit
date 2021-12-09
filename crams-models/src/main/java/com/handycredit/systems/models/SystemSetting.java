@@ -22,7 +22,7 @@ public class SystemSetting extends BaseEntity {
     private String mailSenderSmtpHost = "smtp.sendgrid.net";
     private String mailSenderSmtpPort = "587";
     private String mailSenderAddress="apikey";
-    private String mailSenderPassword="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";
+    private String mailSenderPassword="";
     private String themeName = "blue";
     private String defaultCurrencyCode = "USD";
     private int defaultCurrencyDecimalPlaces = 1;
