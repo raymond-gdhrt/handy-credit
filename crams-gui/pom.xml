@@ -547,7 +547,7 @@
     </dependencies>
 
     <build>
-        <finalName>UMA-System</finalName>
+        <finalName>crams-gui</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

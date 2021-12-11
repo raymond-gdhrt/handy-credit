@@ -14,7 +14,7 @@
             <meta name="apple-mobile-web-app-capable" content="yes" />
             <link rel="icon" href="#{request.contextPath}/resources/freya-layout/images/uma-logo.png" type="image/x-icon"></link>
         </f:facet>
-        <title><ui:insert name="title">PrimeFaces Freya</ui:insert></title>
+        <title><ui:insert name="title">CRAMS </ui:insert></title>
         <h:outputScript name="js/layout.js" library="freya-layout" />
         <ui:insert name="head"/>
     </h:head>
@@ -36,7 +36,7 @@
                 </p>
             </div>   
             <div class="ui-g-8">
-                <h:form id="externalManufacturerForm" style="width:100% " enctype="multipart/form-data">
+                <h:form id="loanProviderRegistartionForm" style="width:100% " enctype="multipart/form-data">
 
                     <ui:fragment>
                         <div class="ui-g ui-g-12 ui-md-12 ui-lg-nopad">
@@ -53,7 +53,7 @@
                                                     <span style="color: red"> * </span> 
 
                                                     <p:inputText required="true" 
-                                                                 value="#{externalManufacturerForm.model.companyName}"
+                                                                 value="#{loanProviderRegistartionForm.model.companyName}"
                                                                  style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 95%" />
                                                 </div>
                                                 <div class="ui-g-12 ui-md-12 ui-lg-6" >
@@ -62,7 +62,7 @@
 
                                                     <p:inputText required="false"
 
-                                                                 value="#{externalManufacturerForm.model.location}"
+                                                                 value="#{loanProviderRegistartionForm.model.location}"
                                                                  style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 90%" /><br/>
 
                                                 </div>
@@ -73,7 +73,7 @@
                                                     <span style="color: red"> * </span><br/>
 
                                                     <p:inputText  required="true"
-                                                                  value="#{externalManufacturerForm.model.phoneNumber}"
+                                                                  value="#{loanProviderRegistartionForm.model.phoneNumber}"
                                                                   style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 90%" />
 
 
@@ -83,7 +83,7 @@
                                                     <span style="color: red"> * </span><br/>
 
                                                     <p:inputText placeholder="Email" required="true"
-                                                                 value="#{externalManufacturerForm.model.emailAddress}"
+                                                                 value="#{loanProviderRegistartionForm.model.emailAddress}"
                                                                  style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 90%" />
 
 
@@ -94,7 +94,7 @@
                                                     <span style="color: red"> * </span><br/>
 
                                                     <p:inputText placeholder="reg no" required="false"
-                                                                 value="#{externalManufacturerForm.model.registrationNumber}"
+                                                                 value="#{loanProviderRegistartionForm.model.registrationNumber}"
                                                                  style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 90%" />
 
 
@@ -104,14 +104,14 @@
                                                 <!--                                                <div class="ui-g-12 ui-md-12 ui-lg-4 " style="margin-left: auto" >
                                                                                                     <h:outputText value="Sector" style="font-size: 18px;" />
                                                                                                     <span style="color: red"> * </span><br/>
-                                                                                                    <p:selectOneMenu  value="#{externalManufacturerForm.model.sector}" id="sector" 
+                                                                                                    <p:selectOneMenu  value="#{loanProviderRegistartionForm.model.sector}" id="sector" 
                                                                                                                       converter="sectorConverter" var="sector"
                                                                                                                       styleClass="Wid100" effect="fade"
                                                                                                                       filter="true"  style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 90%" 
                                                                                                                       filterMatchMode="startsWith">
                                                                                                         <f:selectItem itemLabel="Select sector"
                                                                                                                       itemValue="#{null}" />
-                                                                                                        <f:selectItems value="#{externalManufacturerForm.sectors}" var="sector"
+                                                                                                        <f:selectItems value="#{loanProviderRegistartionForm.sectors}" var="sector"
                                                                                                                        itemLabel="#{sector}" itemValue="#{sector}" />
                                                                                                         <p:column>
                                                                                                             <h:outputText value="#{sector}" />
@@ -127,7 +127,7 @@
                                                             <span style="color: red"> * </span> 
 
                                                             <p:inputText required="false"
-                                                                         value="#{externalManufacturerForm.model.contactPersonName}"
+                                                                         value="#{loanProviderRegistartionForm.model.contactPersonName}"
                                                                          style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 90%" /><br/>
 
                                                         </div>
@@ -136,7 +136,7 @@
                                                             <span style="color: red"> * </span><br/>
 
                                                             <p:inputText  required="false"
-                                                                          value="#{externalManufacturerForm.model.contactPersonPhoneNumber}"
+                                                                          value="#{loanProviderRegistartionForm.model.contactPersonPhoneNumber}"
                                                                           style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 90%" />
 
 
@@ -146,7 +146,7 @@
                                                             <span style="color: red"> * </span><br/>
 
                                                             <p:inputText placeholder="Email" required="false"
-                                                                         value="#{externalManufacturerForm.model.contactPersonEmailAddress}"
+                                                                         value="#{loanProviderRegistartionForm.model.contactPersonEmailAddress}"
                                                                          style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 90%" />
 
 
@@ -160,8 +160,8 @@
 
                                                     <p:commandButton icon="fa fa-save" value="Submit" id="saveBtn"
                                                                      styleClass="green-btn" validateClient="true"
-                                                                     action="#{externalManufacturerForm.save}"
-                                                                     update="externalManufacturerForm" />
+                                                                     action="#{loanProviderRegistartionForm.save}"
+                                                                     update="loanProviderRegistartionForm" />
 
                                                 </div>
 
@@ -180,7 +180,7 @@
                             </div>
                         </div>
                     </ui:fragment>
-                    <p:blockUI block="externalManufacturerForm" trigger="saveBtn">
+                    <p:blockUI block="loanProviderRegistartionForm" trigger="saveBtn">
                         <p:graphicImage value="/resources/images/workingicon.png" />
                     </p:blockUI>
                 </h:form>

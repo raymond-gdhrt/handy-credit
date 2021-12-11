@@ -89,6 +89,6 @@
     </dependencies>
 
     <build>
-        <finalName>payment-gateway-models</finalName>
+        <finalName>crams-models</finalName>
     </build>
 </project>

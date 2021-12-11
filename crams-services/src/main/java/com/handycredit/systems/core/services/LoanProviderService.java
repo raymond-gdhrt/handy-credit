@@ -8,5 +8,6 @@ import com.handycredit.systems.models.LoanProvider;
  * @author RayGdhrt
  */
 public interface LoanProviderService extends GenericService<LoanProvider>  {
+    void saveOutsideContext(LoanProvider loanProvider);
 
 }

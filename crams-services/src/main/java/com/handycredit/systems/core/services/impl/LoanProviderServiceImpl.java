@@ -32,4 +32,9 @@ public class LoanProviderServiceImpl extends GenericServiceImpl<LoanProvider> im
         return super.save(instance);
 
     }
+
+    @Override
+    public void saveOutsideContext(LoanProvider loanProvider) {
+       super.saveBG(loanProvider);
+    }
 }

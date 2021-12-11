@@ -1,10 +1,9 @@
-package com.pahappa.systems.client.converters;
+package com.handycredit.systems.client.converters;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-
 import org.sers.webutils.model.utils.SortField;
 
 @FacesConverter("sortFieldConverter")

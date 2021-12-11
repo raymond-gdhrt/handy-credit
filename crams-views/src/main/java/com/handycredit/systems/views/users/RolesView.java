@@ -6,21 +6,18 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 
 import com.handycredit.systems.security.HyperLinks;
 import org.sers.webutils.client.views.presenters.PaginatedTable;
 import org.sers.webutils.client.views.presenters.ViewPath;
 import org.sers.webutils.model.security.Role;
-import org.sers.webutils.model.security.User;
 import org.sers.webutils.server.core.service.RoleService;
-import org.sers.webutils.server.core.service.UserService;
 import org.sers.webutils.server.core.service.excel.reports.ExcelReport;
 import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 
 @ManagedBean(name = "rolesView")
 @SessionScoped
-@ViewPath(path = HyperLinks.ROLE_VIEW)
+@ViewPath(path = HyperLinks.APIREQUESTVIEW)
 public class RolesView extends PaginatedTable<Role> {
 
 	private static final long serialVersionUID = 1L;

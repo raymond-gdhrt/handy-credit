@@ -32,4 +32,10 @@ public class BusinessServiceImpl extends GenericServiceImpl<Business> implements
         return super.save(instance);
 
     }
+
+    @Override
+    public Business saveOutsideContext(Business business) {
+      return  super.mergeBG(business);
+    
+    }
 }

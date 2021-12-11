@@ -6,16 +6,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import com.handycredit.systems.security.HyperLinks;
-import org.primefaces.model.chart.Axis;
-import org.primefaces.model.chart.AxisType;
-import org.primefaces.model.chart.CategoryAxis;
-import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.LineChartModel;
 import org.sers.webutils.client.controllers.WebAppExceptionHandler;
 import org.sers.webutils.client.views.presenters.ViewPath;
 import org.sers.webutils.model.security.User;
-import org.sers.webutils.server.core.utils.ApplicationContextProvider;
-import org.sers.webutils.server.core.utils.DateUtils;
 import org.sers.webutils.server.shared.SharedAppData;
 
 

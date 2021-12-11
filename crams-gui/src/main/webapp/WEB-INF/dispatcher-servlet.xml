@@ -14,7 +14,7 @@
 	<!-- It does the bean discovery (searches for @Component annotation in base 
 		package) and then activates the additional annotations (e.g. Autowired). -->
 	<context:component-scan
-		base-package="org.pahappa.systems.core" />
+		base-package="com.handycredit.systems.core" />
 
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">

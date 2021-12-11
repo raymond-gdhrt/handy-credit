@@ -8,5 +8,7 @@ import com.handycredit.systems.models.Loan;
  * @author RayGdhrt
  */
 public interface BusinessService extends GenericService<Business>  {
+    
+    public Business saveOutsideContext(Business business);
 
 }

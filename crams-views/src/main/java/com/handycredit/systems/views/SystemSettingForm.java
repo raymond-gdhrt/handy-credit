@@ -11,7 +11,7 @@ import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 
 @ManagedBean(name = "settingsForm")
 @SessionScoped
-@ViewPath(path = HyperLinks.APP_SETTINGS_FORM)
+@ViewPath(path = HyperLinks.SYSTEM_SETTINGS_FORM)
 public class SystemSettingForm extends WebFormView<SystemSetting, SystemSettingForm, Dashboard> {
 
     private static final long serialVersionUID = 1L;

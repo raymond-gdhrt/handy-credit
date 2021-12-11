@@ -16,56 +16,6 @@
         <security:filter-chain-map path-type="ant">				
             <security:filter-chain
                 pattern="/resources/freya-layout/**" filters="none" />
-            
-            <security:filter-chain
-                pattern="/resources/primefaces-freya-avocado-dark/**" filters="none" />
-             
-            <security:filter-chain
-                pattern="/resources/primefaces-freya-avocado-light/**" filters="none" />
-             
-            <security:filter-chain
-                pattern="/resources/primefaces-freya-blue-dark/**" filters="none" />
-               
-            <security:filter-chain
-                pattern="/resources/primefaces-freya-blue-white/**" filters="none" />
-                 
-            <security:filter-chain
-                pattern="/resources/primefaces-freya-green-dark/**" filters="none" />
-                   
-            <security:filter-chain
-                pattern="/resources/primefaces-freya-green-white/**" filters="none" />
-             
-            <security:filter-chain
-                pattern="/resources/primefaces-freya-orange-dark/**" filters="none" />
-            
-            <security:filter-chain
-                pattern="/resources/primefaces-freya-orange-light/**" filters="none" />
-            
-              <security:filter-chain
-                pattern="/resources/primefaces-freya-purple-dark/**" filters="none" />
-            
-            <security:filter-chain
-                pattern="/resources/primefaces-freya-purple-light/**" filters="none" />
-            
-              <security:filter-chain
-                pattern="/resources/primefaces-freya-red-dark/**" filters="none" />
-            
-            <security:filter-chain
-                pattern="/resources/primefaces-freya-red-light/**" filters="none" />
-            
-              <security:filter-chain
-                pattern="/resources/primefaces-freya-yellow-dark/**" filters="none" />
-            
-            <security:filter-chain
-                pattern="/resources/primefaces-freya-yellow-light/**" filters="none" />
-            
-              <security:filter-chain
-                pattern="/resources/primefaces-freya-turquoise-dark/**" filters="none" />
-            
-            <security:filter-chain
-                pattern="/resources/primefaces-freya-turquoise-light/**" filters="none" />
-            
-            
             <!--             <resources mapping="/resources/**" location="/resources/" />-->
 
             <security:filter-chain
@@ -76,6 +26,9 @@
 
             <security:filter-chain
                 pattern="/resources/freya-layout/images/**" filters="none" />
+            
+            <security:filter-chain
+                pattern="/resources/freya-layout/images/landing/**" filters="none" />
 
             <security:filter-chain
                 pattern="/resources/freya-layout/fonts/**" filters="none" />
@@ -87,8 +40,10 @@
 
             <security:filter-chain
                 pattern="/ExternalViews/Login.xhtml" filters="none" />
-             <security:filter-chain
-                pattern="/ExternalViews/ExternalManufacturerForm.xhtml" filters="none" />
+            <security:filter-chain
+                pattern="/ExternalViews/BusinessRegistrationForm.xhtml" filters="none" />
+            <security:filter-chain
+                pattern="/ExternalViews/LoanProviderRegistrationForm.xhtml" filters="none" />
 
             <security:filter-chain
                 pattern="/javax.faces.resource/**" filters="none" />
@@ -199,8 +154,8 @@
         <property name="authenticationSuccessHandler">
             <bean
                 class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
-                <!-- <property name="administratorTargetUrl" value="/administrator.html" 
-                /> -->
+                <property name="defaultTargetUrl"
+					value="/pages/dashboard/Dashboard.xhtml" />
             </bean>
         </property>
 

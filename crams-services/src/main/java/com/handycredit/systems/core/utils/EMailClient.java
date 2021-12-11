@@ -13,7 +13,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 
-public class MailCustomService {
+public class EMailClient {
 
     private static String SMTPHOST = "smtp.gmail.com";
     private static int SMTP_PORT = 587;

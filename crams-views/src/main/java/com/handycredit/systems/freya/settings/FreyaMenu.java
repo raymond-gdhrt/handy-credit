@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.pahappa.systems.freya.settings;
+package com.handycredit.systems.freya.settings;
 
 import javax.faces.component.UIComponent;
 import org.primefaces.component.menu.AbstractMenu;
