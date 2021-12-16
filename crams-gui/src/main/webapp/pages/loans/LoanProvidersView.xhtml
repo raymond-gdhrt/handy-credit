@@ -9,7 +9,7 @@
     <ui:define name="content">
         <div class="ui-g ui-fluid">
             <div class="ui-g-12">
-                <h:form id="loansView" enctype="multipart/form-data"
+                <h:form id="loanProvidersView" enctype="multipart/form-data"
                         rendered="#{componentRenderer.administrator}">
 
                     <div class="p-grid overlay-demo">
@@ -49,26 +49,26 @@
                                 <p:inputText id="searchTerm" required="false"
 
                                              placeholder="Search ..."
-                                             onkeyup="#{loansView.reloadFilterReset()}"
-                                             value="#{loansView.searchTerm}" >
+                                             onkeyup="#{loanProvidersView.reloadFilterReset()}"
+                                             value="#{loanProvidersView.searchTerm}" >
 
-                                    <p:ajax event="change" update="loansView" listener="#{loansView.reloadFilterReset()}"/>
+                                    <p:ajax event="change" update="loanProvidersView" listener="#{loanProvidersView.reloadFilterReset()}"/>
                                 </p:inputText>
                             </div> <!-- comment -->
 
 
                             <div class="p-col-12 p-md-6 p-lg-3" >
-                                <p:selectCheckboxMenu id="countries" label="Filter country" value="#{loansView.selectedCountries}" 
+                                <p:selectCheckboxMenu id="countries" label="Filter country" value="#{loanProvidersView.selectedCountries}" 
                                                       converter="countryConverter"  style="height: 100%" >
 
-                                    <f:selectItems value="#{loansView.countries}"/>
-                                    <p:ajax event="change" update="loansView" listener="#{loansView.reloadFilterReset()}"/>
+                                    <f:selectItems value="#{loanProvidersView.countries}"/>
+                                    <p:ajax event="change" update="loanProvidersView" listener="#{loanProvidersView.reloadFilterReset()}"/>
                                 </p:selectCheckboxMenu>
                             </div>
                             <div class="p-col-12 p-md-6 p-lg-3" >
                                 <p:commandButton icon="fa fa-search" styleClass="ui-button-help"
                                                  id="searchBtn" style="margin-right: 18px"
-                                                 actionListener="#{loansView.reloadFilterReset()}" >
+                                                 actionListener="#{loanProvidersView.reloadFilterReset()}" >
                                 </p:commandButton>
                             </div>
 
@@ -81,19 +81,19 @@
                         <div class="p-grid table-demo">
                             <div class="p-col-12">
                                 <div class="card">
-                                    <p:dataTable id="businessOwnersTable" var="model" value="#{loansView}"
-                                                 widgetVar="businessOwnersTable"
+                                    <p:dataTable id="loanProvidersTable" var="model" value="#{loanProvidersView}"
+                                                 widgetVar="loanProvidersTable"
                                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                                  paginator="true" lazy="true"
-                                                 rows="#{loansView.maximumresultsPerpage}"
-                                                 emptyMessage="#{loansView.dataEmptyMessage}"
+                                                 rows="#{loanProvidersView.maximumresultsPerpage}"
+                                                 emptyMessage="#{loanProvidersView.dataEmptyMessage}"
                                                  paginatorPosition="bottom" paginatorAlwaysVisible="false"
                                                  rowIndexVar="row" reflow="true" styleClass="TableAlgnment">
 
                                         <f:facet name="header">
                                             <div class="p-d-flex p-jc-between">
                                                 <div >
-                                                    <span class="table-header-text">Authors</span>
+                                                    <span class="table-header-text">Loan providers</span>
 
                                                 </div>
 
@@ -104,7 +104,7 @@
                                                                              process="clientsTable" icon="fa fa-upload" 
 
                                                                              styleClass="ui-button-secondary" ajax="false">
-                                                                <p:dataExporter type="pdf"  target="businessOwnersTable" fileName="businessOwners"/>
+                                                                <p:dataExporter type="pdf"  target="loanProvidersTable" fileName="loanProviders"/>
                                                             </p:commandButton>
                                                         </div>  
                                                         <div class="p-mr-2 p-mb-2">
@@ -122,20 +122,30 @@
                                         </p:column>
 
                                         <p:column width="200" headerText="Full name">
-                                            <h:outputText value="#{model.userAccount.fullName}" />
+                                            <h:outputText value="#{model.name}" />
                                         </p:column>
                                         <p:column width="200" headerText="Username">
-                                            <h:outputText value="#{model.userAccount.username}" />
+                                            <h:outputText value="#{model.type}" />
                                         </p:column>
 
                                         <p:column width="200" headerText="Country">
 
-                                            <h:outputText value="#{model.userAccount.country}" />
+                                            <h:outputText value="#{model.registrationNumber}" />
                                         </p:column>
 
-                                        <p:column headerText="Email address">
+                                        <p:column headerText="District">
 
-                                            <h:outputText value="#{model.userAccount.emailAddress}" />
+                                            <h:outputText value="#{model.district}" />
+                                        </p:column>
+                                        
+                                        <p:column headerText="Email">
+
+                                            <h:outputText value="#{model.emailAddress}" />
+                                        </p:column>
+                                        
+                                         <p:column headerText="Phone">
+
+                                            <h:outputText value="#{model.phoneNumber}" />
                                         </p:column>
 
                                         <p:column headerText="Date registered">
@@ -150,20 +160,20 @@
 
                                             <p:commandButton  process="@this" icon="fa fa-edit" styleClass="ui-button-help"
                                                               immediate="true"  rendered="#{componentRenderer.administrator and model.status eq 'Draft'}"
-                                                              actionListener="#{businessOwnerFormDialog.show}">
+                                                              actionListener="#{loanProviderFormDialog.show}">
                                                 <f:setPropertyActionListener value="#{model}"
-                                                                             target="#{businessOwnerFormDialog.model}" />
+                                                                             target="#{loanProviderFormDialog.model}" />
 
-                                                <p:ajax event="dialogReturn" update="businessOwnersTable" />
+                                                <p:ajax event="dialogReturn" update="loanProvidersTable" />
                                             </p:commandButton>
 
 
                                             <p:commandButton icon="fa fa-eye" title="View" 
                                                              styleClass="ui-button-primary"  style="margin-left: 5px"
 
-                                                             action="#{businessOwnerProfileView.getViewPath}">
+                                                             action="#{loanProviderProfileView.getViewPath}">
                                                 <f:setPropertyActionListener value="#{model}"
-                                                                             target="#{businessOwnerProfileView.model}" />
+                                                                             target="#{loanProviderProfileView.model}" />
 
                                             </p:commandButton>
 
@@ -174,11 +184,11 @@
 
                                             <p:commandButton icon="fa fa-trash" title="Delete"  
                                                              styleClass="ui-button-danger" style="margin-left: 5px"
-                                                             action="#{loansView.deleteAuthor(model)}"
+                                                             action="#{loanProvidersView.deleteAuthor(model)}"
                                                              rendered="#{componentRenderer.administrator and  model.status eq 'Draft'}"
-                                                             update="businessOwnersTable">
+                                                             update="loanProviderTable">
                                                 <p:confirm header="Confirmation"
-                                                           message="You are about to delete a businessOwner. Do you wish to continue?"
+                                                           message="You are about to delete a loanProvider. Do you wish to continue?"
                                                            icon="ui-icon-alert" />
                                             </p:commandButton>
 
@@ -186,7 +196,7 @@
 
                                     </p:dataTable>
 
-                                    <p:blockUI block="loansView" trigger="searchBtn">
+                                    <p:blockUI block="loanProvidersView" trigger="searchBtn">
                                         <p:graphicImage value="/resources/images/workingicon.png" />
                                     </p:blockUI>
 
@@ -196,7 +206,7 @@
                             </div>
                         </div>
                     </ui:fragment>
-                    <p:blockUI block="loansView" >
+                    <p:blockUI block="loanProvidersView" >
                         <p:graphicImage value="/resources/images/workingicon.png" />
                     </p:blockUI>    
                     <p:confirmDialog global="true">

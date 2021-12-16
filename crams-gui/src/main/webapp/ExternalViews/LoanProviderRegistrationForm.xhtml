@@ -12,10 +12,16 @@
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
             <meta name="apple-mobile-web-app-capable" content="yes" />
-            <link rel="icon" href="#{request.contextPath}/resources/freya-layout/images/uma-logo.png" type="image/x-icon"></link>
+            <link rel="icon" href="#{request.contextPath}/resources/freya-layout/images/logo.png" type="image/x-icon"></link>
         </f:facet>
-        <title><ui:insert name="title">CRAMS </ui:insert></title>
+        <title><ui:insert name="title">CRAMS</ui:insert></title>
+        <link rel="shortcut icon" type="image/x-icon"
+              href="#{request.contextPath}/resources/images/favicon_ico.png" />
         <h:outputScript name="js/layout.js" library="freya-layout" />
+        <h:outputStylesheet name="css/primeicons.css" library="freya-layout" />
+        <h:outputStylesheet name="css/primeflex.min.css" library="freya-layout" />
+        <h:outputStylesheet name="css/#{guestPreferences.layout}.css" library="freya-layout" />
+        <h:outputStylesheet name="css/demo-#{guestPreferences.darkMode}.css" library="demo" />
         <ui:insert name="head"/>
     </h:head>
 
@@ -23,9 +29,9 @@
 
         <div class="ui-g-12  layout-wrapper layout-topbar-#{guestPreferences.topbarTheme} layout-menu-#{guestPreferences.menuTheme} #{guestPreferences.menuMode}" >
             <div class="ui-g-4 card-body" style="text-align: center">
-                <h2>Register Company </h2>
+                <h2>Register as loan provider</h2>
                 <h:link  styleClass="logo">
-                    <p:graphicImage name="images/uma-logo.png" width="200" height="200" library="freya-layout" />
+                    <p:graphicImage name="images/logo.png" width="300" height="200" library="freya-layout" />
                 </h:link>
                 <p style="padding: 10%;font-size: 18px;color: #35557e">Nullam non efficitur tellus. Aenean sapien magna, vulputate dictum odio quis, 
                     ornare maximus elit. Vestibulum quis dolor eget sem lacinia consectetur. 
@@ -36,151 +42,148 @@
                 </p>
             </div>   
             <div class="ui-g-8">
-                <h:form id="loanProviderRegistartionForm" style="width:100% " enctype="multipart/form-data">
+                <h:form id="loanProviderRegistrationForm"  enctype="multipart/form-data">
 
-                    <ui:fragment>
-                        <div class="ui-g ui-g-12 ui-md-12 ui-lg-nopad">
-                            <div class="ui-g-12 ui-md-12 ui-lg-12 NoMargin">
+                    <ui:fragment rendered="#{loanProviderRegistrationForm.showForm}">
+                        <div class="card " >
 
-                                <div class="card card-w-title" style="width: 100%;height: 100%">
-                                    <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            <p:fieldset legend="Loan provider details" id="regForm" >
+                                <div class="ui-fluid p-formgrid p-grid">
+                                    <div class="p-field p-col-12 p-md-6">
+                                        <p:outputLabel for="name" value="Company name" />
+                                        <p:inputText required="true" id="name"
+                                                     value="#{loanProviderRegistrationForm.model.name}"/>
+                                    </div>
 
-                                        <p:fieldset style="margin-bottom:20px">
-                                            <div class="ui-g-12 ui-md-12 ui-lg-12" style="margin-bottom:20px">
-                                                <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                    <div class="p-field p-col-12 p-md-6">
+                                        <p:outputLabel for="type" value="Type" />
+                                        <p:selectOneMenu id="type" required="true" value="#{loanProviderRegistrationForm.model.type}">
+                                            <f:selectItem itemLabel="Select One" itemValue=""/>
+                                            <f:selectItems value="#{loanProviderRegistrationForm.loanProviderTypes}"/>
+                                        </p:selectOneMenu>
+                                    </div>
 
-                                                    <h:outputText value="Company Name" style="font-size: 18px;" />
-                                                    <span style="color: red"> * </span> 
+                                    <div class="p-field p-col-12 p-md-6">
+                                        <p:outputLabel for="tin" value="Registartion /TIN number" />
+                                        <p:inputText required="true" id="tin"
+                                                     value="#{loanProviderRegistrationForm.model.registrationNumber}"/>
+                                    </div>
 
-                                                    <p:inputText required="true" 
-                                                                 value="#{loanProviderRegistartionForm.model.companyName}"
-                                                                 style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 95%" />
-                                                </div>
-                                                <div class="ui-g-12 ui-md-12 ui-lg-6" >
-                                                    <h:outputText value="Physical Address" style="font-size: 18px;" />
-                                                    <span style="color: red"> * </span> 
-
-                                                    <p:inputText required="false"
-
-                                                                 value="#{loanProviderRegistartionForm.model.location}"
-                                                                 style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 90%" /><br/>
-
-                                                </div>
-
-
-                                                <div class="ui-g-12 ui-md-12 ui-lg-6" >
-                                                    <h:outputText value="Phone Number" style="font-size: 18px;" />
-                                                    <span style="color: red"> * </span><br/>
-
-                                                    <p:inputText  required="true"
-                                                                  value="#{loanProviderRegistartionForm.model.phoneNumber}"
-                                                                  style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 90%" />
+                                    <div class="p-field p-col-12 p-md-6">
+                                        <p:outputLabel for="date" value="Opening date" />
+                                        <p:calendar required="true" id="date"
+                                                    value="#{loanProviderRegistrationForm.model.dateOfOpening}"/>
+                                    </div>
 
 
-                                                </div>
-                                                <div class="ui-g-12 ui-md-12 ui-lg-6" >
-                                                    <h:outputText value="Email address" style="font-size: 18px;" />
-                                                    <span style="color: red"> * </span><br/>
+                                    <div class="p-field p-col-12 p-md-6">
+                                        <p:outputLabel for="email" value="Email address" />
+                                        <p:inputText required="true" id="email"
+                                                     value="#{loanProviderRegistrationForm.model.emailAddress}"/>
+                                    </div>
 
-                                                    <p:inputText placeholder="Email" required="true"
-                                                                 value="#{loanProviderRegistartionForm.model.emailAddress}"
-                                                                 style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 90%" />
+                                    <div class="p-field p-col-12 p-md-6">
+                                        <p:outputLabel for="phone" value="Phone number" />
+                                        <p:inputText required="true" id="phone"
+                                                     value="#{loanProviderRegistrationForm.model.phoneNumber}"/>
+                                    </div>
 
+                                    <div class="p-field p-col-12 p-md-6">
+                                        <p:outputLabel for="district" value="District" />
+                                        <p:selectOneMenu  value="#{loanProviderRegistrationForm.model.district}" 
+                                                          id="district" 
+                                                          effect="fade" filter="true" >
 
-                                                </div>
+                                            <f:selectItems value="#{loanProviderRegistrationForm.districts}"  />
 
-                                                <div class="ui-g-12 ui-md-12 ui-lg-6" >
-                                                    <h:outputText value="Registration Number" style="font-size: 18px;" />
-                                                    <span style="color: red"> * </span><br/>
+                                        </p:selectOneMenu>
 
-                                                    <p:inputText placeholder="reg no" required="false"
-                                                                 value="#{loanProviderRegistartionForm.model.registrationNumber}"
-                                                                 style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 90%" />
-
-
-                                                </div>
-
-
-                                                <!--                                                <div class="ui-g-12 ui-md-12 ui-lg-4 " style="margin-left: auto" >
-                                                                                                    <h:outputText value="Sector" style="font-size: 18px;" />
-                                                                                                    <span style="color: red"> * </span><br/>
-                                                                                                    <p:selectOneMenu  value="#{loanProviderRegistartionForm.model.sector}" id="sector" 
-                                                                                                                      converter="sectorConverter" var="sector"
-                                                                                                                      styleClass="Wid100" effect="fade"
-                                                                                                                      filter="true"  style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 90%" 
-                                                                                                                      filterMatchMode="startsWith">
-                                                                                                        <f:selectItem itemLabel="Select sector"
-                                                                                                                      itemValue="#{null}" />
-                                                                                                        <f:selectItems value="#{loanProviderRegistartionForm.sectors}" var="sector"
-                                                                                                                       itemLabel="#{sector}" itemValue="#{sector}" />
-                                                                                                        <p:column>
-                                                                                                            <h:outputText value="#{sector}" />
-                                                                                                        </p:column>
-                                                                                                    </p:selectOneMenu>
-                                                                                                </div>-->
-                                                <p:fieldset legend="Contact Person" style="margin-bottom:5px" >
-
-                                                    <div class="ui-g-12 ui-md-12 ui-lg-12">
-
-                                                        <div class="ui-g-12 ui-md-12 ui-lg-4" >
-                                                            <h:outputText value="Name" style="font-size: 18px;" />
-                                                            <span style="color: red"> * </span> 
-
-                                                            <p:inputText required="false"
-                                                                         value="#{loanProviderRegistartionForm.model.contactPersonName}"
-                                                                         style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 90%" /><br/>
-
-                                                        </div>
-                                                        <div class="ui-g-12 ui-md-12 ui-lg-4" >
-                                                            <h:outputText value="PhoneNumber" style="font-size: 18px;" />
-                                                            <span style="color: red"> * </span><br/>
-
-                                                            <p:inputText  required="false"
-                                                                          value="#{loanProviderRegistartionForm.model.contactPersonPhoneNumber}"
-                                                                          style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 90%" />
-
-
-                                                        </div>
-                                                        <div class="ui-g-12 ui-md-12 ui-lg-4" >
-                                                            <h:outputText value="EmailAddress" style="font-size: 18px;" />
-                                                            <span style="color: red"> * </span><br/>
-
-                                                            <p:inputText placeholder="Email" required="false"
-                                                                         value="#{loanProviderRegistartionForm.model.contactPersonEmailAddress}"
-                                                                         style="padding: 10px;margin-bottom: 2%; font-size: 20px; width: 90%" />
-
-
-                                                        </div>
-                                                    </div>
-
-                                                </p:fieldset>
-                                            </div>
-                                            <div class="ui-g-12 ui-md-12 ui-lg-12" >
-                                                <div class="ui-g-12 ui-md-12 ui-lg-1" style="text-align: end; margin-right: auto">
-
-                                                    <p:commandButton icon="fa fa-save" value="Submit" id="saveBtn"
-                                                                     styleClass="green-btn" validateClient="true"
-                                                                     action="#{loanProviderRegistartionForm.save}"
-                                                                     update="loanProviderRegistartionForm" />
-
-                                                </div>
-
-
-                                            </div>
-                                        </p:fieldset>
-
-
+                                    </div>
+                                    <div class="p-field p-col-12 p-md-6">
+                                        <p:outputLabel for="addr" value="Physical address" />
+                                        <p:inputText required="true" id="addr"
+                                                     value="#{loanProviderRegistrationForm.model.physicalAddress}"/>
                                     </div>
 
 
 
                                 </div>
 
+                                <div class="ui-g-12 ui-md-12 ui-lg-12" >
+                                    <div style="text-align: end; display: flex">
+
+                                        <p:commandButton  value="Submit" id="saveBtn1"
+                                                          process="regForm"
+                                                          styleClass="green-btn" validateClient="true"
+                                                          style="margin-left: auto"
+                                                          action="#{loanProviderRegistrationForm.createMember()}"
+                                                          update="loanProviderRegistrationForm" />
+
+                                    </div>
+
+
+                                </div>
+                            </p:fieldset>
+
+
+
+                        </div>
+                    </ui:fragment>
+
+                    <ui:fragment id="codeSection" rendered="#{loanProviderRegistrationForm.showCodeSection}">
+                        <div class="ui-fluid p-formgrid p-grid" style="padding: 20%">
+                            <div class="p-field p-col-12 p-md-12" style="text-align: center">
+                                <h4 >Enter code sent to your email</h4>
+                            </div>
+
+                            <p:outputPanel rendered="#{not loanProviderRegistrationForm.successResponse}" 
+                                           style="background-color:red;color: white" styleClass="p-field p-col-12 p-md-12">
+                                <h5>#{loanProviderRegistrationForm.customUiMessage}</h5>
+
+
+                            </p:outputPanel>
+                            <div class="p-field p-col-12 p-md-12">
+
+                                <p:inputText required="true" 
+                                             value="#{loanProviderRegistrationForm.verificationCode}" />
+
+                            </div>
+                            <div class="p-field p-col-12 p-md-6" style="display: flex">
+
+                                <p:commandButton  style="margin-left: auto"
+                                                  process="codeSection"
+                                                  value="Verify" id="saveBtn2"
+                                                  styleClass="green-btn" validateClient="true"
+                                                  action="#{loanProviderRegistrationForm.verifyCode()}"
+                                                  update="codeSection" />
+                            </div>
+
+
+
+
+                        </div>
+
+                    </ui:fragment>
+
+
+
+                    <ui:fragment id="postMessageSection" rendered="#{loanProviderRegistrationForm.showSuccessMessageSection}">
+                        <div class="card card-w-title" style="width: 100%;height: 100%">
+                            <div class="ui-g-12 ui-md-12 ui-lg-12" style="margin-bottom:20px">
+                                <h4>Congratulations, account has been created successfully\n check your email for login credentials</h4>
+                                <a   href="#{request.contextPath}/ExternalViews/Login.xhtml">
+
+                                    <p:commandButton icon="fa fa-save" 
+                                                     value="Login" id="saveBtn4"
+                                                     styleClass="green-btn" validateClient="true"
+                                                     />
+                                </a>
+
 
                             </div>
                         </div>
                     </ui:fragment>
-                    <p:blockUI block="loanProviderRegistartionForm" trigger="saveBtn">
+                    <p:blockUI block="loanProviderRegistrationForm" trigger="saveBtn1 saveBtn2 ">
                         <p:graphicImage value="/resources/images/workingicon.png" />
                     </p:blockUI>
                 </h:form>

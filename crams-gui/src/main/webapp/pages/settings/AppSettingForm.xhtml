@@ -12,14 +12,11 @@
                     <div class="ui-g ui-fluid">
                         <div class="ui-g-12">
                             <div class="exception-topbar">
-                                <h:link styleClass="logo">
-                                    <p:graphicImage library="freya-layout" />
-                                </h:link>
+
                             </div>
 
                             <div class="exception-panel">
-                                <p:graphicImage styleClass="exception-icon"
-                                                name="images/icon-access.png" library="freya-layout" />
+
                                 <h1 class="exception-summary">Access Denied</h1>
                                 <p class="exception-detail">
                                     You don't have the necessary permissions.<br></br> Contact the
@@ -31,129 +28,154 @@
                     </div>
                 </ui:fragment>
 
-                <h:form id="appSettingForm"
-                        rendered="#{ (componentRenderer.administrator) }">
-                    <div class="ui-g-12">
-                        <div class="card">
-                            <p:breadCrumb homeDisplay="text" styleClass="breadcrumbs">
-                                <p:menuitem value="" />
-                                <p:menuitem value="Home"
-                                            style="font-size: 13px; margin-left: 5px !important; font-weight: bold !important;"
-                                            url="#{homePage.viewPath}" />
-                                <p:menuitem value="Settings" url="" />
-                                <p:menuitem value="App Settings"
-                                            url="#{appSettingForm.viewPath}" />
-                            </p:breadCrumb>
+                <ui:fragment rendered="#{componentRenderer.administrator}">
+                    <h:form id="settingsForm">
+                        <div class="card card-w-title" >
+
+                            <h4>Adjust system settings</h4>
+
+
                         </div>
-                    </div>
 
-                    
-                        <div class="ui-g-12 ui-md-12 ui-lg-9">
-                            <p:fieldset legend="Application Settings"
-                                        style="margin-bottom:20px;  ">
-                                <p:panelGrid columns="1" layout="grid"
-                                             styleClass="ui-panelgrid-blank form-group">
-                                    <h:outputText value="Egosms Api Url*" style="font-size: 18px;" />
-                                    <p:inputText required="true"
-                                                 value="#{appSettingForm.model.egosmsUrl}"
-                                                 style="padding: 10px; font-size: 20px;"
-                                                 placeholder="Enter Egosms Url here" />
-
-
-
-                                    <h:outputText value="EgoSMS Api username*" style="font-size: 18px;" />
-                                    <p:inputText required="true"
-                                                 value="#{appSettingForm.model.egoSmsApiUsername}"
-                                                 style="padding: 10px; font-size: 20px;"
-                                                 placeholder="Enter egoSmsApiUsername here" />
-
-                                    <h:outputText value="EgoSMS Api password*" style="font-size: 18px;" />
-
-                                    <p:inputText required="true"
-                                                 value="#{appSettingForm.model.egoSmsApiPassword}"
-                                                 style="padding: 10px; font-size: 20px;"
-                                                 placeholder="Enter egoSmsApiPassword here" />
-
-                                    <h:outputText value="Payment Api Url*" style="font-size: 18px;" />
-                                    <p:inputText required="true"
-                                                 value="#{appSettingForm.model.paymentUrl}"
-                                                 style="padding: 10px; font-size: 20px;"
-                                                 placeholder="Enter Payment Url here" />
-
-                                    <h:outputText value="Payment Api Username*" style="font-size: 18px;" />
-                                    <p:inputText required="true"
-                                                 value="#{appSettingForm.model.paymentApiUsername}"
-                                                 style="padding: 10px; font-size: 20px;"
-                                                 placeholder="Enter paymentApiPassword here" />
-
-
-                                    <h:outputText value="Payment Api Password" style="font-size: 18px;" />
-                                    <p:inputText required="true"
-                                                 value="#{appSettingForm.model.paymentApiPassword}"
-                                                 style="padding: 10px; font-size: 20px;"
-                                                 placeholder="Enter paymentApiPassword here" />
-                                    
-                                     <h:outputText value="YoPayment Balace Code" style="font-size: 18px;" />
-                                    <p:inputText required="true"
-                                                 value="#{appSettingForm.model.balanceCode}" 
-                                                 style="padding: 10px; font-size: 20px;" maxlength="20"
-                                                 placeholder="Enter balaceCode e.g UGX-MTNMM" />
-
-
-                                </p:panelGrid>
-
-                            </p:fieldset>
-
-                            <div class="ui-g">
-                                <div class="ui-g-1">
-                                    <div style="text-align: center">
-                                        <p:commandButton icon="fa fa-save" value="Save" id="saveBtn"
-                                                         styleClass="green-btn" validateClient="true"
-                                                         style="margin-bottom:15px; " action="#{appSettingForm.save}"
-                                                         update="appSettingForm" />
-                                    </div>
+                        <div class="card card-w-title" >
+                            <div class="p-grid p-justify-end">
+                                <div class="p-col-1">
+                                    <p:commandButton icon="fa fa-save" value="Save" id="saveBtn"
+                                                     process=":settingsForm:tab:mailSetting 
+                                                     :settingsForm:tab:generalSetting @this" 
+                                                     styleClass="primary-button" validateClient="true"
+                                                     action="#{settingsForm.save()}"
+                                                     update=":settingsForm" />
                                 </div>
-                                <div class="ui-g-1">
-                                    <p:button value="Back" styleClass="red-btn"
+
+                                <div class="p-col-1">
+                                    <p:button value="Back" styleClass="help-button"
                                               icon="fa fa-backward" 
-                                              outcome="#{appSettingForm.parentView}" />
+                                              outcome="/pages/dashboard/Dashboard" />
                                 </div>
                             </div>
+
+                            <p:tabView id="tab">
+                                  <p:tab id="generalSetting" title="General">
+                                    <div  class="p-grid ui-fluid">
+                                        <div class="p-col-12 p-md-12 p-lg-6">
+
+                                            <h:outputLabel for="sm" value="System name" />
+
+                                            <p:inputText id="sm" value="#{settingsForm.model.systemName}" required="true" />
+
+                                        </div>
+                                        <div class="p-col-12 p-md-12 p-lg-6">
+
+                                            <h:outputLabel for="tn" value="Theme name" />
+
+                                            <p:inputText id="tn" value="#{settingsForm.model.systemName}" required="true" />
+
+                                        </div>
+                                        
+                                        <div class="p-col-12 p-md-12 p-lg-6">
+
+                                            <h:outputLabel for="ddp" value="Decimal places" />
+
+                                            <p:inputText id="ddp" value="#{settingsForm.model.defaultCurrencyDecimalPlaces}" required="true" />
+
+                                        </div>
+                                        
+                                          <div class="p-col-12 p-md-12 p-lg-6">
+
+                                            <h:outputLabel for="dcc" value="Currency code" />
+
+                                            <p:inputText id="dcc" value="#{settingsForm.model.defaultCurrencyCode}" required="true" />
+
+                                        </div>
+
+                                    </div>
+                                </p:tab>
+                                <p:tab id="mailSetting"  title="Mail Setting">
+                                    <div  class="p-grid">
+                                        <div class="p-col-12 p-md-12 p-lg-6">
+                                            <p:outputLabel for="smtpHost">SMTP host</p:outputLabel>
+                                            <p:inputText id="smtpHost"
+                                                         value="#{settingsForm.model.mailSenderSmtpHost}"
+                                                         required="true" placeholder="Enter sender SMTP host" />
+                                        </div>
+                                        <div class="p-col-12 p-md-12 p-lg-6">
+                                            <p:outputLabel for="smtpPort">SMTP port</p:outputLabel>
+                                            <p:inputText id="smtpPort"
+                                                         value="#{settingsForm.model.mailSenderSmtpPort}"
+                                                         required="true" placeholder="Enter sender SMTP port" />
+                                        </div>
+                                        <div class="p-col-12 p-md-12 p-lg-6">
+                                            <p:outputLabel for="senderEmail">Sender email</p:outputLabel>
+                                            <p:inputText id="senderEmail"
+                                                         value="#{settingsForm.model.mailSenderAddress}"
+                                                         required="true" placeholder="Enter sender email address" />
+                                        </div>
+                                        <div class="p-col-12 p-md-12 p-lg-6">
+                                            <p:outputLabel for="senderPassword">Email password</p:outputLabel>
+                                            <p:inputText id="senderPassword"
+                                                         value="#{settingsForm.model.mailSenderPassword}"
+                                                         required="true" placeholder="Enter sender email password" />
+                                        </div>
+                                       
+
+                                    </div>
+                                </p:tab>
+
+
+                               
+
+                              
+
+
+                            </p:tabView>
+
+
                         </div>
 
-                        <div class="ui-g-12 ui-md-12 ui-lg-3">
-                            <p:fieldset legend="Extra Tools">
-                                <p:commandButton icon="fa fa-external-link-square" styleClass="green-btn"
-                                                 process="@this" style="margin-bottom: 10px"
-                                                 id="runBtn" action="#{appSettingForm.fetchTransactions()}"
-                                                 update="appSettingForm" value="Update Stuck Payments">
-                                </p:commandButton>
 
-                                <p:commandButton icon="fa fa-credit-card" styleClass="pink-btn" process="@this"
-                                                 id="payBtn" action="#{appSettingForm.payRefferes()}" style="margin-bottom: 10px"
-                                                 update="appSettingForm" value="Pay Stuck Refferes">
-                                </p:commandButton>
-                                
-                                 <p:commandButton icon="fa fa-paper-plane-o" styleClass="blue-btn" process="@this" style="margin-bottom: 10px"
-                                                  id="sendBtn" action="#{appSettingForm.sendUnsentMessages()}"
-                                                 update="appSettingForm" value="Send Stuck Messages">
-                                </p:commandButton>
-                            </p:fieldset>
-                        </div>
-                   
-                    <p:blockUI block="appSettingForm" trigger="saveBtn">
-                        <p:graphicImage value="/resources/images/workingicon.png" />
-                    </p:blockUI>
-                    <p:blockUI block="appSettingForm" trigger="runBtn">
-                        <p:graphicImage value="/resources/images/workingicon.png" />
-                    </p:blockUI>
-                    <p:blockUI block="appSettingForm" trigger="payBtn">
-                        <p:graphicImage value="/resources/images/workingicon.png" />
-                    </p:blockUI>
-                     <p:blockUI block="appSettingForm" trigger="sendBtn">
-                        <p:graphicImage value="/resources/images/workingicon.png" />
-                    </p:blockUI>
-                </h:form>
+                        <p:dialog widgetVar="test_email_dialog" style="max-width: 800px"
+                                  height="300px" width="80%" header="Send test email" minHeight="40"
+                                  responsive="true" showEffect="fade" modal="true">
+                            <p:outputPanel id="testEmailForm">
+                                <p:outputPanel 
+                                    styleClass="p-grid ui-fluid">
+
+                                    <div class="p-field ui-g-12 ui-md-12">
+                                        <p:outputLabel for="testemail">Email</p:outputLabel>
+                                        <p:inputText id="testemail" type="email"  value="#{settingsForm.testEmail}"
+                                                     required="true" />
+                                    </div>
+
+                                    <div class="p-field ui-g-12 ui-md-12">
+                                        <p:outputLabel for="testTitle">Test message</p:outputLabel>
+                                        <p:inputTextarea id="testTitle" maxlength="100" value="#{settingsForm.testMessage}"
+                                                         required="true" />
+                                    </div>
+
+
+
+
+                                </p:outputPanel>
+
+                            </p:outputPanel>
+
+                            <f:facet name="footer">
+
+                                <p:commandButton value="Send" icon="pi pi-check"
+                                                 actionListener="#{settingsForm.sendTestEmail()}" oncomplete="PF('test_email_dialog').hide()"
+                                                 update="settingsForm" process="testEmailForm @this" />
+
+                            </f:facet>
+
+
+                        </p:dialog>
+                        <p:blockUI block="settingsForm" trigger="saveBtn">
+                            <p:graphicImage value="/resources/images/workingicon.png" />
+                        </p:blockUI>
+
+                    </h:form>
+                </ui:fragment>
             </div>
 
         </div>

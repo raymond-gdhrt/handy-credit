@@ -1,4 +1,4 @@
-package com.handycredit.systems.views.users;
+package com.handycredit.systems.views;
 
 import java.util.List;
 import java.util.Map;

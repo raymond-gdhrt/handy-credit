@@ -48,6 +48,7 @@ public class LoanProvider extends BaseEntity {
     private String physicalAddress;
     private AccountStatus accountStatus;
     private User userAccount;
+    private String lastVerificationCode;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
@@ -208,5 +209,16 @@ public class LoanProvider extends BaseEntity {
     public void setUserAccount(User userAccount) {
         this.userAccount = userAccount;
     }
+
+     @Column(name = "last_verification_code", length = 10)
+    public String getLastVerificationCode() {
+        return lastVerificationCode;
+    }
+
+    public void setLastVerificationCode(String lastVerificationCode) {
+        this.lastVerificationCode = lastVerificationCode;
+    }
+    
+    
 
 }

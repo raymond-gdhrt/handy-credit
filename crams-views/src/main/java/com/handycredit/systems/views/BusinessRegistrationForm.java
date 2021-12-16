@@ -5,6 +5,8 @@ import com.handycredit.systems.constants.AccountStatus;
 import com.handycredit.systems.constants.BusinessCategory;
 import com.handycredit.systems.constants.UgandanDistrict;
 import com.handycredit.systems.core.services.BusinessService;
+import com.handycredit.systems.core.utils.AppUtils;
+import com.handycredit.systems.core.utils.EmailService;
 import com.handycredit.systems.models.Business;
 import com.handycredit.systems.security.HyperLinks;
 import java.util.Arrays;
@@ -27,7 +29,7 @@ import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 
 @ManagedBean(name = "businessRegistrationForm")
 @ViewScoped
-@ViewPath(path = HyperLinks.DASHBOARD)
+@ViewPath(path = HyperLinks.BUSINESS_REGISTRATION_FORM)
 public class BusinessRegistrationForm extends WebFormView<Business, BusinessRegistrationForm, BusinessRegistrationForm> {
 
     private static final long serialVersionUID = 1L;
@@ -70,12 +72,12 @@ public class BusinessRegistrationForm extends WebFormView<Business, BusinessRegi
 
     public void createMember() {
         try {
-            String code = String.valueOf(new Random(6).nextInt());
+            String code = AppUtils.generateOTP(6);
             super.model.setLastVerificationCode(code);
             super.model.setAccountStatus(AccountStatus.created);
             super.model = this.businessService.saveOutsideContext(super.model);
 
-            // new EMailClient().sendHtmlEmail(super.model.getEmailAddress(), "AAPU registartion", "Confirm your email address with this code\n ");
+            new EmailService().sendMail(super.model.getEmailAddress(), "AAPU registartion", "Confirm your email address with this code\n <h2>"+code+"</h2>");
             showCodeForm();
         } catch (Exception ex) {
             customUiMessage = "Ops, some error occured\n " + ex.getLocalizedMessage();

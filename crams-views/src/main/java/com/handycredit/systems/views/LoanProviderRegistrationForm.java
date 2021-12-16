@@ -1,17 +1,24 @@
 package com.handycredit.systems.views;
 
 import com.googlecode.genericdao.search.Search;
+import com.handycredit.systems.constants.AccountStatus;
 import com.handycredit.systems.constants.LoanProviderType;
 import com.handycredit.systems.constants.UgandanDistrict;
 import com.handycredit.systems.core.services.LoanProviderService;
-import com.handycredit.systems.core.utils.EMailClient;
+import com.handycredit.systems.core.utils.AppUtils;
+import com.handycredit.systems.core.utils.EmailService;
 import com.handycredit.systems.models.LoanProvider;
+import com.handycredit.systems.models.security.PermissionConstants;
 import com.handycredit.systems.security.HyperLinks;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.apache.commons.lang.WordUtils;
+import org.primefaces.PrimeFaces;
 import org.sers.webutils.client.views.presenters.ViewPath;
 import org.sers.webutils.client.views.presenters.WebFormView;
 import org.sers.webutils.model.RecordStatus;
@@ -32,6 +39,12 @@ public class LoanProviderRegistrationForm extends WebFormView<LoanProvider, Loan
     private List<LoanProviderType> loanProviderTypes;
     Search search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE);
     private UserService userService;
+    private String customUiMessage;
+    private String verificationCode, password;
+    private boolean successResponse = true;
+    private boolean showForm = true;
+
+    private boolean showCodeSection, showSuccessMessageSection, showFinalSection;
 
     @Override
     public void beanInit() {
@@ -55,46 +68,87 @@ public class LoanProviderRegistrationForm extends WebFormView<LoanProvider, Loan
         this.loanProviderService.saveOutsideContext(super.model);
         super.model = new LoanProvider();
         resetModal();
-        UiUtils.showMessageBox("Thank you for regisering with CRAMS, check " + super.model.getEmailAddress() + " inbox for login credentials", "Registration successfull");
 
         createDefaultUser(super.model);
     }
 
-    public void sendEmail(final User user) {
-        final String mailContent = String.format(
-                "Thank you for creating an account with CRAMS. "
-                + "<br /><br /> Below are your login details. <br /> Username: %s <br /> Password: %s <br /> "
-                + "<br /> Church code <br/> ",
-                user.getUsername(), user.getClearTextPassword());
+    public void createMember() {
+        try {
+            String code = AppUtils.generateOTP(6);
+            System.out.println("Generated code: " + code);
+            super.model.setLastVerificationCode(code);
+            super.model.setAccountStatus(AccountStatus.created);
+            super.model = this.loanProviderService.saveOutsideContext(super.model);
 
-        final EMailClient mailService = new EMailClient();
-        {
-
-            new Thread(new Runnable() {
-                public void run() {
-                    mailService.sendHtmlEmail(user.getEmailAddress(), "Account creation on CRAMS", mailContent);
-
-                }
-            }).start();
+            new EmailService().sendMail(super.model.getEmailAddress(), "CRAMS registration", "Confirm your email address with this code\n <h2><b>" + code + "</b></h2>");
+            showCodeForm();
+        } catch (Exception ex) {
+            customUiMessage = "Ops, some error occured\n " + ex.getLocalizedMessage();
+            this.successResponse = false;
+            Logger.getLogger(LoanProviderRegistrationForm.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void verifyCode() {
+        try {
+            if (verificationCode.equalsIgnoreCase(super.model.getLastVerificationCode())) {
+
+                super.model.setAccountStatus(AccountStatus.verified);
+                super.model.setUserAccount(createDefaultUser(super.model));
+                this.loanProviderService.saveOutsideContext(super.model);
+                super.model = new LoanProvider();
+
+                customUiMessage = "Account created successfully. You can now login with\n username: your email \n one time password: " + password;
+                this.successResponse = true;
+
+                showFinalSection();
+            } else {
+                customUiMessage = "Invalid code supplied, please try again";
+                this.successResponse = false;
+            }
+        } catch (Exception ex) {
+            customUiMessage = "Ops, some error occured\n " + ex.getLocalizedMessage();
+            this.successResponse = false;
+            Logger.getLogger(LoanProviderRegistrationForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private User createDefaultUser(LoanProvider loanProvider) throws ValidationFailedException {
+        System.out.println("Creating user account...");
+        password = "loanProvider" + AppUtils.generateOTP(4);
+        User user = new User();
+        user.setUsername(loanProvider.getEmailAddress());
+        user.setFirstName(WordUtils.capitalize(loanProvider.getName()));
+        user.setLastName("User");
+        user.setClearTextPassword(password);
+        
+        user.addRole(userService.getRoleByRoleName(PermissionConstants.PERM_LOAN_PROVIDER));
+
+        return this.userService.saveUser(user);
 
     }
 
-    private void createDefaultUser(LoanProvider manufacturer) throws ValidationFailedException {
-        User user = new User();
-        user.setUsername(manufacturer.getEmailAddress());
-        user.setFirstName(WordUtils.capitalize(manufacturer.getName()));
-        user.setLastName("User");
-        user.setClearTextPassword("loanProvider");
-        List<Role> roles = userService.getRoles();
-        for (Role role : roles) {
-            if (!role.getName().equals(Role.DEFAULT_ADMIN_ROLE)) {
-                user.addRole(role);
-            }
-        }
+    public void showRegForm() {
+        this.showForm = true;
+        this.showCodeSection = false;
+        this.showFinalSection = false;
+        PrimeFaces.current().ajax().update("loanProviderRegistrationForm");
 
-        this.userService.saveUser(user);
-        sendEmail(user);
+    }
+
+    public void showCodeForm() {
+        this.showForm = false;
+        this.showCodeSection = true;
+        this.showFinalSection = false;
+        PrimeFaces.current().ajax().update("loanProviderRegistrationForm");
+
+    }
+
+    public void showFinalSection() {
+        this.showForm = false;
+        this.showCodeSection = false;
+        this.showFinalSection = true;
+        PrimeFaces.current().ajax().update("loanProviderRegistrationForm");
 
     }
 
@@ -130,7 +184,69 @@ public class LoanProviderRegistrationForm extends WebFormView<LoanProvider, Loan
     public void setLoanProviderTypes(List<LoanProviderType> loanProviderTypes) {
         this.loanProviderTypes = loanProviderTypes;
     }
-    
-    
+
+    public boolean isShowFinalSection() {
+        return showFinalSection;
+    }
+
+    public void setShowFinalSection(boolean showFinalSection) {
+        this.showFinalSection = showFinalSection;
+    }
+
+    public Search getSearch() {
+        return search;
+    }
+
+    public void setSearch(Search search) {
+        this.search = search;
+    }
+
+    public String getCustomUiMessage() {
+        return customUiMessage;
+    }
+
+    public void setCustomUiMessage(String customUiMessage) {
+        this.customUiMessage = customUiMessage;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public boolean isSuccessResponse() {
+        return successResponse;
+    }
+
+    public void setSuccessResponse(boolean successResponse) {
+        this.successResponse = successResponse;
+    }
+
+    public boolean isShowForm() {
+        return showForm;
+    }
+
+    public void setShowForm(boolean showForm) {
+        this.showForm = showForm;
+    }
+
+    public boolean isShowCodeSection() {
+        return showCodeSection;
+    }
+
+    public void setShowCodeSection(boolean showCodeSection) {
+        this.showCodeSection = showCodeSection;
+    }
+
+    public boolean isShowSuccessMessageSection() {
+        return showSuccessMessageSection;
+    }
+
+    public void setShowSuccessMessageSection(boolean showSuccessMessageSection) {
+        this.showSuccessMessageSection = showSuccessMessageSection;
+    }
 
 }

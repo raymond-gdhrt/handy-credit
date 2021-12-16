@@ -22,7 +22,7 @@
     <h:body styleClass="#{guestPreferences.inputStyleClass}">
         <div class="layout-wrapper layout-topbar-#{guestPreferences.topbarTheme} layout-menu-#{guestPreferences.menuTheme} #{guestPreferences.menuMode}" >
             <ui:include src="./topbar.xhtml"></ui:include>  
-           
+
             <ui:include src="./rightpanel.xhtml"></ui:include>  
             <ui:include src="./config.xhtml" />
 
@@ -32,12 +32,12 @@
                 </div>
                 <ui:include src="./footer.xhtml"></ui:include>
             </div>
-         
+
             <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
                 <f:facet name="start">
                     <i class="pi pi-spin pi-spinner ajax-loader" aria-hidden="true"></i>
                 </f:facet>
-     
+
                 <f:facet name="complete">
                     <h:outputText value="" />
                 </f:facet>
@@ -47,7 +47,6 @@
         <h:outputStylesheet name="css/primeicons.css" library="freya-layout" />
         <h:outputStylesheet name="css/primeflex.min.css" library="freya-layout" />
         <h:outputStylesheet name="css/#{guestPreferences.layout}.css" library="freya-layout" />
-        <h:outputStylesheet name="css/demo-#{guestPreferences.darkMode}.css" library="demo" />
     </h:body>
 
 </html>

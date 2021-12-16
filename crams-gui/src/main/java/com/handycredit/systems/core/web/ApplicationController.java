@@ -19,6 +19,8 @@ public class ApplicationController extends AbstractApplicationController {
     public ModelAndView errorHandler(ModelMap model) {
         return new ModelAndView("Error", model);
     }
+    
+ 
 
     @RequestMapping(value = {HyperLinks.SYSTEM_SETTINGS_FORM})
     public ModelAndView getSystemSettingsForm(ModelMap model) {

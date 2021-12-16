@@ -2,12 +2,9 @@ package com.handycredit.systems.core.services.impl;
 
 import com.handycredit.systems.core.services.SystemSettingService;
 import com.handycredit.systems.models.SystemSetting;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
-
-import org.hibernate.SessionFactory;
 import com.handycredit.systems.models.security.CRAMSPermissionInterpreter;
+import com.handycredit.systems.models.security.PermissionConstants;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.sers.webutils.model.RecordStatus;
@@ -34,7 +31,7 @@ public class CustomDataBaseMigrations {
     RoleDao roleDao;
 
     @Migration(orderNumber = 1)
-    public void savePermissions() {
+    public void saveNewPermissions() {
 
         for (Permission permission : CRAMSPermissionInterpreter.reflectivelyGetPermissions()) {
             if (permissionDao.searchUniqueByPropertyEqual("name", permission.getName()) == null) {
@@ -50,17 +47,53 @@ public class CustomDataBaseMigrations {
                 }
             }
         }
+
     }
 
     @Migration(orderNumber = 2)
     public void saveDefaulSetting() {
         SystemSetting setting = new SystemSetting();
         try {
-            ApplicationContextProvider.getBean(SystemSettingService.class).saveInstance(setting);
+            ApplicationContextProvider.getBean(SystemSettingService.class
+            ).saveInstance(setting);
         } catch (ValidationFailedException ex) {
-            Logger.getLogger(CustomDataBaseMigrations.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CustomDataBaseMigrations.class
+                    .getName()).log(Level.SEVERE, null, ex);
         } catch (OperationFailedException ex) {
-            Logger.getLogger(CustomDataBaseMigrations.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CustomDataBaseMigrations.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    @Migration(orderNumber = 3)
+    public void saveNewRoles() {
+
+        try {
+            System.out.println("Saving biz role..");
+            Role businessRole = new Role();
+            businessRole.setName(PermissionConstants.PERM_BUSINESS_OWNER);
+            businessRole.setDescription(PermissionConstants.PERM_BUSINESS_OWNER);
+            businessRole.setRecordStatus(RecordStatus.ACTIVE);
+            businessRole.addPermission(permissionDao.searchUniqueByPropertyEqual("name", PermissionConstants.PERM_BUSINESS_OWNER));
+            businessRole.addPermission(permissionDao.searchUniqueByPropertyEqual("name", org.sers.webutils.model.security.PermissionConstants.PERM_WEB_ACCESS));
+            businessRole.setDateCreated(new Date());
+            businessRole.setDateChanged(new Date());
+            roleDao.saveBG(businessRole);
+
+            System.out.println("Saving loan provider role..");
+            Role loanProviderRole = new Role();
+            loanProviderRole.setName(PermissionConstants.PERM_LOAN_PROVIDER);
+            loanProviderRole.setDescription(PermissionConstants.PERM_LOAN_PROVIDER);
+            loanProviderRole.setRecordStatus(RecordStatus.ACTIVE);
+            loanProviderRole.addPermission(permissionDao.searchUniqueByPropertyEqual("name", PermissionConstants.PERM_LOAN_PROVIDER));
+            loanProviderRole.addPermission(permissionDao.searchUniqueByPropertyEqual("name", org.sers.webutils.model.security.PermissionConstants.PERM_WEB_ACCESS));
+            loanProviderRole.setDateCreated(new Date());
+            loanProviderRole.setDateChanged(new Date());
+            roleDao.saveBG(loanProviderRole);
+
+        } catch (Exception exe) {
+            System.out.println("Role already exists "+exe.getLocalizedMessage());
+        }
+    }
+
 }

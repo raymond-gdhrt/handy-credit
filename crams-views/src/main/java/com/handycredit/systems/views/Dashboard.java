@@ -22,10 +22,7 @@ public class Dashboard extends WebAppExceptionHandler implements Serializable {
 
     @PostConstruct
     public void init() {
-    	
-       
-        loggedInUser = SharedAppData.getLoggedInUser();
-        
+    	loggedInUser = SharedAppData.getLoggedInUser();       
     }
 
     public User getLoggedInUser() {

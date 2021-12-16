@@ -81,8 +81,8 @@
                         <div class="p-grid table-demo">
                             <div class="p-col-12">
                                 <div class="card">
-                                    <p:dataTable id="businessOwnersTable" var="model" value="#{loanProvidersView}"
-                                                 widgetVar="businessOwnersTable"
+                                    <p:dataTable id="loansTable" var="model" value="#{loanProvidersView}"
+                                                 widgetVar="loansTable"
                                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                                  paginator="true" lazy="true"
                                                  rows="#{loanProvidersView.maximumresultsPerpage}"
@@ -104,7 +104,7 @@
                                                                              process="clientsTable" icon="fa fa-upload" 
 
                                                                              styleClass="ui-button-secondary" ajax="false">
-                                                                <p:dataExporter type="pdf"  target="businessOwnersTable" fileName="businessOwners"/>
+                                                                <p:dataExporter type="pdf"  target="loansTable" fileName="loans"/>
                                                             </p:commandButton>
                                                         </div>  
                                                         <div class="p-mr-2 p-mb-2">
@@ -121,16 +121,16 @@
                                             <h:outputText value="#{row + 1}" />
                                         </p:column>
 
-                                        <p:column width="200" headerText="Full name">
-                                            <h:outputText value="#{model.userAccount.fullName}" />
+                                        <p:column width="200" headerText="Title">
+                                            <h:outputText value="#{model.title}" />
                                         </p:column>
-                                        <p:column width="200" headerText="Username">
-                                            <h:outputText value="#{model.userAccount.username}" />
+                                        <p:column width="200" headerText="Description">
+                                            <h:outputText value="#{model.description}" />
                                         </p:column>
 
-                                        <p:column width="200" headerText="Country">
+                                        <p:column width="200" headerText="Interest ">
 
-                                            <h:outputText value="#{model.userAccount.country}" />
+                                            <h:outputText value="#{model.interestRate} #{model.interestRateInterval}" />
                                         </p:column>
 
                                         <p:column headerText="Email address">
@@ -138,11 +138,10 @@
                                             <h:outputText value="#{model.userAccount.emailAddress}" />
                                         </p:column>
 
-                                        <p:column headerText="Date registered">
+                                        <p:column headerText="Loan provider">
 
-                                            <h:outputText value="#{model.dateCreated}" >
-                                                <f:convertDateTime pattern="dd/MMM/yyyy 'at' hh:mm a"/>
-                                            </h:outputText>
+                                            <h:outputText value="#{model.loanProvider}" />
+                                               
                                         </p:column>
 
 
@@ -150,20 +149,20 @@
 
                                             <p:commandButton  process="@this" icon="fa fa-edit" styleClass="ui-button-help"
                                                               immediate="true"  rendered="#{componentRenderer.administrator and model.status eq 'Draft'}"
-                                                              actionListener="#{businessOwnerFormDialog.show}">
+                                                              actionListener="#{loanFormDialog.show}">
                                                 <f:setPropertyActionListener value="#{model}"
-                                                                             target="#{businessOwnerFormDialog.model}" />
+                                                                             target="#{loanFormDialog.model}" />
 
-                                                <p:ajax event="dialogReturn" update="businessOwnersTable" />
+                                                <p:ajax event="dialogReturn" update="loansTable" />
                                             </p:commandButton>
 
 
                                             <p:commandButton icon="fa fa-eye" title="View" 
                                                              styleClass="ui-button-primary"  style="margin-left: 5px"
 
-                                                             action="#{businessOwnerProfileView.getViewPath}">
+                                                             action="#{loanProfileView.getViewPath}">
                                                 <f:setPropertyActionListener value="#{model}"
-                                                                             target="#{businessOwnerProfileView.model}" />
+                                                                             target="#{loanProfileView.model}" />
 
                                             </p:commandButton>
 
@@ -176,9 +175,9 @@
                                                              styleClass="ui-button-danger" style="margin-left: 5px"
                                                              action="#{loanProvidersView.deleteAuthor(model)}"
                                                              rendered="#{componentRenderer.administrator and  model.status eq 'Draft'}"
-                                                             update="businessOwnersTable">
+                                                             update="loansTable">
                                                 <p:confirm header="Confirmation"
-                                                           message="You are about to delete a businessOwner. Do you wish to continue?"
+                                                           message="You are about to delete a loan. Do you wish to continue?"
                                                            icon="ui-icon-alert" />
                                             </p:commandButton>
 

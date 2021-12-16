@@ -34,7 +34,7 @@ public class LoanProviderServiceImpl extends GenericServiceImpl<LoanProvider> im
     }
 
     @Override
-    public void saveOutsideContext(LoanProvider loanProvider) {
-       super.saveBG(loanProvider);
+    public LoanProvider saveOutsideContext(LoanProvider loanProvider) {
+      return super.mergeBG(loanProvider);
     }
 }

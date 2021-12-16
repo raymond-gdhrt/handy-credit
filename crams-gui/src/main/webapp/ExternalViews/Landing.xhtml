@@ -13,9 +13,12 @@
             <meta name="apple-mobile-web-app-capable" content="yes" />
         </f:facet>
         <title>CRAMS Home</title>
+        <link rel="icon" href="#{request.contextPath}/resources/freya-layout/images/logo.png" type="image/x-icon"></link>
         <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,600" rel="stylesheet"/>
         <h:outputStylesheet name="css/style.css" library="freya-layout" />
         <h:outputScript library="freya-layout"  name="js/common.js" />
+       
+
 
         <script src="https://unpkg.com/animejs@3.0.1/lib/anime.min.js"></script>
         <script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
@@ -47,7 +50,7 @@
                                 <div class="hero-cta">
                                     <a class="button button-primary" 
                                        href="#{request.contextPath}/ExternalViews/LoanProviderRegistrationForm.xhtml">Register loan </a>
-                                       <a class="button button-primary" 
+                                    <a class="button button-primary" 
                                        href="#{request.contextPath}/ExternalViews/BusinessRegistrationForm.xhtml">Register business</a>
                                     <a class="button" href="#{request.contextPath}/ExternalViews/Login.xhtml">Login</a>
                                 </div>
@@ -88,7 +91,7 @@
                                 <div class="feature text-center is-revealing">
                                     <div class="feature-inner">
                                         <div class="feature-icon">
-                                         <p:graphicImage  name="images/landing/feature-icon-02.svg" alt="Feature 02" library="freya-layout" />
+                                            <p:graphicImage  name="images/landing/feature-icon-02.svg" alt="Feature 02" library="freya-layout" />
 
                                         </div>
                                         <h4 class="feature-title mt-24">Be Productive</h4>
@@ -98,7 +101,7 @@
                                 <div class="feature text-center is-revealing">
                                     <div class="feature-inner">
                                         <div class="feature-icon">
-                                                 <p:graphicImage  name="images/landing/feature-icon-03.svg" alt="Feature 03" library="freya-layout" />
+                                            <p:graphicImage  name="images/landing/feature-icon-03.svg" alt="Feature 03" library="freya-layout" />
 
                                         </div>
                                         <h4 class="feature-title mt-24">Be Productive</h4>
@@ -197,8 +200,8 @@
                     <div class="site-footer-inner">
                         <div class="brand footer-brand">
                             <a href="#">
-                                 <p:graphicImage  name="images/landing/logo.svg.svg" alt="Feature 05" library="freya-layout" />
-   
+                                <p:graphicImage  name="images/landing/logo.svg.svg" alt="Feature 05" library="freya-layout" />
+
                             </a>
                         </div>
                         <ul class="footer-links list-reset">
@@ -247,6 +250,6 @@
             </footer>
         </div>
 
-        <script src="dist/js/main.min.js"></script>
+ <h:outputScript library="freya-layout"  name="js/main.min.js" />
     </h:body>
 </html>

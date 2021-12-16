@@ -8,7 +8,7 @@
     <div class="menu-wrapper">
         <div class="sidebar-logo">
             <a href="#">
-                <p:graphicImage name="images/uma-logo.png" library="freya-layout" />
+                <p:graphicImage name="images/logo.png" library="freya-layout" />
             </a>
             <a href="#" class="sidebar-pin" title="Toggle Menu">
                 <span class="pin"></span>
@@ -19,26 +19,36 @@
             <h:form id="menuform">
                 <fr:menu widgetVar="FreyaMenuWidget">
                     <p:menuitem id="om_dashboard" value="Dashboard" icon="pi pi-home" 
-                                url="#{request.contextPath}/Dashboard"  />
-                    <p:menuitem id="busineses" 
+                              
+                                url="/Dashboard"  />
+                    <p:menuitem id="busineses" rendered="#{componentRenderer.administrator}"
                                 value="Businesses"
-                                icon="pi pi-id-card" 
-                                url="#{request.contextPath}/Businesses" />
+                                icon="pi pi-briefcase" 
+                                url="/Businesses" />
 
                     <p:menuitem id="loanProviders" 
+                                rendered="#{componentRenderer.administrator}"
                                 value="Loan providers"
                                 icon="pi pi-id-card" 
-                                url="#{request.contextPath}/LoanProviders" />
+                                url="/LoanProviders" />
+                    
+                    <p:menuitem id="loanApplications" 
+                                rendered="#{componentRenderer.administrator or componentRenderer.loanProvider}"
+                                value="Loan applications"
+                                icon="pi pi-th-large" 
+                                url="/LoanProviders" />
 
                     <p:menuitem id="loans" 
+                               
                                 value="Loans"
-                                icon="pi pi-id-card" 
-                                url="#{request.contextPath}/Loans" />
+                                icon="pi pi-compass" 
+                                url="/Loans" />
 
                     <p:menuitem id="om_widgets" 
+                                 rendered="#{componentRenderer.administrator}"
                                 value="System Settings"
                                 icon="pi pi-cog" 
-                                url="#{request.contextPath}/Settings"/>
+                                url="/Settings"/>
                     <p:menuitem id="om_grid" 
                                 value="Logout"
                                 icon="pi pi-arrow-circle-left" 
