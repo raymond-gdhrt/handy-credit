@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.handycredit.systems.core.services;
+package com.handycredit.systems.core.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +20,7 @@ import com.googlecode.genericdao.search.Search;
  * Contains the general search utility/helper functions used to query models
  * from the DB.
  * 
- * @author Mzee Sr.
+ * @author RayGdhrt
  *
  */
 public class GeneralSearchUtils {

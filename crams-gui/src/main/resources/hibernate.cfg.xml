@@ -34,6 +34,7 @@
         <mapping
             class="org.sers.webutils.model.migrations.DBChangeset" />
         <mapping class="org.sers.webutils.model.migrations.Migration" />
+         <mapping class="org.sers.webutils.model.Country" />
         <mapping class="org.sers.webutils.model.security.User" />
         <mapping class="org.sers.webutils.model.security.Role" />
         <mapping class="org.sers.webutils.model.security.Permission" />
@@ -48,11 +49,25 @@
             class="org.sers.webutils.model.bgtasks.TaskSchedule" />
         <mapping
             class="org.sers.webutils.model.bgtasks.MethodParameter" />
-      
      
-        <mapping 
-            class="org.pahappa.systems.models.SystemSetting" />
+        
+
        
+        <mapping  class="com.handycredit.systems.models.ApiRequest" />
+        <mapping  class="com.handycredit.systems.models.Business" />
+        <mapping  class="com.handycredit.systems.models.BusinessCreditHistory" />
+        <mapping  class="com.handycredit.systems.models.BusinessCreditProfile" />
+        <mapping  class="com.handycredit.systems.models.BusinessTransaction" />
+        <mapping  class="com.handycredit.systems.models.Collateral" />
+        <mapping  class="com.handycredit.systems.models.DynamicField" />
+        <mapping  class="com.handycredit.systems.models.FilledDynamicField" />
+        <mapping  class="com.handycredit.systems.models.Loan" />
+        <mapping  class="com.handycredit.systems.models.LoanProvider" />
+        <mapping  class="com.handycredit.systems.models.LoanApplication" />
+        <mapping  class="com.handycredit.systems.models.SystemSetting" />
+        <mapping  class="com.handycredit.systems.models.SystemSetting" />
+                   
+            
           
             
     </session-factory>
