@@ -1,4 +1,4 @@
-package com.pahappa.systems.freya.settings;
+package com.handycredit.systems.freya.settings;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;

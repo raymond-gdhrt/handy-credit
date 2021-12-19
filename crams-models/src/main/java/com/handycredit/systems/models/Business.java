@@ -47,8 +47,23 @@ public class Business extends BaseEntity {
     private String facebookLink;
     private String linkedInLink;
     private String physicalAddress;
+    private String lastVerificationCode;
     private AccountStatus accountStatus;
     private User userAccount;
+
+    
+    @Column(name = "last_verification_code")
+    public String getLastVerificationCode() {
+        return lastVerificationCode;
+    }
+
+    public void setLastVerificationCode(String lastVerificationCode) {
+        this.lastVerificationCode = lastVerificationCode;
+    }
+    
+    
+    
+    
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type")

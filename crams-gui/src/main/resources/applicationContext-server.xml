@@ -44,8 +44,8 @@
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://localhost/crams" />
-		<property name="username" value="root" />
-		<property name="password" value="root" />
+		<property name="username" value="pahappa" />
+		<property name="password" value="pass@2020@Pahappa" />
 	</bean>
 
 	<bean id="sessionFactory"

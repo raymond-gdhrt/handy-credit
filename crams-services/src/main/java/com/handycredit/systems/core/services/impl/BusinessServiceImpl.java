@@ -7,8 +7,11 @@ package com.handycredit.systems.core.services.impl;
 
 import com.handycredit.systems.core.services.BusinessService;
 import com.handycredit.systems.models.Business;
+import com.handycredit.systems.models.LoanProvider;
+import org.sers.webutils.model.RecordStatus;
 import org.sers.webutils.model.exception.OperationFailedException;
 import org.sers.webutils.model.exception.ValidationFailedException;
+import org.sers.webutils.model.security.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class BusinessServiceImpl extends GenericServiceImpl<Business> implements BusinessService {
 
-   
-
     @Override
     public boolean isDeletable(Business entity) throws OperationFailedException {
         return false;
@@ -30,6 +31,18 @@ public class BusinessServiceImpl extends GenericServiceImpl<Business> implements
     @Override
     public Business saveInstance(Business instance) throws ValidationFailedException, OperationFailedException {
         return super.save(instance);
+
+    }
+
+    @Override
+    public Business saveOutsideContext(Business business) {
+        return super.mergeBG(business);
+
+    }
+
+    @Override
+    public Business getBusinessByUserAccount(User user) {
+        return super.searchUniqueByPropertyEqual("userAccount", user, RecordStatus.ACTIVE);
 
     }
 }

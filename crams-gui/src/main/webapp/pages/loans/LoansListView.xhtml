@@ -1,0 +1,134 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/pages/freyatemplate/template.xhtml">
+
+    <ui:define name="content">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <h:form id="loansListView" enctype="multipart/form-data"
+                        rendered="#{componentRenderer.administrator or componentRenderer.businessOwner}">
+
+
+                    <div class="card">
+                        <h:outputText value="Filters" />
+
+                        <p:growl id="messages" showDetail="true" />
+
+                        <div class="p-grid" >
+                            <div class="p-col-12 p-md-6 p-lg-3" >
+                                <p:inputText id="searchTerm" required="false"
+
+                                             placeholder="Search ..."
+                                             onkeyup="#{loansListView.reloadFilterReset()}"
+                                             value="#{loansListView.searchTerm}" >
+
+                                    <p:ajax event="change" update="loansListView" listener="#{loansListView.reloadFilterReset()}"/>
+                                </p:inputText>
+                            </div> <!-- comment -->
+
+
+                            <div class="p-col-12 p-md-6 p-lg-3" >
+                                <p:selectCheckboxMenu id="countries" label="Filter category" value="#{loansListView.selectedCountries}" 
+                                                      converter="countryConverter"  style="height: 100%" >
+
+                                    <f:selectItems value="#{loansListView.countries}"/>
+                                    <p:ajax event="change" update="loansListView" listener="#{loansListView.reloadFilterReset()}"/>
+                                </p:selectCheckboxMenu>
+                            </div>
+                            <div class="p-col-12 p-md-6 p-lg-3" >
+                                <p:commandButton icon="fa fa-search" styleClass="ui-button-help"
+                                                 id="searchBtn" style="margin-right: 18px"
+                                                 actionListener="#{loansListView.reloadFilterReset()}" >
+                                </p:commandButton>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <ui:fragment>
+                        <div class="p-grid table-demo">
+                            <div class="p-col-12">
+                                <div class="card">
+                                    <p:dataScroller id="loansTable" var="loan" value="#{loansListView}"
+                                                    widgetVar="loansTable" lazy="true"
+                                                    rows="#{loansListView.maximumresultsPerpage}"
+                                                    rowIndexVar="row"  >
+
+                                        <f:facet name="header">
+                                            Recommended loans for you
+                                        </f:facet>
+
+
+                                        <div class="p-grid">
+                                            <div class="p-col-4">
+                                                <p:graphicImage width="90%" height="200px" name="demo/images/nature/placeholder.jpg"/>
+                                            </div>
+                                            <div class="p-col-4">
+                                                <h3>#{loan.title}</h3>
+                                                <h5>#{loan.description}</h5>
+                                                
+                                                <p:rating readonly="true"  value="#{3}" />
+                                                <h5><p:link> <i class="pi pi-user"/><span
+                                                            class="product-category">#{loan.loanProvider.name}</span></p:link></h5>
+                                            </div>
+                                            <div class="p-col-4">
+                                                <h4> Minimum amount:
+                                                    <h:outputText value="#{loan.minimumAmount}" style="opacity: 0.7" >
+                                                    <f:convertNumber currencySymbol="UGX" type="currency"/>
+                                                </h:outputText>
+                                                    </h4>
+                                                
+                                                 <h4> Maximum amount:
+                                                <h:outputText value="#{loan.maximumAmount}" style="opacity: 0.7" >
+                                                    <f:convertNumber currencySymbol="UGX" type="currency"/>
+                                                </h:outputText>
+                                                    </h4>
+                                                
+                                                <h4>Interest rate: <span style="opacity: 0.8">#{loan.interestRate}  #{loan.interestRateInterval}</span>
+                                           </h4>
+                                                <p:commandButton value="Apply now" 
+                                                                 styleClass="help-button"
+                                                                 action="#{loanApplicationForm.getViewPath}">
+                                                    <f:setPropertyActionListener value="#{loan}"
+                                                                                 target="#{loanApplicationForm.loan}" />
+                                                     <f:setPropertyActionListener value="#{loan.business}"
+                                                                                 target="#{loanApplicationForm.business}" />
+                                                </p:commandButton>
+                                               
+                                            
+                                            </div>
+                                        </div>
+
+                                    </p:dataScroller>
+
+                                    <p:blockUI block="loansListView" trigger="searchBtn">
+                                        <p:graphicImage value="/resources/images/workingicon.png" />
+                                    </p:blockUI>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </ui:fragment>
+                    <p:blockUI block="loansListView" >
+                        <p:graphicImage value="/resources/images/workingicon.png" />
+                    </p:blockUI>    
+                    <p:confirmDialog global="true">
+                        <p:commandButton value="Yes" type="button"
+                                         styleClass="ui-confirmdialog-yes" icon="fa fa-thumbs-up" />
+                        <p:commandButton value="No" type="button"
+                                         styleClass="ui-confirmdialog-no" icon="fa fa-thumbs-down" />
+                    </p:confirmDialog>
+
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

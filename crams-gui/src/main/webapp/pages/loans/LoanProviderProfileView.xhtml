@@ -1,0 +1,146 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/pages/californiatemplate/template.xhtml">
+
+    <ui:define name="content">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <h:form id="loanProviderProfileView" styleClass="p-grid" enctype="multipart/form-data"
+                        rendered="#{componentRenderer.loanProvider}">
+
+                    <div class="p-col-12">
+                        <div class="card">
+                            <div class="p-grid ">
+
+                                <div class="p-col-12 p-md-12">
+
+                                    <p:toolbar style="background-color:white !important;border: 0pt;">
+                                        <p:toolbarGroup align="left">
+                                            <h3 style="font-weight:bolder;" >#{loanProviderProfileView.model.name} <span style="font-weight:bolder;opacity: 0.8" >loanProvider dashboard</span> </h3>
+                                        </p:toolbarGroup>
+
+                                        <p:toolbarGroup align="right" >
+
+                                            <p:commandButton icon="fa fa-arrow-left" 
+                                                             value="Back" action="#{loanProviderProfileView.loadParentView()}"
+                                                             title="Back to loanProviders"  process="@this"
+                                                             style="width: 100px;"
+                                                             styleClass="ui-button-warning"  >
+                                            </p:commandButton>
+
+                                            <p:commandButton title="Print profile" value="Print" 
+                                                             style="width: 100px; margin-left: 10px" 
+                                                             process="loanProviderProfileView" icon="pi pi-upload" 
+                                                             styleClass="ui-button-secondary" ajax="false">
+                                                <p:dataExporter type="pdf"  target="loanProviderHeadsTable" fileName="#{loanProviderProfileView.model.name}"/>
+                                            </p:commandButton>
+
+                                            <p:commandButton  process="@this" icon="fa fa-edit" styleClass="ui-button-help"
+                                                              immediate="true" rendered="#{componentRenderer.loanProvider}"
+                                                              value="Edit" style="width: 100px; margin-left: 10px"
+                                                              title="Edit loanProvider details" 
+                                                              actionListener="#{loanProviderFormDialog.show}">
+                                                <f:setPropertyActionListener value="#{loanProviderProfileView.model}"
+                                                                             target="#{loanProviderFormDialog.model}" />
+                                                <p:ajax event="dialogReturn" listener="#{loanProviderProfileView.reloadView()}" update="loanProviderProfileView" />
+                                            </p:commandButton>
+
+
+                                        </p:toolbarGroup>
+                                    </p:toolbar>
+
+                                </div>
+
+                                <div class="p-col-12 p-md-3" style="padding-left: 20px">
+                                    <h4>About</h4>
+                                    <h5>Name: <span style="font-weight: lighter">#{loanProviderProfileView.model.name}</span> </h5>
+                                    <h5>Code: <span style="font-weight: lighter">#{loanProviderProfileView.model.code}</span></h5>
+
+                                    <h5>Category: <span style="font-weight: lighter">#{loanProviderProfileView.model.category}</span> </h5>
+                                    <h5>Country: <span style="font-weight: lighter">#{loanProviderProfileView.model.country}</span> </h5>
+
+
+                                </div>
+
+                                <div class="p-col-12 p-md-4">
+
+
+                                    <h4>Description:</h4>
+                                    <h5>#{loanProviderProfileView.model.description}</h5>
+                                </div>
+                                <div class="p-col-12 p-md-5">
+
+
+                                    <h4>More details</h4>
+                                    <h5>Created at: <span style="font-weight: lighter"><h:outputText value="#{loanProviderProfileView.model.dateCreated}">
+                                                <f:convertDateTime pattern="dd-MMM-yyyy 'at' HH:MM a"/>
+                                            </h:outputText></span> </h5>
+                                    <h5>Created by: <span style="font-weight: lighter">#{loanProviderProfileView.model.createdBy}</span></h5>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="p-col-12 p-md-12">
+                        <div class="card">
+                            <p:tabView>
+
+                                <p:tab title="Change history" >
+                                    <p:dataTable var="log" rowIndexVar="row" value="#{loanProviderProfileView.loanProviderLogs}">
+
+                                        <p:column width="20" headerText="#">
+                                            <h:outputText value="#{row+1}"/>
+
+                                        </p:column>
+                                        <p:column width="200" headerText="Title">
+                                            <h:outputText value="#{log.title}"/>
+
+                                        </p:column>
+
+                                        <p:column headerText="Old value">
+                                            <h:outputText value="#{log.oldValue}"/>
+
+                                        </p:column>
+                                        <p:column headerText="New value">
+                                            <h:outputText value="#{log.newValue}"/>
+
+                                        </p:column>
+                                        <p:column width="200" headerText="Date">
+                                            <h:outputText value="#{note.dateCreated}"/>
+
+                                        </p:column>
+                                        <p:column width="200" headerText="Action by">
+                                            <h:outputText value="#{note.createdBy}"/>
+
+                                        </p:column>
+
+
+
+                                    </p:dataTable>
+
+                                </p:tab>
+                            </p:tabView>
+                        </div>
+                    </div> 
+
+                    <p:blockUI block="loanProviderProfileView" >
+                        <p:graphicImage value="/resources/images/workingicon.png" />
+                    </p:blockUI>    
+                    <p:confirmDialog global="true">
+                        <p:commandButton value="Yes" type="button"
+                                         styleClass="ui-confirmdialog-yes" icon="fa fa-thumbs-up" />
+                        <p:commandButton value="No" type="button"
+                                         styleClass="ui-confirmdialog-no" icon="fa fa-thumbs-down" />
+                    </p:confirmDialog>
+
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

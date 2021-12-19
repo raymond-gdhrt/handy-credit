@@ -1,4 +1,4 @@
-package com.pahappa.systems.client.controllers;
+package com.handycredit.systems.client.controllers;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -14,18 +14,18 @@ import org.sers.webutils.server.core.utils.DateUtils;
 @ApplicationScoped
 public class GenericController implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private int currentYear;
 	private Date currentDate;
 	private String currentDateAsString;
-	private String systemName = "Payment Gateway";
+        
+	private String systemName = "CRAMS";
 	private String searchPlaceHolder = "Enter text to search";
 	private String dataEmptyMessage = "No records found";
+        
 	private String contactNumbers;
 	private String contactEmail;
+        
 	private String landingPageLabel = "";
 
 	@PostConstruct

@@ -116,120 +116,207 @@
         </script>
     </ui:define>
 
+
     <ui:define name="content">
         <div class="layout-dashboard">
             <div class="p-grid">
                 <div class="p-col-12">
                     <div class="notification">
-                        <h6>Hello! Welcome to UMA! Before start please complete your profile to know you better. <a href="#">Profile settings <i class="pi pi-arrow-up"></i></a></h6>
-                    </div>
-                </div>
-                <div class="p-col-12">
-                    <div class="p-grid" style="margin: -1rem;">
-                        <div class="p-col">
-                            <div class="card overview-box white">
-                                <div class="overview-info">
-                                    <h6>Total Manufacturers</h6>
-                                    <h1>
-                                        <h:outputText value="#{dashboard.manufacturers}">
-                                            <f:convertNumber groupingUsed="true"
-                                                             maxFractionDigits="2"  />
-                                        </h:outputText>
-                                    </h1>
-                                </div>
-                                <i class="pi pi-image"></i>
-                            </div>
-                        </div>
-                        <div class="p-col">
-                            <div class="card overview-box blue">
-                                <div class="overview-info">
-                                    <h6>New users (Today)</h6>
-                                    <h1>32</h1>
-                                </div>
-                                <i class="pi pi-users"></i>
-                            </div>
-                        </div>
-                        <div class="p-col">
-                            <div class="card overview-box gray">
-                                <div class="overview-info">
-                                    <h6>Uptime</h6>
-                                    <h1>5h12m</h1>
-                                </div>
-                                <i class="pi pi-globe"></i>
-                            </div>
-                        </div>
-                        <div class="p-col">
-                            <div class="card overview-box darkgray">
-                                <div class="overview-info">
-                                    <h6>Total Sectors</h6>
-                                    <h1>#{dashboard.sectorsCount}</h1>
-                                </div>
-                                <i class="pi pi-th-large"></i>
-                            </div>
-                        </div>
-                        <div class="p-col">
-                            <div class="card overview-box orange">
-                                <div class="overview-info">
-                                    <h6>Cloud users</h6>
-                                    <h1>4216</h1>
-                                </div>
-                                <i class="pi pi-cloud"></i>
-                            </div>
-                        </div>
+                        <h6>Hello! Welcome to CRAMS! Before start please complete your profile to know you better. <a href="#">Profile settings <i class="pi pi-arrow-up"></i></a></h6>
                     </div>
                 </div>
 
+                <div class="p-col-12 p-md-4">
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <div class="card device-status">
+                                <div class="p-grid">
+                                    <div class="p-col-12 p-xl-12">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h6>Total connected device change for last 4 days</h6>
+                                                <p class="subtitle">Line graph</p>
+                                            </div>
+                                        </div>
+                                        <p class="content">Labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud ercitation ullamco laboris nisi..</p>
+                                        <div class="progress active">
+                                            <span>Today</span>
+                                            <p:progressBar value="100" displayOnly="true"/>
+                                            <span>2100</span>
+                                        </div>
+                                        <div class="progress">
+                                            <span>Fri</span>
+                                            <p:progressBar value="20" displayOnly="true"/>
+                                            <span>1100</span>
+                                        </div>
+                                        <div class="progress">
+                                            <span>Thu</span>
+                                            <p:progressBar value="50" displayOnly="true"/>
+                                            <span>1203</span>
+                                        </div>
+                                        <div class="progress">
+                                            <span>Wed</span>
+                                            <p:progressBar value="100" displayOnly="true"/>
+                                            <span>1316</span>
+                                        </div>
 
+                                        <div class="progress">
+                                            <span>Fri</span>
+                                            <p:progressBar value="20" displayOnly="true"/>
+                                            <span>1100</span>
+                                        </div>
+                                        <div class="progress">
+                                            <span>Thu</span>
+                                            <p:progressBar value="50" displayOnly="true"/>
+                                            <span>1203</span>
+                                        </div>
 
-                <!--Section 7-->
-                <div class="p-col-12 p-md-12 p-xl-12">
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="p-col-12 p-md-8 p-xl-4">
+                    <div class="card operations">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h6>Capaciry score flows</h6>
+                                <p class="subtitle">Europe 1</p>
+                            </div>
+                            <p class="subtitle">8 May</p>
+                        </div>
+                        <canvas id="chart2" style="max-height: 160px;"></canvas>
+                        <div class="insights">
+                            <div class="insight-header">
+                                <p:graphicImage name="images/dashboard/subtract.svg" library="demo" />
+                                <h6>Insights</h6>
+                            </div>
+                            <ul>
+                                <li>
+                                    <span><span>1</span> Increase CPU load levels</span>
+                                    <span class="ui-tag ui-tag-warning">12%</span>
+                                </li>
+                                <li>
+                                    <span><span>2</span> 28% increase on thanks mes./w..</span>
+                                    <span class="ui-tag ui-tag-success">UP!</span>
+                                </li>
+                                <a href="#">See all(4)</a>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="p-col-12 p-xl-4">
+                    <div class="p-grid">
+
+                        <div class="p-col-12 p-md-6 p-xl-12">
+                            <div class="card stocks">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h6>Credit scores watch list</h6>
+                                        <p class="subtitle">Today</p>
+                                    </div>
+                                    <p:commandButton type="button" icon="pi pi-plus" styleClass="secondary-button text-button rounded-button" />
+                                </div>
+                                <ul>
+                                    <li class="down">
+                                        <div class="stock-name">
+                                            <h6>CAPT</h6>
+                                        </div>
+                                        <p:graphicImage name="images/dashboard/mini-graph-1.svg" library="demo" />
+                                        <div class="stock-price">
+                                            <i class="pi pi-arrow-down"></i>
+                                            <h6>54.20</h6>
+                                        </div>
+                                        <div class="stock-status">
+                                            <span>0.57%</span>
+                                            <span>4.01</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="stock-name">
+                                            <h6>CHAR</h6>
+                                        </div>
+                                        <p:graphicImage name="images/dashboard/mini-graph-2.svg" library="demo" />
+                                        <div class="stock-price">
+                                            <i class="pi pi-arrow-down"></i>
+                                            <h6>183.16</h6>
+                                        </div>
+                                        <div class="stock-status">
+                                            <span>1.46%</span>
+                                            <span>4.01</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="stock-name">
+                                            <h6>CAPA</h6>
+                                        </div>
+                                        <p:graphicImage name="images/dashboard/mini-graph-3.svg" library="demo" />
+                                        <div class="stock-price">
+                                            <i class="pi pi-arrow-down"></i>
+                                            <h6>307.20</h6>
+                                        </div>
+                                        <div class="stock-status">
+                                            <span>0.59%</span>
+                                            <span>4.01</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="stock-name">
+                                            <h6>COND</h6>
+                                        </div>
+                                        <p:graphicImage name="images/dashboard/mini-graph-4.svg" library="demo" />
+                                        <div class="stock-price">
+                                            <i class="pi pi-arrow-down"></i>
+                                            <h6>799.17</h6>
+                                        </div>
+                                        <div class="stock-status">
+                                            <span>0.52%</span>
+                                            <span>4.01</span>
+                                        </div>
+                                    </li>
+                                    <li class="same">
+                                        <div class="stock-name">
+                                            <h6>CAPC</h6>
+                                        </div>
+                                        <p:graphicImage name="images/dashboard/mini-graph-5.svg" library="demo" />
+                                        <div class="stock-price">
+                                            <i class="pi pi-minus"></i>
+                                            <h6>799.17</h6>
+                                        </div>
+                                        <div class="stock-status">
+                                            <span>0.52%</span>
+                                            <span>4.01</span>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="p-col-12 p-md-12 p-xl-8">
                     <div class="p-grid">
                         <div class="p-col-12">
                             <div class="card chart">
                                 <div class="card-header">
                                     <div class="card-title">
-                                        <h6>Company monthly revenue performance</h6>
+                                        <h6>Character performance</h6>
                                         <p class="subtitle">Line graph</p>
                                     </div>
                                 </div>
-
-                                <p:chart type="line"  responsive="true" model="#{dashboard.dateModel}" style="max-height: 330px;"/>
-
-
-                            </div>
-                        </div>
-
-                        <div class="p-col-6">
-                            <div class="card chart">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <h6>Sector Shares</h6>
-                                        <p class="subtitle">Pie</p>
-                                    </div>
-                                </div>
-                                <p:chart type="pie" responsive="true" model="#{dashboard.pieModel1}" style="height:400px;"/>
-
-
-                            </div>
-                        </div>
-
-                        <div class="p-col-6">
-                            <div class="card chart">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <h6>Manufacturers per sector</h6>
-                                        <p class="subtitle">Bar</p>
-                                    </div>
-                                </div>
-                                <p:chart type="bar" responsive="true" model="#{dashboard.sectorsBarModel}" style="height:400px;"/>
-
-
+                                <canvas id="chart1" style="max-height: 330px;"></canvas>
                             </div>
                         </div>
 
                     </div>
                 </div>
-
 
 
             </div>

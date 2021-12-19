@@ -32,6 +32,8 @@ import org.sers.webutils.model.BaseEntity;
 public class Loan extends BaseEntity {
 
     private LoanProvider loanProvider;
+    private String title;
+    private String description;
     private float interestRate;
     private InterestRateInterval interestRateInterval;
     private float maximumAmount;
@@ -177,5 +179,27 @@ public class Loan extends BaseEntity {
     public void setTargetAccountStatus(AccountStatus targetAccountStatus) {
         this.targetAccountStatus = targetAccountStatus;
     }
+
+     @Column(name = "title")
+   
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+     @Column(name = "description",length =1000)
+   
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    
 
 }

@@ -1,0 +1,212 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/pages/freyatemplate/template.xhtml">
+
+    <ui:define name="content">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <h:form id="loanApplicationsView" enctype="multipart/form-data"
+                        rendered="#{componentRenderer.administrator}">
+
+                    <div class="p-grid overlay-demo">
+                        <div class="p-col-12 p-md-3">
+                            <div class="card">
+                                <h:outputText value="Total" />
+                                <h2 class="p-text-right">267</h2>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-md-3">
+                            <div class="card">
+                                <h:outputText value="Draft" />
+                                <h2 class="p-text-right">399</h2>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-md-3">
+                            <div class="card">
+                                <h:outputText value="Approved" />
+                                <h2 class="p-text-right">20</h2>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-md-3">
+                            <div class="card">
+                                <h:outputText value="Rejected" />
+                                <h2 class="p-text-right">400</h2>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card">
+                        <h:outputText value="Filters" />
+
+                        <p:growl id="messages" showDetail="true" />
+
+                        <div class="p-grid" >
+                            <div class="p-col-12 p-md-6 p-lg-3" >
+                                <p:inputText id="searchTerm" required="false"
+
+                                             placeholder="Search ..."
+                                             onkeyup="#{loanApplicationsView.reloadFilterReset()}"
+                                             value="#{loanApplicationsView.searchTerm}" >
+
+                                    <p:ajax event="change" update="loanApplicationsView" listener="#{loanApplicationsView.reloadFilterReset()}"/>
+                                </p:inputText>
+                            </div> <!-- comment -->
+
+
+                            <div class="p-col-12 p-md-6 p-lg-3" >
+                                <p:selectCheckboxMenu id="countries" label="Filter country" value="#{loanApplicationsView.selectedCountries}" 
+                                                      converter="countryConverter"  style="height: 100%" >
+
+                                    <f:selectItems value="#{loanApplicationsView.countries}"/>
+                                    <p:ajax event="change" update="loanApplicationsView" listener="#{loanApplicationsView.reloadFilterReset()}"/>
+                                </p:selectCheckboxMenu>
+                            </div>
+                            <div class="p-col-12 p-md-6 p-lg-3" >
+                                <p:commandButton icon="fa fa-search" styleClass="ui-button-help"
+                                                 id="searchBtn" style="margin-right: 18px"
+                                                 actionListener="#{loanApplicationsView.reloadFilterReset()}" >
+                                </p:commandButton>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <ui:fragment>
+                        <div class="p-grid table-demo">
+                            <div class="p-col-12">
+                                <div class="card">
+                                    <p:dataTable id="loansTable" var="model" value="#{loanApplicationsView}"
+                                                 widgetVar="loansTable"
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                 paginator="true" lazy="true"
+                                                 rows="#{loanApplicationsView.maximumresultsPerpage}"
+                                                 emptyMessage="#{loanApplicationsView.dataEmptyMessage}"
+                                                 paginatorPosition="bottom" paginatorAlwaysVisible="false"
+                                                 rowIndexVar="row" reflow="true" styleClass="TableAlgnment">
+
+                                        <f:facet name="header">
+                                            <div class="p-d-flex p-jc-between">
+                                                <div >
+                                                    <span class="table-header-text">Loan applications</span>
+
+                                                </div>
+
+                                                <div >
+                                                    <div class="p-d-flex p-flex-wrap">
+                                                        <div class="p-mr-2 p-mb-2">
+                                                            <p:commandButton value="Export" 
+                                                                             process="clientsTable" icon="fa fa-upload" 
+
+                                                                             styleClass="ui-button-secondary" ajax="false">
+                                                                <p:dataExporter type="pdf"  target="loansTable" fileName="loans"/>
+                                                            </p:commandButton>
+                                                        </div>  
+                                                        <div class="p-mr-2 p-mb-2">
+
+                                                      
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </f:facet>
+
+                                        <p:column width="30" headerText="No.">
+                                            <h:outputText value="#{row + 1}" />
+                                        </p:column>
+
+                                        <p:column width="200" headerText="Title">
+                                            <h:outputText value="#{model.title}" />
+                                        </p:column>
+                                        <p:column width="200" headerText="Description">
+                                            <h:outputText value="#{model.description}" />
+                                        </p:column>
+
+                                        <p:column width="200" headerText="Interest ">
+
+                                            <h:outputText value="#{model.interestRate} #{model.interestRateInterval}" />
+                                        </p:column>
+
+                                        <p:column headerText="Email address">
+
+                                            <h:outputText value="#{model.userAccount.emailAddress}" />
+                                        </p:column>
+
+                                        <p:column headerText="Loan provider">
+
+                                            <h:outputText value="#{model.loan}" />
+                                               
+                                        </p:column>
+
+
+                                        <p:column headerText="Action" width="140" exportable="false" style="text-align: center" >
+
+                                            <p:commandButton  process="@this" icon="fa fa-edit" styleClass="ui-button-help"
+                                                              immediate="true"  rendered="#{componentRenderer.administrator and model.status eq 'Draft'}"
+                                                              actionListener="#{loanFormDialog.show}">
+                                                <f:setPropertyActionListener value="#{model}"
+                                                                             target="#{loanFormDialog.model}" />
+
+                                                <p:ajax event="dialogReturn" update="loansTable" />
+                                            </p:commandButton>
+
+
+                                            <p:commandButton icon="fa fa-eye" title="View" 
+                                                             styleClass="ui-button-primary"  style="margin-left: 5px"
+
+                                                             action="#{loanProfileView.getViewPath}">
+                                                <f:setPropertyActionListener value="#{model}"
+                                                                             target="#{loanProfileView.model}" />
+
+                                            </p:commandButton>
+
+
+
+
+
+
+                                            <p:commandButton icon="fa fa-trash" title="Delete"  
+                                                             styleClass="ui-button-danger" style="margin-left: 5px"
+                                                             action="#{loanApplicationsView.deleteAuthor(model)}"
+                                                             rendered="#{componentRenderer.administrator and  model.status eq 'Draft'}"
+                                                             update="loansTable">
+                                                <p:confirm header="Confirmation"
+                                                           message="You are about to delete a loan. Do you wish to continue?"
+                                                           icon="ui-icon-alert" />
+                                            </p:commandButton>
+
+                                        </p:column>
+
+                                    </p:dataTable>
+
+                                    <p:blockUI block="loanApplicationsView" trigger="searchBtn">
+                                        <p:graphicImage value="/resources/images/workingicon.png" />
+                                    </p:blockUI>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </ui:fragment>
+                    <p:blockUI block="loanApplicationsView" >
+                        <p:graphicImage value="/resources/images/workingicon.png" />
+                    </p:blockUI>    
+                    <p:confirmDialog global="true">
+                        <p:commandButton value="Yes" type="button"
+                                         styleClass="ui-confirmdialog-yes" icon="fa fa-thumbs-up" />
+                        <p:commandButton value="No" type="button"
+                                         styleClass="ui-confirmdialog-no" icon="fa fa-thumbs-down" />
+                    </p:confirmDialog>
+
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

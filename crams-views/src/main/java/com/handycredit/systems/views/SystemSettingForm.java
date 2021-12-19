@@ -1,47 +1,74 @@
 package com.handycredit.systems.views;
 
 import com.handycredit.systems.core.services.SystemSettingService;
+import com.handycredit.systems.core.utils.EmailService;
 import com.handycredit.systems.models.SystemSetting;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import com.handycredit.systems.security.HyperLinks;
+import java.util.Date;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import org.sers.webutils.client.views.presenters.ViewPath;
 import org.sers.webutils.client.views.presenters.WebFormView;
+import org.sers.webutils.model.exception.OperationFailedException;
+import org.sers.webutils.model.exception.ValidationFailedException;
 import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 
 @ManagedBean(name = "settingsForm")
-@SessionScoped
-@ViewPath(path = HyperLinks.APP_SETTINGS_FORM)
-public class SystemSettingForm extends WebFormView<SystemSetting, SystemSettingForm, Dashboard> {
+@ViewScoped
+@ViewPath(path = HyperLinks.SYSTEM_SETTINGS_FORM)
+public class SystemSettingForm extends WebFormView<SystemSetting, SystemSettingForm, SystemSettingForm> {
 
+    /**
+     *
+     */
     private static final long serialVersionUID = 1L;
-    private SystemSettingService appSettingService;
-   
+    private SystemSettingService defaultSettingService;
+
+    private boolean showPrice = true;
+    private boolean flutterLive;
+    private String testEmail;
+
+    private String testMessage = "This is a test email from CRAMS";
 
     @Override
     public void beanInit() {
-        this.appSettingService = ApplicationContextProvider.getBean(SystemSettingService.class);
-        if (this.appSettingService.getSystemSettings() != null) {
-            super.model = this.appSettingService.getSystemSettings();
+        this.defaultSettingService = ApplicationContextProvider.getBean(SystemSettingService.class);
+        super.model = this.defaultSettingService.getSystemSettings();
+
+        if (this.model == null) {
+            this.model = new SystemSetting();
         } else {
-            super.model = new SystemSetting();
+            super.model = this.defaultSettingService.getSystemSettings();
         }
-       
+
     }
 
     @Override
     public void pageLoadInit() {
-        if (this.appSettingService.getSystemSettings() != null) {
-            super.model = this.appSettingService.getSystemSettings();
-        } else {
-            super.model = new SystemSetting();
-        }
+        super.model = this.defaultSettingService.getSystemSettings();
     }
 
     @Override
     public void persist() throws Exception {
-        this.appSettingService.saveInstance(super.model);
-        UiUtils.showMessageBox("App settings updated", "Action Successful");
+        System.out.println("-----------Saving setting------");
+        this.defaultSettingService.saveInstance(super.model);
+        UiUtils.showMessageBox("Default settings updated", "Action Successful");
+    }
+
+    public void saveSettings() throws ValidationFailedException, OperationFailedException {
+        System.out.println("-----------Saving setting------");
+        this.defaultSettingService.saveInstance(super.model);
+        UiUtils.showMessageBox("Default settings updated", "Action Successful");
+
+    }
+
+    @Override
+    public String getViewUrl() {
+        return HyperLinks.SYSTEM_SETTINGS_FORM;
+    }
+
+    public void hidePrice() {
+        this.showPrice = false;
     }
 
     @Override
@@ -55,18 +82,48 @@ public class SystemSettingForm extends WebFormView<SystemSetting, SystemSettingF
         super.setFormProperties();
     }
 
-    @Override
-    public String getViewUrl() {
-        return this.getViewPath();
+    public void sendTestEmail() {
+
+        try {
+
+            new EmailService().sendMail(this.testEmail, this.testMessage, "Sent this test email from RGW web on " + new Date());
+
+        } catch (Exception ex) {
+            UiUtils.ComposeFailure("Action failed", ex.getLocalizedMessage());
+        }
+
     }
 
-    public SystemSettingService getAppSettingService() {
-        return appSettingService;
+    public boolean isShowPrice() {
+        return showPrice;
     }
 
-    public void setAppSettingService(SystemSettingService appSettingService) {
-        this.appSettingService = appSettingService;
+    public void setShowPrice(boolean showPrice) {
+        this.showPrice = showPrice;
     }
 
-  
+    public String getTestEmail() {
+        return testEmail;
+    }
+
+    public void setTestEmail(String testEmail) {
+        this.testEmail = testEmail;
+    }
+
+    public String getTestMessage() {
+        return testMessage;
+    }
+
+    public void setTestMessage(String testMessage) {
+        this.testMessage = testMessage;
+    }
+
+    public boolean isFlutterLive() {
+        return flutterLive;
+    }
+
+    public void setFlutterLive(boolean flutterLive) {
+        this.flutterLive = flutterLive;
+    }
+
 }

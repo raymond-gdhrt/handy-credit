@@ -1,0 +1,156 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/pages/freyatemplate/template.xhtml">
+    <ui:define name="head">
+        <style type="text/css">
+            .capitalized {
+                text-transform: capitalize;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <title>#{loanCreationForm.model.isNew()?'Add loan':loanCreationForm.model.name}</title>
+        <h:form id="loanCreationForm" styleClass="card">
+            <div class="p-grid ui-fluid" style="">
+                <div class="ui-col-12 ui-md-6">
+                    <h5>Title</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputText value="#{loanCreationForm.model.title}" required="true" />
+                    </div>
+                </div>
+                
+                 <div class="ui-col-12 ui-md-6">
+                    <h5>Reason</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:selectOneMenu id="category" value="#{loanCreationForm.model.targetRequestReason}" 
+                                       
+                                         effect="fold" >
+                            <f:selectItem itemLabel="Select One" itemValue=""/>
+                            <f:selectItems value="#{loanCreationForm.loanRequestReasons}"/>
+                        </p:selectOneMenu>
+                    </div>
+                </div>
+                
+
+                <div class="ui-col-12 ui-md-6">
+                    <h5>Interval</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:selectOneMenu  value="#{loanCreationForm.model.interestRateInterval}" 
+                                       
+                                         effect="fold" >
+                            <f:selectItem itemLabel="Select One" itemValue=""/>
+                            <f:selectItems value="#{loanCreationForm.rateIntervals}"/>
+                        </p:selectOneMenu>
+                    </div>
+                </div>
+                
+                <div class="ui-col-12 ui-md-6">
+                    <h5>Target business</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:selectOneMenu  value="#{loanCreationForm.model.targetBusinessCategory}" 
+                                         
+                                         effect="fold" >
+                            <f:selectItem itemLabel="All" itemValue=""/>
+                            <f:selectItems value="#{loanCreationForm.businessCategories}"/>
+                        </p:selectOneMenu>
+                    </div>
+                </div>
+                
+                 <div class="ui-col-12 ui-md-6">
+                    <h5>Min amount</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputNumber decimalPlaces="0" value="#{loanCreationForm.model.minimumAmount}" required="true" />
+                    </div>
+                </div>
+                
+                 <div class="ui-col-12 ui-md-6">
+                    <h5>Max amount</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputNumber decimalPlaces="0" value="#{loanCreationForm.model.maximumAmount}" required="true" />
+                    </div>
+                </div>
+                
+                 <div class="ui-col-12 ui-md-6">
+                    <h5>Min capacity score</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputNumber decimalPlaces="0" value="#{loanCreationForm.model.minimumCapacityScore}" required="true" />
+                    </div>
+                </div>
+                
+                  <div class="ui-col-12 ui-md-3">
+                    <h5>Min capital score</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputNumber decimalPlaces="0" value="#{loanCreationForm.model.minimumCapitalScore}" required="true" />
+                    </div>
+                </div>
+                
+                 <div class="ui-col-12 ui-md-3">
+                    <h5>Min character score</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputNumber decimalPlaces="0" value="#{loanCreationForm.model.minimumCharacterScore}" required="true" />
+                    </div>
+                </div>
+                
+                 <div class="ui-col-12 ui-md-3">
+                    <h5>Min collateral score</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputNumber decimalPlaces="0" value="#{loanCreationForm.model.minimumCollateralScore}" required="true" />
+                    </div>
+                </div>
+                
+                 <div class="ui-col-12 ui-md-3">
+                    <h5>Min conditions score</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputNumber decimalPlaces="0" value="#{loanCreationForm.model.minimumConditionsScore}" required="true" />
+                    </div>
+                </div>
+              
+
+                <div class="ui-col-12 ui-md-12">
+                    <h5>Other details</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputTextarea value="#{loanCreationForm.model.description}" rows="4" required="true" />
+                    </div>
+                </div>
+
+
+
+                <div class="ui-col-12 ui-md-12" style="margin-top: 10px;">
+                    <div class="p-grid p-justify-end">
+                        <div class="p-col-2">
+                            <p:commandButton value="Cancel" 
+                                             validateClient="false"
+                                             process="@this"
+                                             action="#{loanCreationForm.hide}"
+                                             styleClass="ui-button-outlined ui-button-help" />
+                        </div>
+                        <div class="p-col-2" >
+                            <p:commandButton value="Save"
+                                             process="@form"
+                                             actionListener="#{loanCreationForm.save}"
+                                             update="@form" validateClient="true" />
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

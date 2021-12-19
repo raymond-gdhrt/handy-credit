@@ -1,0 +1,122 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/pages/californiatemplate/dialog-template.xhtml">
+    <ui:define name="head">
+        <style type="text/css">
+            .capitalized {
+                text-transform: capitalize;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <title>#{businessFormDialog.model.isNew()?'Add business':businessFormDialog.model.name}</title>
+        <h:form id="businessFormDialog" styleClass="card">
+            <div class="p-grid ui-fluid" style="">
+                <div class="ui-col-12 ui-md-6">
+                    <h5>Business name</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputText value="#{businessFormDialog.model.name}" required="true" />
+                    </div>
+                </div>
+                <div class="ui-col-12 ui-md-6">
+                    <h5>Business registration number /TIN</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputText value="#{businessFormDialog.model.registrationNumber}" required="true" />
+                    </div>
+                </div>
+                
+                <div class="ui-col-12 ui-md-6">
+                    <h5>Phone number</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputText value="#{businessFormDialog.model.phoneNumber}" required="true" />
+                    </div>
+                </div>
+
+                <div class="ui-col-12 ui-md-6">
+                    <h5>Website</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputText value="#{businessFormDialog.model.website}" required="true" />
+                    </div>
+                </div>
+
+                <div class="ui-col-12 ui-md-6">
+                    <h5>Twitter handle</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputText value="#{businessFormDialog.model.twitterHandle}" required="true" />
+                    </div>
+                </div>
+
+
+
+                <div class="ui-col-12 ui-md-6">
+                    <h5>Facebook page link</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputText value="#{businessFormDialog.model.facebookLink}" required="true" />
+                    </div>
+                </div>
+              
+
+                <div class="ui-col-12 ui-md-6">
+                    <h5>District</h5>
+                    <div class="ui-inputgroup">
+                        <p:selectOneMenu id="country" value="#{businessFormDialog.model.district}" 
+                                         converter="countryConverter" filter="true" 
+                                         style="width:95% ">
+                            <f:selectItem itemLabel="Select country" itemValue=""/>
+                            <f:selectItems value="#{businessFormDialog.districts}"/>
+                        </p:selectOneMenu>
+
+                    </div>
+                </div>
+                
+                  <div class="ui-col-12 ui-md-12">
+                    <h5>Physical address</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputTextarea value="#{businessFormDialog.model.physcialAddress}" rows="4" required="true" />
+                    </div>
+                </div>
+                
+                  <div class="ui-col-12 ui-md-12">
+                    <h5>About business (Short details about business)</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputTextarea value="#{businessFormDialog.model.description}" rows="5" required="true" />
+                    </div>
+                </div>
+
+
+
+
+                <div class="ui-col-12 ui-md-12" style="margin-top: 50px;">
+                    <div class="p-grid p-justify-end">
+                        <div class="p-col-2">
+                            <p:commandButton value="Cancel" 
+                                             validateClient="false"
+                                             process="@this"
+                                             action="#{businessFormDialog.hide}"
+                                             styleClass="ui-button-outlined ui-button-help" />
+                        </div>
+                        <div class="p-col-2">
+                            <p:commandButton value="Save" 
+                                             process="@form"
+                                             actionListener="#{businessFormDialog.save}"
+                                             update="businessFormDialog" validateClient="true" />
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
