@@ -29,16 +29,14 @@
 
         <div class="ui-g-12  layout-wrapper layout-topbar-#{guestPreferences.topbarTheme} layout-menu-#{guestPreferences.menuTheme} #{guestPreferences.menuMode}" >
             <div class="ui-g-4 card-body" style="text-align: center">
-                <h2>Register as business</h2>
+                <h2>Register as SME</h2>
                 <h:link  styleClass="logo">
-                    <p:graphicImage name="images/logo.png" width="300" height="200" library="freya-layout" />
+                    <p:graphicImage name="images/logo.png" width="200" height="200" library="freya-layout" />
                 </h:link>
                 <p style="padding: 10%;font-size: 18px;color: #35557e">Nullam non efficitur tellus. Aenean sapien magna, vulputate dictum odio quis, 
                     ornare maximus elit. Vestibulum quis dolor eget sem lacinia consectetur. 
                     Integer ac accumsan enim. Cras eget nunc non ipsum dignissim blandit. 
-                    Donec ex eros, lobortis eu nisi dictum, semper pulvinar ante.  
-                </p>
-                
+                    Donec ex eros, lobortis eu nisi dictum, semper pulvinar ante.  </p>
                 <p style="margin-top: 2px" >
                     <a href="LoanProviderRegistrationForm.xhtml">Register as loan provider instead </a>
                 </p>
@@ -46,19 +44,23 @@
             <div class="ui-g-8">
                 <h:form id="businessRegistrationForm"  enctype="multipart/form-data">
 
-                    <ui:fragment rendered="#{businessRegistrationForm.showForm}">
+                    <ui:fragment >
                         <div class="card " >
 
-                            <p:fieldset legend="Business details" id="regForm" >
+                            <p:fieldset rendered="#{businessRegistrationForm.showForm}" legend="SME business details" id="regForm" >
                                 <div class="ui-fluid p-formgrid p-grid">
+                                     <p:outputPanel styleClass="p-field p-col-12 p-md-12" rendered="#{not businessRegistrationForm.successResponse}" 
+                                                   style="background-color:red;margin-right: 20%;margin-left: 20%">
+                                        <h4>#{businessRegistrationForm.customUiMessage} </h4>
+                                    </p:outputPanel>
                                     <div class="p-field p-col-12 p-md-6">
-                                        <p:outputLabel for="name" value="Business name" />
+                                        <p:outputLabel for="name" value="Company name" />
                                         <p:inputText required="true" id="name"
                                                      value="#{businessRegistrationForm.model.name}"/>
                                     </div>
 
                                     <div class="p-field p-col-12 p-md-6">
-                                        <p:outputLabel for="type" value="Business type" />
+                                        <p:outputLabel for="type" value="Type" />
                                         <p:selectOneMenu id="type" required="true" value="#{businessRegistrationForm.model.type}">
                                             <f:selectItem itemLabel="Select One" itemValue=""/>
                                             <f:selectItems value="#{businessRegistrationForm.businessTypes}"/>
@@ -128,63 +130,69 @@
                             </p:fieldset>
 
 
+                            <p:fieldset id="codeSection" rendered="#{businessRegistrationForm.showCodeSection}">
+                                <div class="ui-fluid p-formgrid p-grid" style="padding: 20%">
+                                     <p:outputPanel styleClass="p-field p-col-12 p-md-12" rendered="#{not businessRegistrationForm.successResponse}" 
+                                                   style="background-color:red;margin-right: 20%;margin-left: 20%">
+                                        <h4>#{businessRegistrationForm.customUiMessage} </h4>
+                                    </p:outputPanel>
+                                    <div class="p-field p-col-12 p-md-12" style="text-align: center">
+                                        <h4 >Enter code sent to your email</h4>
+                                    </div>
+
+                                    <p:outputPanel rendered="#{not businessRegistrationForm.successResponse}" 
+                                                   style="background-color:red;color: white" styleClass="p-field p-col-12 p-md-12">
+                                        <h5>#{businessRegistrationForm.customUiMessage}</h5>
+
+
+                                    </p:outputPanel>
+                                    <div class="p-field p-col-12 p-md-12">
+
+                                        <p:inputText required="true" 
+                                                     value="#{businessRegistrationForm.verificationCode}" />
+
+                                    </div>
+                                    <div class="p-field p-col-12 p-md-6" style="display: flex">
+
+                                        <p:commandButton  style="margin-left: auto"
+                                                          process="codeSection"
+                                                          value="Verify" id="saveBtn2"
+                                                          styleClass="green-btn" validateClient="true"
+                                                          action="#{businessRegistrationForm.verifyCode()}"
+                                                          update="codeSection" />
+                                    </div>
+
+
+
+
+                                </div>
+
+                            </p:fieldset>
+
+
+
+                            <p:fieldset id="postMessageSection" rendered="#{businessRegistrationForm.showFinalSection}">
+                                <div class="card card-w-title" style="width: 100%;height: 100%">
+                                    <div class="ui-g-12 ui-md-12 ui-lg-12" style="margin-bottom:20px">
+                                        <h4>#{businessRegistrationForm.customUiMessage}</h4>
+                                        <a   href="#{request.contextPath}/ExternalViews/Login.xhtml">
+
+                                            <p:commandButton icon="fa fa-save" 
+                                                             value="Login" id="saveBtn4"
+                                                             styleClass="green-btn" validateClient="true"
+                                                             />
+                                        </a>
+
+
+                                    </div>
+                                </div>
+                            </p:fieldset>
+
+
 
                         </div>
                     </ui:fragment>
 
-                    <ui:fragment id="codeSection" rendered="#{businessRegistrationForm.showCodeSection}">
-                        <div class="ui-fluid p-formgrid p-grid" style="padding: 20%">
-                            <div class="p-field p-col-12 p-md-12" style="text-align: center">
-                                <h4 >Enter code sent to your email</h4>
-                            </div>
-
-                            <p:outputPanel rendered="#{not businessRegistrationForm.successResponse}" 
-                                           style="background-color:red;color: white" styleClass="p-field p-col-12 p-md-12">
-                                <h5>#{businessRegistrationForm.customUiMessage}</h5>
-
-
-                            </p:outputPanel>
-                            <div class="p-field p-col-12 p-md-12">
-
-                                <p:inputText required="true" 
-                                             value="#{businessRegistrationForm.verificationCode}" />
-
-                            </div>
-                            <div class="p-field p-col-12 p-md-6" style="display: flex">
-
-                                <p:commandButton  style="margin-left: auto"
-                                                  process="codeSection"
-                                                  value="Verify" id="saveBtn2"
-                                                  styleClass="green-btn" validateClient="true"
-                                                  action="#{businessRegistrationForm.verifyCode()}"
-                                                  update="codeSection" />
-                            </div>
-
-
-
-
-                        </div>
-
-                    </ui:fragment>
-
-
-
-                    <ui:fragment id="postMessageSection" rendered="#{businessRegistrationForm.showSuccessMessageSection}">
-                        <div class="card card-w-title" style="width: 100%;height: 100%">
-                            <div class="ui-g-12 ui-md-12 ui-lg-12" style="margin-bottom:20px">
-                                <h4>Congratulations, account has been created successfully\n check your email for login credentials</h4>
-                                <a   href="#{request.contextPath}/ExternalViews/Login.xhtml">
-
-                                    <p:commandButton icon="fa fa-save" 
-                                                     value="Login" id="saveBtn4"
-                                                     styleClass="green-btn" validateClient="true"
-                                                     />
-                                </a>
-
-
-                            </div>
-                        </div>
-                    </ui:fragment>
                     <p:blockUI block="businessRegistrationForm" trigger="saveBtn1 saveBtn2 ">
                         <p:graphicImage value="/resources/images/workingicon.png" />
                     </p:blockUI>

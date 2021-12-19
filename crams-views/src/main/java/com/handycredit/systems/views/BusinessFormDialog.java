@@ -5,9 +5,11 @@
  */
 package com.handycredit.systems.views;
 
+import com.handycredit.systems.constants.UgandanDistrict;
 import com.handycredit.systems.core.services.BusinessService;
 import com.handycredit.systems.models.Business;
 import com.handycredit.systems.security.HyperLinks;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -32,13 +34,13 @@ public class BusinessFormDialog extends DialogForm<Business> {
   
     private BusinessService businessService;
     
-    private List<Country> countryList;
+    private List<UgandanDistrict> districts;
    
     @PostConstruct
     public void init() {
 
         this.businessService = ApplicationContextProvider.getApplicationContext().getBean(BusinessService.class);
-        this.countryList=ApplicationContextProvider.getBean(SetupService.class).getAllCountries();
+        this.districts= Arrays.asList(UgandanDistrict.values());
      
     }
 
@@ -64,13 +66,15 @@ public class BusinessFormDialog extends DialogForm<Business> {
         super.setFormProperties();
     }
 
-    public List<Country> getCountryList() {
-        return countryList;
+    public List<UgandanDistrict> getDistricts() {
+        return districts;
     }
 
-    public void setCountryList(List<Country> countryList) {
-        this.countryList = countryList;
+    public void setDistricts(List<UgandanDistrict> districts) {
+        this.districts = districts;
     }
+
+   
 
   
 }

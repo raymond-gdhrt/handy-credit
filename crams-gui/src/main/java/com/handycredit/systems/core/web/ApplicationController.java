@@ -26,6 +26,12 @@ public class ApplicationController extends AbstractApplicationController {
     public ModelAndView getSystemSettingsForm(ModelMap model) {
         return new ModelAndView(HyperLinks.SYSTEM_SETTINGS_FORM.replace("/", ""), model);
     }
+    
+    
+    @RequestMapping(value = {HyperLinks.ROLES_VIEW})
+    public ModelAndView getRoles(ModelMap model) {
+        return new ModelAndView(HyperLinks.ROLES_VIEW.replace("/", ""), model);
+    }
 
     @RequestMapping(value = {HyperLinks.BUSINESSES_VIEW})
     public ModelAndView getBusinesses(ModelMap model) {
@@ -45,5 +51,15 @@ public class ApplicationController extends AbstractApplicationController {
     @RequestMapping(value = {HyperLinks.LOANS_VIEW})
     public ModelAndView getLoans(ModelMap model) {
         return new ModelAndView(HyperLinks.LOANS_VIEW.replace("/", ""), model);
+    }
+    
+     @RequestMapping(value = {HyperLinks.LOANS_LIST_VIEW})
+    public ModelAndView getLoansList(ModelMap model) {
+        return new ModelAndView(HyperLinks.LOANS_LIST_VIEW.replace("/", ""), model);
+    }
+    
+    @RequestMapping(value = {HyperLinks.LOANS_APPLICATIONS_VIEW})
+    public ModelAndView getLoansApplications(ModelMap model) {
+        return new ModelAndView(HyperLinks.LOANS_APPLICATIONS_VIEW.replace("/", ""), model);
     }
 }

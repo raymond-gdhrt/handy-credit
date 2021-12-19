@@ -9,6 +9,7 @@ import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 import com.googlecode.genericdao.search.Search;
 import com.handycredit.systems.core.services.BusinessService;
 import com.handycredit.systems.models.Business;
+import com.handycredit.systems.models.BusinessCreditHistory;
 import com.handycredit.systems.security.HyperLinks;
 import java.util.List;
 import java.util.logging.Level;
@@ -27,6 +28,7 @@ public class BusinessProfileView extends WebFormView<Business, BusinessProfileVi
     private String searchTerm;
     private Search search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE);
     private Business selectedBusiness;
+    private List<BusinessCreditHistory> histories;
    
 
     @Override
@@ -81,6 +83,14 @@ public class BusinessProfileView extends WebFormView<Business, BusinessProfileVi
 
     public void setSelectedBusiness(Business selectedBusiness) {
         this.selectedBusiness = selectedBusiness;
+    }
+
+    public List<BusinessCreditHistory> getHistories() {
+        return histories;
+    }
+
+    public void setHistories(List<BusinessCreditHistory> histories) {
+        this.histories = histories;
     }
 
    

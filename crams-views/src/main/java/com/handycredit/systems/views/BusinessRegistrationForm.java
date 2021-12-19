@@ -8,6 +8,8 @@ import com.handycredit.systems.core.services.BusinessService;
 import com.handycredit.systems.core.utils.AppUtils;
 import com.handycredit.systems.core.utils.EmailService;
 import com.handycredit.systems.models.Business;
+import com.handycredit.systems.models.Business;
+import com.handycredit.systems.models.security.PermissionConstants;
 import com.handycredit.systems.security.HyperLinks;
 import java.util.Arrays;
 import java.util.List;
@@ -40,6 +42,7 @@ public class BusinessRegistrationForm extends WebFormView<Business, BusinessRegi
     private UserService userService;
     private String customUiMessage;
     private String verificationCode;
+    private String password;
     private boolean successResponse = true;
     private boolean showForm = true;
     private boolean showCodeSection, showSuccessMessageSection, showFinalSection;
@@ -73,11 +76,12 @@ public class BusinessRegistrationForm extends WebFormView<Business, BusinessRegi
     public void createMember() {
         try {
             String code = AppUtils.generateOTP(6);
+            System.out.println("Generated code: " + code);
             super.model.setLastVerificationCode(code);
             super.model.setAccountStatus(AccountStatus.created);
             super.model = this.businessService.saveOutsideContext(super.model);
 
-            new EmailService().sendMail(super.model.getEmailAddress(), "AAPU registartion", "Confirm your email address with this code\n <h2>"+code+"</h2>");
+            new EmailService().sendMail(super.model.getEmailAddress(), "CRAMS registration", "Confirm your email address with this code\n <h2><b>" + code + "</b></h2>");
             showCodeForm();
         } catch (Exception ex) {
             customUiMessage = "Ops, some error occured\n " + ex.getLocalizedMessage();
@@ -89,9 +93,16 @@ public class BusinessRegistrationForm extends WebFormView<Business, BusinessRegi
     public void verifyCode() {
         try {
             if (verificationCode.equalsIgnoreCase(super.model.getLastVerificationCode())) {
+                password = "business" + AppUtils.generateOTP(4);
 
+                new EmailService().sendMail(super.model.getEmailAddress(), "CRAMS Login details", "Your CRAMs account wwas successfully created, Your logu=in credentials are <h2>Username: <b>" + super.model.getEmailAddress() + "</b> </h2> <h2>Password: <b>" + password + "</b> </h2>");
                 super.model.setAccountStatus(AccountStatus.verified);
-                super.model = this.businessService.saveOutsideContext(super.model);
+                super.model.setUserAccount(createDefaultUser(super.model));
+                this.businessService.saveOutsideContext(super.model);
+                super.model = new Business();
+                customUiMessage = "Account created successfully. Check your email for login details";
+                this.successResponse = true;
+
                 showFinalSection();
             } else {
                 customUiMessage = "Invalid code supplied, please try again";
@@ -104,20 +115,18 @@ public class BusinessRegistrationForm extends WebFormView<Business, BusinessRegi
         }
     }
 
-    private void createDefaultUser(Business manufacturer) throws ValidationFailedException {
-        User user = new User();
-        user.setUsername(manufacturer.getEmailAddress());
-        user.setFirstName(WordUtils.capitalize(manufacturer.getName()));
-        user.setLastName("User");
-        user.setClearTextPassword("business");
-        List<Role> roles = userService.getRoles();
-        for (Role role : roles) {
-            if (!role.getName().equals(Role.DEFAULT_ADMIN_ROLE)) {
-                user.addRole(role);
-            }
-        }
+    private User createDefaultUser(Business business) throws ValidationFailedException {
+        System.out.println("Creating user account...");
 
-        this.userService.saveUser(user);
+        User user = new User();
+        user.setUsername(business.getEmailAddress());
+        user.setFirstName(WordUtils.capitalize(business.getName()));
+        user.setLastName("User");
+        user.setClearTextPassword(password);
+
+        user.addRole(userService.getRoleByRoleName(PermissionConstants.PERM_BUSINESS_OWNER));
+
+        return this.userService.saveUser(user);
 
     }
 
@@ -232,6 +241,14 @@ public class BusinessRegistrationForm extends WebFormView<Business, BusinessRegi
 
     public void setShowSuccessMessageSection(boolean showSuccessMessageSection) {
         this.showSuccessMessageSection = showSuccessMessageSection;
+    }
+
+    public boolean isShowFinalSection() {
+        return showFinalSection;
+    }
+
+    public void setShowFinalSection(boolean showFinalSection) {
+        this.showFinalSection = showFinalSection;
     }
 
 }

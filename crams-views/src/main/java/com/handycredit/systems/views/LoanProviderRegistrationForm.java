@@ -93,12 +93,13 @@ public class LoanProviderRegistrationForm extends WebFormView<LoanProvider, Loan
         try {
             if (verificationCode.equalsIgnoreCase(super.model.getLastVerificationCode())) {
 
+                password = "loanProvider" + AppUtils.generateOTP(4);
+                new EmailService().sendMail(super.model.getEmailAddress(), "CRAMS Login details", "Your CRAMs account wwas successfully created, Your logu=in credentials are <h2>Username: <b>" + super.model.getEmailAddress() + "</b> </h2> <h2>Password: <b>" + password + "</b> </h2>");
                 super.model.setAccountStatus(AccountStatus.verified);
                 super.model.setUserAccount(createDefaultUser(super.model));
                 this.loanProviderService.saveOutsideContext(super.model);
                 super.model = new LoanProvider();
-
-                customUiMessage = "Account created successfully. You can now login with\n username: your email \n one time password: " + password;
+                customUiMessage = "Account created successfully. Check your email for login details";
                 this.successResponse = true;
 
                 showFinalSection();
@@ -115,13 +116,13 @@ public class LoanProviderRegistrationForm extends WebFormView<LoanProvider, Loan
 
     private User createDefaultUser(LoanProvider loanProvider) throws ValidationFailedException {
         System.out.println("Creating user account...");
-        password = "loanProvider" + AppUtils.generateOTP(4);
+
         User user = new User();
         user.setUsername(loanProvider.getEmailAddress());
         user.setFirstName(WordUtils.capitalize(loanProvider.getName()));
         user.setLastName("User");
         user.setClearTextPassword(password);
-        
+
         user.addRole(userService.getRoleByRoleName(PermissionConstants.PERM_LOAN_PROVIDER));
 
         return this.userService.saveUser(user);

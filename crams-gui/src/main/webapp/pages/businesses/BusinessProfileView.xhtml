@@ -4,13 +4,13 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/pages/californiatemplate/template.xhtml">
+                template="/pages/freyatemplate/template.xhtml">
 
     <ui:define name="content">
         <div class="ui-g ui-fluid">
             <div class="ui-g-12">
                 <h:form id="businessProfileView" styleClass="p-grid" enctype="multipart/form-data"
-                        rendered="#{componentRenderer.business}">
+                        rendered="#{componentRenderer.businessOwner}">
 
                     <div class="p-col-12">
                         <div class="card">
@@ -40,7 +40,7 @@
                                             </p:commandButton>
 
                                             <p:commandButton  process="@this" icon="fa fa-edit" styleClass="ui-button-help"
-                                                              immediate="true" rendered="#{componentRenderer.business}"
+                                                              immediate="true" rendered="#{componentRenderer.businessOwner}"
                                                               value="Edit" style="width: 100px; margin-left: 10px"
                                                               title="Edit business details" 
                                                               actionListener="#{businessFormDialog.show}">
@@ -58,30 +58,45 @@
                                 <div class="p-col-12 p-md-3" style="padding-left: 20px">
                                     <h4>About</h4>
                                     <h5>Name: <span style="font-weight: lighter">#{businessProfileView.model.name}</span> </h5>
-                                    <h5>Code: <span style="font-weight: lighter">#{businessProfileView.model.code}</span></h5>
+                                    <h5>Type: <span style="font-weight: lighter">#{businessProfileView.model.type}</span></h5>
 
-                                    <h5>Category: <span style="font-weight: lighter">#{businessProfileView.model.category}</span> </h5>
-                                    <h5>Country: <span style="font-weight: lighter">#{businessProfileView.model.country}</span> </h5>
+                                    <h5>Account status: <span style="font-weight: lighter">#{businessProfileView.model.accountStatus}</span> </h5>
+                                    <h5>Reg No. <span style="font-weight: lighter">#{businessProfileView.model.registrationNumber}</span> </h5>
 
 
                                 </div>
 
-                                <div class="p-col-12 p-md-4">
-
-
+                                <div class="p-col-12 p-md-3">
                                     <h4>Description:</h4>
+                                    <h5>District: <span style="font-weight: lighter">#{businessProfileView.model.district}</span> </h5>
+                                    <h5>Address: <span style="font-weight: lighter">#{businessProfileView.model.physicalAddress}</span> </h5>
+                                    <h5>Email: <span style="font-weight: lighter">#{businessProfileView.model.emailAddress}</span> </h5>
+                                    <h5>Phone number: <span style="font-weight: lighter">#{businessProfileView.model.phoneNumber}</span> </h5>
+
                                     <h5>#{businessProfileView.model.description}</h5>
                                 </div>
-                                <div class="p-col-12 p-md-5">
+
+                                <div class="p-col-12 p-md-3">
+                                    <h4>More details</h4>
+
+                                    <h5>Website <span style="font-weight: lighter">#{businessProfileView.model.website}</span></h5>
+                                    <h5>Twitter handle <span style="font-weight: lighter">#{businessProfileView.model.twitterHandle}</span></h5>
+                                    <h5>Facebook username <span style="font-weight: lighter">#{businessProfileView.model.facebookLink}</span></h5>
+                                    <h5>LinkedIn <span style="font-weight: lighter">#{businessProfileView.model.linkedInLink}</span></h5>
+
+
+                                </div>
+                                <div class="p-col-12 p-md-3">
 
 
                                     <h4>More details</h4>
-                                    <h5>Created at: <span style="font-weight: lighter"><h:outputText value="#{businessProfileView.model.dateCreated}">
+                                     <h5>Date of opening: <span style="font-weight: lighter"><h:outputText value="#{businessProfileView.model.dateOfOpening}">
                                                 <f:convertDateTime pattern="dd-MMM-yyyy 'at' HH:MM a"/>
                                             </h:outputText></span> </h5>
-                                    <h5>Created by: <span style="font-weight: lighter">#{businessProfileView.model.createdBy}</span></h5>
-
-
+                                    <h5>Signup date: <span style="font-weight: lighter"><h:outputText value="#{businessProfileView.model.dateCreated}">
+                                                <f:convertDateTime pattern="dd-MMM-yyyy 'at' HH:MM a"/>
+                                            </h:outputText></span> </h5>
+                                  
                                 </div>
                             </div>
                         </div>
@@ -92,37 +107,7 @@
                             <p:tabView>
 
                                 <p:tab title="Change history" >
-                                    <p:dataTable var="log" rowIndexVar="row" value="#{businessProfileView.businessLogs}">
 
-                                        <p:column width="20" headerText="#">
-                                            <h:outputText value="#{row+1}"/>
-
-                                        </p:column>
-                                        <p:column width="200" headerText="Title">
-                                            <h:outputText value="#{log.title}"/>
-
-                                        </p:column>
-
-                                        <p:column headerText="Old value">
-                                            <h:outputText value="#{log.oldValue}"/>
-
-                                        </p:column>
-                                        <p:column headerText="New value">
-                                            <h:outputText value="#{log.newValue}"/>
-
-                                        </p:column>
-                                        <p:column width="200" headerText="Date">
-                                            <h:outputText value="#{note.dateCreated}"/>
-
-                                        </p:column>
-                                        <p:column width="200" headerText="Action by">
-                                            <h:outputText value="#{note.createdBy}"/>
-
-                                        </p:column>
-
-
-
-                                    </p:dataTable>
 
                                 </p:tab>
                             </p:tabView>

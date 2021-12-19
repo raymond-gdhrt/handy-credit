@@ -7,9 +7,9 @@
 
     <div class="menu-wrapper">
         <div class="sidebar-logo">
-            <a href="#">
+            <h:link target="#{request.contextPath}/Dashboard">
                 <p:graphicImage name="images/logo.png" library="freya-layout" />
-            </a>
+            </h:link>
             <a href="#" class="sidebar-pin" title="Toggle Menu">
                 <span class="pin"></span>
             </a>
@@ -25,6 +25,11 @@
                                 value="Businesses"
                                 icon="pi pi-briefcase" 
                                 url="/Businesses" />
+                    
+                    <p:menuitem id="businesesPV" rendered="#{componentRenderer.businessOwner and not componentRenderer.administrator }"
+                                value="My profile"
+                                icon="pi pi-briefcase" 
+                                url="/BusinessProfile" />
 
                     <p:menuitem id="loanProviders" 
                                 rendered="#{componentRenderer.administrator}"
@@ -36,19 +41,39 @@
                                 rendered="#{componentRenderer.administrator or componentRenderer.loanProvider}"
                                 value="Loan applications"
                                 icon="pi pi-th-large" 
-                                url="/LoanProviders" />
+                                url="/LoanApplications" />
 
                     <p:menuitem id="loans" 
-                               
+                                rendered="#{componentRenderer.administrator or componentRenderer.loanProvider}"
                                 value="Loans"
                                 icon="pi pi-compass" 
                                 url="/Loans" />
-
-                    <p:menuitem id="om_widgets" 
+                    
+                     <p:menuitem id="loansList" 
+                                 rendered="#{ (not componentRenderer.administrator) and  componentRenderer.businessOwner}"
+                                value="Loans"
+                                icon="pi pi-compass" 
+                                url="/LoansList" />
+                    
+                    
+                    <p:submenu  label="Tools" 
                                  rendered="#{componentRenderer.administrator}"
+                                icon="pi pi-cog" >
+                        
+                         <p:menuitem id="settings" 
+                                
                                 value="System Settings"
-                                icon="pi pi-cog" 
+                                icon="pi pi-bars" 
                                 url="/Settings"/>
+                         
+                          <p:menuitem id="roles" 
+                                
+                                value="Roles"
+                                icon="pi pi-bars" 
+                                url="/Roles"/>
+                    </p:submenu>
+
+                   
                     <p:menuitem id="om_grid" 
                                 value="Logout"
                                 icon="pi pi-arrow-circle-left" 

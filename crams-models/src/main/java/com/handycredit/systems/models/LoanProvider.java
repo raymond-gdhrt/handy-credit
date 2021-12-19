@@ -201,7 +201,7 @@ public class LoanProvider extends BaseEntity {
     }
 
     @OneToOne(optional = true)
-    @JoinColumn(name = "user_account")
+    @JoinColumn(name = "user_account",unique = true)
     public User getUserAccount() {
         return userAccount;
     }

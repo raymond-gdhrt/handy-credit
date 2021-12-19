@@ -9,8 +9,8 @@
     <ui:define name="content">
         <div class="ui-g ui-fluid">
             <div class="ui-g-12">
-                <h:form id="loansView" enctype="multipart/form-data"
-                        rendered="#{componentRenderer.administrator or componentRenderer.loanProvider}">
+                <h:form id="loanApplicationsView" enctype="multipart/form-data"
+                        rendered="#{componentRenderer.administrator}">
 
                     <div class="p-grid overlay-demo">
                         <div class="p-col-12 p-md-3">
@@ -49,27 +49,26 @@
                                 <p:inputText id="searchTerm" required="false"
 
                                              placeholder="Search ..."
-                                             onkeyup="#{loansView.reloadFilterReset()}"
-                                             value="#{loansView.searchTerm}" >
+                                             onkeyup="#{loanApplicationsView.reloadFilterReset()}"
+                                             value="#{loanApplicationsView.searchTerm}" >
 
-                                    <p:ajax event="change" update="loansView" listener="#{loansView.reloadFilterReset()}"/>
+                                    <p:ajax event="change" update="loanApplicationsView" listener="#{loanApplicationsView.reloadFilterReset()}"/>
                                 </p:inputText>
-                            </div> 
-                            <!-- comment -->
+                            </div> <!-- comment -->
 
 
                             <div class="p-col-12 p-md-6 p-lg-3" >
-                                <p:selectCheckboxMenu id="countries" label="Filter country" value="#{loansView.selectedCountries}" 
+                                <p:selectCheckboxMenu id="countries" label="Filter country" value="#{loanApplicationsView.selectedCountries}" 
                                                       converter="countryConverter"  style="height: 100%" >
 
-                                    <f:selectItems value="#{loansView.countries}"/>
-                                    <p:ajax event="change" update="loansView" listener="#{loansView.reloadFilterReset()}"/>
+                                    <f:selectItems value="#{loanApplicationsView.countries}"/>
+                                    <p:ajax event="change" update="loanApplicationsView" listener="#{loanApplicationsView.reloadFilterReset()}"/>
                                 </p:selectCheckboxMenu>
                             </div>
                             <div class="p-col-12 p-md-6 p-lg-3" >
                                 <p:commandButton icon="fa fa-search" styleClass="ui-button-help"
                                                  id="searchBtn" style="margin-right: 18px"
-                                                 actionListener="#{loansView.reloadFilterReset()}" >
+                                                 actionListener="#{loanApplicationsView.reloadFilterReset()}" >
                                 </p:commandButton>
                             </div>
 
@@ -82,19 +81,19 @@
                         <div class="p-grid table-demo">
                             <div class="p-col-12">
                                 <div class="card">
-                                    <p:dataTable id="loansTable" var="model" value="#{loansView}"
+                                    <p:dataTable id="loansTable" var="model" value="#{loanApplicationsView}"
                                                  widgetVar="loansTable"
                                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                                  paginator="true" lazy="true"
-                                                 rows="#{loansView.maximumresultsPerpage}"
-                                                 emptyMessage="#{loansView.dataEmptyMessage}"
+                                                 rows="#{loanApplicationsView.maximumresultsPerpage}"
+                                                 emptyMessage="#{loanApplicationsView.dataEmptyMessage}"
                                                  paginatorPosition="bottom" paginatorAlwaysVisible="false"
                                                  rowIndexVar="row" reflow="true" styleClass="TableAlgnment">
 
                                         <f:facet name="header">
                                             <div class="p-d-flex p-jc-between">
                                                 <div >
-                                                    <span class="table-header-text">Loan packages</span>
+                                                    <span class="table-header-text">Loan applications</span>
 
                                                 </div>
 
@@ -104,19 +103,13 @@
                                                             <p:commandButton value="Export" 
                                                                              process="clientsTable" icon="fa fa-upload" 
 
-                                                                             styleClass="button-secondary" ajax="false">
+                                                                             styleClass="ui-button-secondary" ajax="false">
                                                                 <p:dataExporter type="pdf"  target="loansTable" fileName="loans"/>
                                                             </p:commandButton>
                                                         </div>  
                                                         <div class="p-mr-2 p-mb-2">
 
-                                                            <p:commandButton icon="fa fa-plus" value="New"
-                                                                             rendered="#{componentRenderer.loanProvider and not componentRenderer.administrator}"
-                                                                             styleClass="primary-button" style="margin-left: 20px"
-                                                                             action="#{loanCreationForm.getViewPath}">
-                                                                <f:setPropertyActionListener target="#{loanCreationForm.model}"
-                                                                                             value="#{null}" />
-                                                            </p:commandButton>
+                                                      
                                                         </div>
                                                     </div>
 
@@ -140,19 +133,22 @@
                                             <h:outputText value="#{model.interestRate} #{model.interestRateInterval}" />
                                         </p:column>
 
-                                     
+                                        <p:column headerText="Email address">
+
+                                            <h:outputText value="#{model.userAccount.emailAddress}" />
+                                        </p:column>
 
                                         <p:column headerText="Loan provider">
 
-                                            <h:outputText value="#{model.loanProvider.name}" />
-
+                                            <h:outputText value="#{model.loan}" />
+                                               
                                         </p:column>
 
 
                                         <p:column headerText="Action" width="140" exportable="false" style="text-align: center" >
 
                                             <p:commandButton  process="@this" icon="fa fa-edit" styleClass="ui-button-help"
-                                                              immediate="true"  rendered="#{componentRenderer.administrator }"
+                                                              immediate="true"  rendered="#{componentRenderer.administrator and model.status eq 'Draft'}"
                                                               actionListener="#{loanFormDialog.show}">
                                                 <f:setPropertyActionListener value="#{model}"
                                                                              target="#{loanFormDialog.model}" />
@@ -177,8 +173,8 @@
 
                                             <p:commandButton icon="fa fa-trash" title="Delete"  
                                                              styleClass="ui-button-danger" style="margin-left: 5px"
-                                                             action="#{loansView.deleteAuthor(model)}"
-                                                             rendered="#{componentRenderer.administrator }"
+                                                             action="#{loanApplicationsView.deleteAuthor(model)}"
+                                                             rendered="#{componentRenderer.administrator and  model.status eq 'Draft'}"
                                                              update="loansTable">
                                                 <p:confirm header="Confirmation"
                                                            message="You are about to delete a loan. Do you wish to continue?"
@@ -189,7 +185,7 @@
 
                                     </p:dataTable>
 
-                                    <p:blockUI block="loansView" trigger="searchBtn">
+                                    <p:blockUI block="loanApplicationsView" trigger="searchBtn">
                                         <p:graphicImage value="/resources/images/workingicon.png" />
                                     </p:blockUI>
 
@@ -199,7 +195,7 @@
                             </div>
                         </div>
                     </ui:fragment>
-                    <p:blockUI block="loansView" >
+                    <p:blockUI block="loanApplicationsView" >
                         <p:graphicImage value="/resources/images/workingicon.png" />
                     </p:blockUI>    
                     <p:confirmDialog global="true">

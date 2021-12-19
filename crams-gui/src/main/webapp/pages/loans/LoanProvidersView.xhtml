@@ -12,33 +12,7 @@
                 <h:form id="loanProvidersView" enctype="multipart/form-data"
                         rendered="#{componentRenderer.administrator}">
 
-                    <div class="p-grid overlay-demo">
-                        <div class="p-col-12 p-md-3">
-                            <div class="card">
-                                <h:outputText value="Total" />
-                                <h2 class="p-text-right">267</h2>
-                            </div>
-                        </div>
-                        <div class="p-col-12 p-md-3">
-                            <div class="card">
-                                <h:outputText value="Draft" />
-                                <h2 class="p-text-right">399</h2>
-                            </div>
-                        </div>
-                        <div class="p-col-12 p-md-3">
-                            <div class="card">
-                                <h:outputText value="Approved" />
-                                <h2 class="p-text-right">20</h2>
-                            </div>
-                        </div>
-                        <div class="p-col-12 p-md-3">
-                            <div class="card">
-                                <h:outputText value="Rejected" />
-                                <h2 class="p-text-right">400</h2>
-                            </div>
-                        </div>
 
-                    </div>
                     <div class="card">
                         <h:outputText value="Filters" />
 
@@ -58,7 +32,7 @@
 
 
                             <div class="p-col-12 p-md-6 p-lg-3" >
-                                <p:selectCheckboxMenu id="countries" label="Filter country" value="#{loanProvidersView.selectedCountries}" 
+                                <p:selectCheckboxMenu id="countries" label="Filter type" value="#{loanProvidersView.selectedCountries}" 
                                                       converter="countryConverter"  style="height: 100%" >
 
                                     <f:selectItems value="#{loanProvidersView.countries}"/>
@@ -109,7 +83,7 @@
                                                         </div>  
                                                         <div class="p-mr-2 p-mb-2">
 
-                                                      
+
                                                         </div>
                                                     </div>
 
@@ -121,14 +95,14 @@
                                             <h:outputText value="#{row + 1}" />
                                         </p:column>
 
-                                        <p:column width="200" headerText="Full name">
+                                        <p:column  headerText="Name">
                                             <h:outputText value="#{model.name}" />
                                         </p:column>
-                                        <p:column width="200" headerText="Username">
+                                        <p:column  headerText="Type">
                                             <h:outputText value="#{model.type}" />
                                         </p:column>
 
-                                        <p:column width="200" headerText="Country">
+                                        <p:column  headerText="Registration">
 
                                             <h:outputText value="#{model.registrationNumber}" />
                                         </p:column>
@@ -137,16 +111,18 @@
 
                                             <h:outputText value="#{model.district}" />
                                         </p:column>
-                                        
+
                                         <p:column headerText="Email">
 
                                             <h:outputText value="#{model.emailAddress}" />
                                         </p:column>
-                                        
-                                         <p:column headerText="Phone">
+
+                                        <p:column headerText="Phone">
 
                                             <h:outputText value="#{model.phoneNumber}" />
                                         </p:column>
+                                        
+                                        
 
                                         <p:column headerText="Date registered">
 
@@ -154,39 +130,29 @@
                                                 <f:convertDateTime pattern="dd/MMM/yyyy 'at' hh:mm a"/>
                                             </h:outputText>
                                         </p:column>
+                                        
+                                         <p:column headerText="Account status">
+
+                                            <h:outputText value="#{model.accountStatus}" />
+                                        </p:column>
 
 
-                                        <p:column headerText="Action" width="140" exportable="false" style="text-align: center" >
-
-                                            <p:commandButton  process="@this" icon="fa fa-edit" styleClass="ui-button-help"
-                                                              immediate="true"  rendered="#{componentRenderer.administrator and model.status eq 'Draft'}"
-                                                              actionListener="#{loanProviderFormDialog.show}">
-                                                <f:setPropertyActionListener value="#{model}"
-                                                                             target="#{loanProviderFormDialog.model}" />
-
-                                                <p:ajax event="dialogReturn" update="loanProvidersTable" />
-                                            </p:commandButton>
+                                        <p:column headerText="Action"  rendered="#{componentRenderer.administrator}" width="140" exportable="false" style="text-align: center" >
 
 
                                             <p:commandButton icon="fa fa-eye" title="View" 
-                                                             styleClass="ui-button-primary"  style="margin-left: 5px"
+                                                             styleClass="primary-button"  style="margin-left: 5px"
 
                                                              action="#{loanProviderProfileView.getViewPath}">
                                                 <f:setPropertyActionListener value="#{model}"
                                                                              target="#{loanProviderProfileView.model}" />
 
                                             </p:commandButton>
-
-
-
-
-
-
                                             <p:commandButton icon="fa fa-trash" title="Delete"  
-                                                             styleClass="ui-button-danger" style="margin-left: 5px"
+                                                             styleClass="danger-button" style="margin-left: 5px"
                                                              action="#{loanProvidersView.deleteAuthor(model)}"
-                                                             rendered="#{componentRenderer.administrator and  model.status eq 'Draft'}"
-                                                             update="loanProviderTable">
+
+                                                             update="loanProvidersTable">
                                                 <p:confirm header="Confirmation"
                                                            message="You are about to delete a loanProvider. Do you wish to continue?"
                                                            icon="ui-icon-alert" />

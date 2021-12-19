@@ -12,33 +12,7 @@
                 <h:form id="businessesView" enctype="multipart/form-data"
                         rendered="#{componentRenderer.administrator}">
 
-                    <div class="p-grid overlay-demo">
-                        <div class="p-col-12 p-md-3">
-                            <div class="card">
-                                <h:outputText value="Total" />
-                                <h2 class="p-text-right">267</h2>
-                            </div>
-                        </div>
-                        <div class="p-col-12 p-md-3">
-                            <div class="card">
-                                <h:outputText value="Draft" />
-                                <h2 class="p-text-right">399</h2>
-                            </div>
-                        </div>
-                        <div class="p-col-12 p-md-3">
-                            <div class="card">
-                                <h:outputText value="Approved" />
-                                <h2 class="p-text-right">20</h2>
-                            </div>
-                        </div>
-                        <div class="p-col-12 p-md-3">
-                            <div class="card">
-                                <h:outputText value="Rejected" />
-                                <h2 class="p-text-right">400</h2>
-                            </div>
-                        </div>
-
-                    </div>
+                 
                     <div class="card">
                         <h:outputText value="Filters" />
 
@@ -58,7 +32,7 @@
 
 
                             <div class="p-col-12 p-md-6 p-lg-3" >
-                                <p:selectCheckboxMenu id="countries" label="Filter country" value="#{businessesView.selectedCountries}" 
+                                <p:selectCheckboxMenu id="countries" label="Filter district" value="#{businessesView.selectedCountries}" 
                                                       converter="countryConverter"  style="height: 100%" >
 
                                     <f:selectItems value="#{businessesView.countries}"/>
@@ -93,7 +67,7 @@
                                         <f:facet name="header">
                                             <div class="p-d-flex p-jc-between">
                                                 <div >
-                                                    <span class="table-header-text">Authors</span>
+                                                    <span class="table-header-text">SMEs</span>
 
                                                 </div>
 
@@ -101,7 +75,7 @@
                                                     <div class="p-d-flex p-flex-wrap">
                                                         <div class="p-mr-2 p-mb-2">
                                                             <p:commandButton value="Export" 
-                                                                             process="clientsTable" icon="fa fa-upload" 
+                                                                             process="businessOwnersTable" icon="fa fa-upload" 
 
                                                                              styleClass="button-secondary" ajax="false">
                                                                 <p:dataExporter type="pdf"  target="businessOwnersTable" fileName="businessOwners"/>
@@ -170,9 +144,9 @@
                                             <p:commandButton icon="fa fa-eye" title="View" 
                                                              styleClass="primary-button"  style="margin-left: 5px"
 
-                                                             action="#{businessOwnerProfileView.getViewPath}">
+                                                             action="#{businessProfileView.getViewPath}">
                                                 <f:setPropertyActionListener value="#{model}"
-                                                                             target="#{businessOwnerProfileView.model}" />
+                                                                             target="#{businessProfileView.model}" />
 
                                             </p:commandButton>
 
