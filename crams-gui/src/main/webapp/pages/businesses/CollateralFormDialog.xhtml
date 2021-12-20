@@ -3,7 +3,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/pages/freyatemplate/dialog-template.xhtml">
+                template="/pages/californiatemplate/dialog-template.xhtml">
     <ui:define name="head">
         <style type="text/css">
             .capitalized {
@@ -69,7 +69,7 @@
                     <h5>District</h5>
                     <div class="ui-inputgroup">
                         <p:selectOneMenu id="country" value="#{businessFormDialog.model.district}" 
-                                          filter="true" 
+                                         converter="countryConverter" filter="true" 
                                          style="width:95% ">
                             <f:selectItem itemLabel="Select country" itemValue=""/>
                             <f:selectItems value="#{businessFormDialog.districts}"/>
@@ -82,7 +82,7 @@
                     <h5>Physical address</h5>
                     <div class="ui-inputgroup">
 
-                        <p:inputTextarea value="#{businessFormDialog.model.physicalAddress}" rows="4" required="true" />
+                        <p:inputTextarea value="#{businessFormDialog.model.physcialAddress}" rows="4" required="true" />
                     </div>
                 </div>
                 

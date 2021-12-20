@@ -12,21 +12,21 @@
         </style>
     </ui:define>
     <ui:define name="content">
-        <title>#{businessFormDialog.model.isNew()?'Add business':businessFormDialog.model.name}</title>
-        <h:form id="businessFormDialog" styleClass="card">
+        <title>#{transactionFormDialog.model.isNew()?'Add business':transactionFormDialog.business.name}</title>
+        <h:form id="transactionFormDialog" styleClass="card">
             <div class="p-grid ui-fluid" style="">
                 <div class="ui-col-12 ui-md-6">
                     <h5>Business name</h5>
                     <div class="ui-inputgroup">
 
-                        <p:inputText value="#{businessFormDialog.model.name}" required="true" />
+                        <p:inputText value="#{transactionFormDialog.model.name}" required="true" />
                     </div>
                 </div>
                 <div class="ui-col-12 ui-md-6">
                     <h5>Business registration number /TIN</h5>
                     <div class="ui-inputgroup">
 
-                        <p:inputText value="#{businessFormDialog.model.registrationNumber}" required="true" />
+                        <p:inputText value="#{transactionFormDialog.model.registrationNumber}" required="true" />
                     </div>
                 </div>
                 
@@ -34,7 +34,7 @@
                     <h5>Phone number</h5>
                     <div class="ui-inputgroup">
 
-                        <p:inputText value="#{businessFormDialog.model.phoneNumber}" required="true" />
+                        <p:inputText value="#{transactionFormDialog.model.phoneNumber}" required="true" />
                     </div>
                 </div>
 
@@ -42,7 +42,7 @@
                     <h5>Website</h5>
                     <div class="ui-inputgroup">
 
-                        <p:inputText value="#{businessFormDialog.model.website}" required="true" />
+                        <p:inputText value="#{transactionFormDialog.model.website}" required="true" />
                     </div>
                 </div>
 
@@ -50,7 +50,7 @@
                     <h5>Twitter handle</h5>
                     <div class="ui-inputgroup">
 
-                        <p:inputText value="#{businessFormDialog.model.twitterHandle}" required="true" />
+                        <p:inputText value="#{transactionFormDialog.model.twitterHandle}" required="true" />
                     </div>
                 </div>
 
@@ -60,7 +60,7 @@
                     <h5>Facebook page link</h5>
                     <div class="ui-inputgroup">
 
-                        <p:inputText value="#{businessFormDialog.model.facebookLink}" required="true" />
+                        <p:inputText value="#{transactionFormDialog.model.facebookLink}" required="true" />
                     </div>
                 </div>
               
@@ -68,11 +68,11 @@
                 <div class="ui-col-12 ui-md-6">
                     <h5>District</h5>
                     <div class="ui-inputgroup">
-                        <p:selectOneMenu id="country" value="#{businessFormDialog.model.district}" 
-                                          filter="true" 
+                        <p:selectOneMenu id="country" value="#{transactionFormDialog.model.district}" 
+                                         converter="countryConverter" filter="true" 
                                          style="width:95% ">
                             <f:selectItem itemLabel="Select country" itemValue=""/>
-                            <f:selectItems value="#{businessFormDialog.districts}"/>
+                            <f:selectItems value="#{transactionFormDialog.districts}"/>
                         </p:selectOneMenu>
 
                     </div>
@@ -82,7 +82,7 @@
                     <h5>Physical address</h5>
                     <div class="ui-inputgroup">
 
-                        <p:inputTextarea value="#{businessFormDialog.model.physicalAddress}" rows="4" required="true" />
+                        <p:inputTextarea value="#{transactionFormDialog.model.physcialAddress}" rows="4" required="true" />
                     </div>
                 </div>
                 
@@ -90,7 +90,7 @@
                     <h5>About business (Short details about business)</h5>
                     <div class="ui-inputgroup">
 
-                        <p:inputTextarea value="#{businessFormDialog.model.description}" rows="5" required="true" />
+                        <p:inputTextarea value="#{transactionFormDialog.model.description}" rows="5" required="true" />
                     </div>
                 </div>
 
@@ -103,14 +103,14 @@
                             <p:commandButton value="Cancel" 
                                              validateClient="false"
                                              process="@this"
-                                             action="#{businessFormDialog.hide}"
+                                             action="#{transactionFormDialog.hide}"
                                              styleClass="ui-button-outlined ui-button-help" />
                         </div>
                         <div class="p-col-2">
                             <p:commandButton value="Save" 
                                              process="@form"
-                                             actionListener="#{businessFormDialog.save}"
-                                             update="businessFormDialog" validateClient="true" />
+                                             actionListener="#{transactionFormDialog.save}"
+                                             update="transactionFormDialog" validateClient="true" />
                         </div>
                     </div>
                 </div>

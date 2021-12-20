@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import org.sers.webutils.client.views.presenters.WebFormView;
 import org.sers.webutils.model.RecordStatus;
 import org.sers.webutils.model.exception.OperationFailedException;
+import org.sers.webutils.server.shared.SharedAppData;
 
 @ManagedBean(name = "businessProfileView")
 @SessionScoped
@@ -29,13 +30,15 @@ public class BusinessProfileView extends WebFormView<Business, BusinessProfileVi
     private Search search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE);
     private Business selectedBusiness;
     private List<BusinessCreditHistory> histories;
-   
 
     @Override
     public void beanInit() {
-        this.search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE);
-        businessService = ApplicationContextProvider.getApplicationContext().getBean(BusinessService.class);
 
+        businessService = ApplicationContextProvider.getApplicationContext().getBean(BusinessService.class);
+        if (super.model == null) {
+            super.model = this.businessService.getBusinessByUserAccount(SharedAppData.getLoggedInUser());
+
+        }
     }
 
     @Override
@@ -43,7 +46,7 @@ public class BusinessProfileView extends WebFormView<Business, BusinessProfileVi
         this.search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE).addFilterEqual("business", super.model
         );
         businessService = ApplicationContextProvider.getApplicationContext().getBean(BusinessService.class);
-      
+
     }
 
     @Override
@@ -93,7 +96,4 @@ public class BusinessProfileView extends WebFormView<Business, BusinessProfileVi
         this.histories = histories;
     }
 
-   
-    
-    
 }

@@ -24,6 +24,7 @@ import org.sers.webutils.model.BaseEntity;
 public class BusinessTransaction extends BaseEntity {
 
     private Business business;
+    private String subject;
     private float amount;
     private Transactiontype transactiontype;
 
@@ -56,6 +57,13 @@ public class BusinessTransaction extends BaseEntity {
         this.transactiontype = transactiontype;
     }
 
-   
+    @Column(name = "subject")
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 
 }

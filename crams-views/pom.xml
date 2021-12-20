@@ -460,6 +460,12 @@
             <artifactId>primefaces-extensions</artifactId>
             <version>1.2.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.5.1</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>

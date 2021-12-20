@@ -5,9 +5,12 @@
  */
 package com.handycredit.systems.views;
 
+import com.handycredit.systems.constants.CollateralStatus;
 import com.handycredit.systems.constants.UgandanDistrict;
 import com.handycredit.systems.core.services.BusinessService;
+import com.handycredit.systems.core.services.CollateralService;
 import com.handycredit.systems.models.Business;
+import com.handycredit.systems.models.Collateral;
 import com.handycredit.systems.security.HyperLinks;
 import java.util.Arrays;
 import java.util.List;
@@ -15,40 +18,45 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import org.sers.webutils.model.Country;
 import org.sers.webutils.model.exception.OperationFailedException;
 import org.sers.webutils.model.exception.ValidationFailedException;
+import org.sers.webutils.server.core.service.SetupService;
 import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 
 /**
  *
  * @author RayGdhrt
  */
-@ManagedBean(name = "businessFormDialog", eager = true)
+@ManagedBean(name = "collateralFormDialog", eager = true)
 @SessionScoped
-public class BusinessFormDialog extends DialogForm<Business> {
+public class CollateralFormDialog extends DialogForm<Collateral> {
 
     private static final long serialVersionUID = 1L;
-    private static final Logger LOGGER = Logger.getLogger(BusinessFormDialog.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(CollateralFormDialog.class.getSimpleName());
   
-    private BusinessService businessService;
+    private CollateralService businessService;
     
-    private List<UgandanDistrict> districts;
+    private List<CollateralStatus> statuses;
+    private Business business;
    
     @PostConstruct
     public void init() {
 
-        this.businessService = ApplicationContextProvider.getApplicationContext().getBean(BusinessService.class);
-        this.districts= Arrays.asList(UgandanDistrict.values());
+        this.businessService = ApplicationContextProvider.getApplicationContext().getBean(CollateralService.class);
+        this.statuses= Arrays.asList(CollateralStatus.values());
      
     }
 
-    public BusinessFormDialog() {
-        super(HyperLinks.BUSINESS_DIALOG_FORM, 700, 600);
+    public CollateralFormDialog() {
+        super(HyperLinks.COLLATERAL_DIALOG_FORM, 700, 500);
     }
 
     @Override
     public void persist() throws ValidationFailedException, OperationFailedException {
-      
+      if(super.model.getBusiness()==null){
+      super.model.setBusiness(business);
+      }
             this.businessService.saveInstance(super.model);
             
     }
@@ -56,7 +64,7 @@ public class BusinessFormDialog extends DialogForm<Business> {
     @Override
     public void resetModal() {
         super.resetModal();
-        super.model = new Business();
+        super.model = new Collateral();
     }
 
     @Override
@@ -64,14 +72,15 @@ public class BusinessFormDialog extends DialogForm<Business> {
         super.setFormProperties();
     }
 
-    public List<UgandanDistrict> getDistricts() {
-        return districts;
+    public List<CollateralStatus> getStatuses() {
+        return statuses;
     }
 
-    public void setDistricts(List<UgandanDistrict> districts) {
-        this.districts = districts;
+    public void setStatuses(List<CollateralStatus> statuses) {
+        this.statuses = statuses;
     }
 
+    
    
 
   

@@ -1,0 +1,262 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/pages/freyatemplate/template.xhtml">
+
+    <ui:define name="content">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <h:form id="businessCreditHistoryView" enctype="multipart/form-data"
+                        rendered="#{componentRenderer.businessOwner}">
+
+                    <div class="p-grid overlay-demo">
+                        <div class="p-col-12 p-md-3">
+                            <div class="card">
+                                <h:outputText value="Total" />
+                                <h2 class="p-text-right">0</h2>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-md-3">
+                            <div class="card">
+                                <h:outputText value="Running" />
+                                <h2 class="p-text-right">0</h2>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-md-3">
+                            <div class="card">
+                                <h:outputText value="Cleared" />
+                                <h2 class="p-text-right">0</h2>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-md-3">
+                            <div class="card">
+                                <h:outputText value="This year" />
+                                <h2 class="p-text-right">0</h2>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card">
+                        <h:outputText value="Filters" />
+
+                        <p:growl id="messages" showDetail="true" />
+
+                        <div class="p-grid" >
+                            <div class="p-col-12 p-md-6 p-lg-3" >
+                                <p:inputText id="searchTerm" required="false"
+
+                                             placeholder="Search ..."
+                                             onkeyup="#{businessCreditHistoryView.reloadFilterReset()}"
+                                             value="#{businessCreditHistoryView.searchTerm}" >
+
+                                    <p:ajax event="change" update="businessCreditHistoryView" listener="#{businessCreditHistoryView.reloadFilterReset()}"/>
+                                </p:inputText>
+                            </div> <!-- comment -->
+
+                            <div class="p-col-12 p-md-6 p-lg-3" >
+                                <p:commandButton icon="fa fa-search" styleClass="ui-button-help"
+                                                 id="searchBtn" style="margin-right: 18px"
+                                                 actionListener="#{businessCreditHistoryView.reloadFilterReset()}" >
+                                </p:commandButton>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <ui:fragment>
+                        <div class="p-grid table-demo">
+                            <div class="p-col-12">
+                                <div class="card">
+                                    <p:dataTable id="creditHistorysTable" var="model" value="#{businessCreditHistoryView}"
+                                                 widgetVar="creditHistorysTable"
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                 paginator="true" lazy="true"
+                                                 rows="#{businessCreditHistoryView.maximumresultsPerpage}"
+                                                 emptyMessage="#{businessCreditHistoryView.dataEmptyMessage}"
+                                                 paginatorPosition="bottom" paginatorAlwaysVisible="false"
+                                                 rowIndexVar="row" reflow="true" styleClass="TableAlgnment">
+
+                                        <f:facet name="header">
+                                            <div class="p-d-flex p-jc-between">
+                                                <div >
+                                                    <span class="table-header-text">Credit history for </span>
+
+                                                </div>
+
+                                                <div >
+                                                    <div class="p-d-flex p-flex-wrap">
+                                                        <div class="p-mr-2 p-mb-2">
+                                                            <p:commandButton value="Export" 
+                                                                             process="clientsTable" icon="fa fa-upload" 
+
+                                                                             styleClass="secondary-button" ajax="false">
+                                                                <p:dataExporter type="pdf"  target="creditHistorysTable" fileName="creditHistorys"/>
+                                                            </p:commandButton>
+                                                        </div>  
+                                                        <div class="p-mr-2 p-mb-2">
+                                                            <p:commandButton title="Download template for uploading clients" icon="fa fa-download" value="Template" styleClass="secondary-button"
+                                                                             style="margin-left: 5px"  ajax="false" 
+                                                                             actionListener="#{businessCreditHistoryView.loadTemplateForDownload()}">
+                                                                <p:fileDownload value="#{businessCreditHistoryView.streamedContent}"  />
+                                                            </p:commandButton>
+
+                                                            <p:commandButton icon="fa fa-upload" value="Upload" styleClass="primary-button"
+                                                                             style="margin-left: 5px" process="@this" 
+                                                                             title="Upload communications from file" 
+                                                                             oncomplete="PF('fileUploadDialogue').show()" 
+                                                                             validateClient="true"
+                                                                             update=":businessCreditHistoryView:fileUploadDialogue">
+                                                            </p:commandButton>
+
+
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </f:facet>
+
+                                        <p:column width="30" headerText="No.">
+                                            <h:outputText value="#{row + 1}" />
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Name" />
+                                            </f:facet>
+                                            <h:outputText value="#{model.name}" />
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Code" />
+                                            </f:facet>
+                                            <h:outputText value="#{model.code}" />
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Country" />
+                                            </f:facet>
+                                            <h:outputText value="#{model.country}" />
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Currency" />
+                                            </f:facet>
+                                            <h:outputText value="#{model.reportingCurrency}" />
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Email" />
+                                            </f:facet>
+                                            <h:outputText value="#{model.emailAddress}" />
+                                        </p:column>
+
+
+
+                                        <p:column headerText="Action" width="140" exportable="false" style="text-align: center" >
+
+                                            <p:commandButton  process="@this" icon="fa fa-edit" styleClass="ui-button-help"
+                                                              immediate="true"  rendered="#{componentRenderer.businessOwner}"
+                                                              actionListener="#{creditHistoryFormDialog.show}">
+                                                <f:setPropertyActionListener value="#{model}"
+                                                                             target="#{creditHistoryFormDialog.model}" />
+
+                                                <p:ajax event="dialogReturn" update="creditHistorysTable" />
+                                            </p:commandButton>
+
+
+                                            <p:commandButton icon="fa fa-eye" title="View" 
+                                                             styleClass="ui-button-primary"  style="margin-left: 5px"
+
+                                                             action="#{creditHistoryProfileView.getViewPath}">
+                                                <f:setPropertyActionListener value="#{model}"
+                                                                             target="#{creditHistoryProfileView.model}" />
+
+                                            </p:commandButton>
+
+
+
+
+
+
+                                            <p:commandButton icon="fa fa-trash" title="Delete"  
+                                                             styleClass="ui-button-danger" style="margin-left: 5px"
+                                                             action="#{businessCreditHistoryView.deleteFunder(model)}"
+                                                             rendered="#{componentRenderer.businessOwner}"
+                                                             update="creditHistorysTable">
+                                                <p:confirm header="Confirmation"
+                                                           message="You are about to delete a creditHistory. Do you wish to continue?"
+                                                           icon="ui-icon-alert" />
+                                            </p:commandButton>
+
+                                        </p:column>
+
+                                    </p:dataTable>
+
+                                    <p:blockUI block="businessCreditHistoryView" trigger="searchBtn">
+                                        <p:graphicImage value="/resources/images/workingicon.png" />
+                                    </p:blockUI>
+
+                                    <p:dialog id="fileUploadDialogue" height="300px" width="60%" 
+                                              header="Upload clients list" 
+                                              widgetVar="fileUploadDialogue" minHeight="40"   showEffect="fade" modal="true">
+                                        <p:outputPanel >
+                                            <div class="p-grid ui-fluid ">
+                                                <p:growl id="filemessages" showDetail="true"/>
+
+
+                                                <div class="p-col-12 p-md-12 " >
+                                                    <p>Headings should be in upper-camel case i.e. Name, PhoneNumber, EmailAddress, RegistrationNumber and Location. Column order doesn't matter. Category names should match those already in the system </p>
+
+                                                </div>
+                                                <div class="p-col-12 p-md-12">
+                                                    <h:outputText id="counterText" value="#{businessCreditHistoryView.counterMassage}"/>
+                                                    <p:fileUpload 
+                                                        multiple="false"
+                                                        style="width: 100%" 
+
+                                                        sizeLimit="30145728" allowTypes="/(\.|\/)(csv)$/"
+                                                        invalidSizeMessage="Maximum file size allowed is 30 MB"
+                                                        invalidFileMessage="Only csv type is allowed"
+                                                        update="counterText uploadSaveBtn"
+
+                                                        fileUploadListener="#{businessCreditHistoryView.handleExcelFileUpload}"/>
+
+                                                    <p:commandButton id="uploadSaveBtn" icon="pi pi-save" process="@this" disabled="#{!businessCreditHistoryView.showSaveUploadsButton()}" 
+                                                                     actionListener="#{businessCreditHistoryView.saveUploadedHistory()}" 
+                                                                     oncomplete="PF('fileUploadDialogue').hide()" update="businessCreditHistoryView" value="Save" />
+
+
+                                                </div>
+                                            </div>
+                                        </p:outputPanel>
+                                    </p:dialog>
+
+                                </div>
+                            </div>
+                        </div>
+                    </ui:fragment>
+                    <p:blockUI block="businessCreditHistoryView" >
+                        <p:graphicImage value="/resources/images/workingicon.png" />
+                    </p:blockUI>    
+                    <p:confirmDialog global="true">
+                        <p:commandButton value="Yes" type="button"
+                                         styleClass="ui-confirmdialog-yes" icon="fa fa-thumbs-up" />
+                        <p:commandButton value="No" type="button"
+                                         styleClass="ui-confirmdialog-no" icon="fa fa-thumbs-down" />
+                    </p:confirmDialog>
+
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
