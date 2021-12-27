@@ -41,7 +41,7 @@ public class UploadedTransaction {
         transaction.setAmount(Float.valueOf(amount));
         transaction.setBusiness(business);
         transaction.setSubject(subject);
-        transaction.setTransactiontype(Transactiontype.valueOf(type.toUpperCase()));
+        transaction.setTransactiontype(Transactiontype.valueOf(type.toLowerCase()));
 
         if (transaction.getTransactiontype() != null) {
             System.out.println("Created " + this.toString() + "...");

@@ -133,7 +133,7 @@ public class BusinessPerformanceView extends PaginatedTableView<BusinessTransact
     }
 
     public StreamedContent loadTemplateForDownload() {
-        InputStream stream = getClass().getResourceAsStream("/custom-files/transactions_upload_template.csv.csv");
+        InputStream stream = getClass().getResourceAsStream("/custom-files/transactions_upload_template.csv");
 
         return new DefaultStreamedContent(stream, "text/csv", "Crams_transactions_UploadTemplate.csv");
     }

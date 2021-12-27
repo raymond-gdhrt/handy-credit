@@ -30,13 +30,14 @@ import org.sers.webutils.server.core.service.SetupService;
 public class LoanApplicationsView extends PaginatedTableView<LoanApplication, LoanApplicationsView, LoanApplicationsView> {
 
     private static final long serialVersionUID = 1L;
-    private LoanApplicationService funderService;
+    private LoanApplicationService loanService;
     private String searchTerm;
     private LoanApplication selectedLoanApplication;
     private Search search;
     private List<SearchField> searchFields;
     private List<Country> selectedCountries;
     private List<Country> countries;
+    private String notes;
     private SortField selectedSortField;
 
     @PostConstruct
@@ -45,7 +46,7 @@ public class LoanApplicationsView extends PaginatedTableView<LoanApplication, Lo
         this.searchFields = Arrays.asList(new SearchField[]{new SearchField("Name", "name"),
             new SearchField("Code", "code"), new SearchField("Email", "emailAddress"), new SearchField("Address", "physcialAddress")});
 
-        funderService = ApplicationContextProvider.getApplicationContext().getBean(LoanApplicationService.class);
+        loanService = ApplicationContextProvider.getApplicationContext().getBean(LoanApplicationService.class);
         this.countries = ApplicationContextProvider.getBean(SetupService.class).getAllCountries();
         reloadFilterReset();
     }
@@ -53,13 +54,13 @@ public class LoanApplicationsView extends PaginatedTableView<LoanApplication, Lo
     @Override
     public void reloadFromDB(int offset, int limit, Map<String, Object> filters) throws Exception {
 
-        super.setDataModels(funderService.getInstances(this.search, offset, limit));
+        super.setDataModels(loanService.getInstances(this.search, offset, limit));
     }
 
     @Override
     public void reloadFilterReset() {
         this.search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE);
-        super.setTotalRecords(funderService.countInstances(this.search));
+        super.setTotalRecords(loanService.countInstances(this.search));
         try {
             super.reloadFilterReset();
         } catch (Exception e) {
@@ -67,14 +68,69 @@ public class LoanApplicationsView extends PaginatedTableView<LoanApplication, Lo
         }
     }
 
-    public void deleteLoanApplication(LoanApplication funder) {
+    public void deleteLoanApplication(LoanApplication loan) {
 
         try {
-            funderService.deleteInstance(funder);
+            loanService.deleteInstance(loan);
             UiUtils.showMessageBox("Action successfull", "LoanApplication deleted");
         } catch (OperationFailedException ex) {
             UiUtils.ComposeFailure("Action failed", ex.getLocalizedMessage());
-           }
+        }
+
+    }
+
+    public void approveLoanApplication(LoanApplication loanApplication) {
+
+        try {
+            loanService.approveLoan(loanApplication);
+            UiUtils.showMessageBox("Action successfull", "Loan Application approved");
+        } catch (Exception ex) {
+            UiUtils.ComposeFailure("Action failed", ex.getLocalizedMessage());
+        }
+
+    }
+
+    public void rejectLoanApplication(LoanApplication loanApplication) {
+
+        try {
+            loanService.rejectLoan(loanApplication, notes);
+            UiUtils.showMessageBox("Action successfull", "Loan Application rejected");
+        } catch (Exception ex) {
+            UiUtils.ComposeFailure("Action failed", ex.getLocalizedMessage());
+        }
+
+    }
+
+    public void disburseLoanApplication(LoanApplication loanApplication) {
+
+        try {
+            loanService.disburseLoan(loanApplication);
+            UiUtils.showMessageBox("Action successfull", "Loan Application rejected");
+        } catch (Exception ex) {
+            UiUtils.ComposeFailure("Action failed", ex.getLocalizedMessage());
+        }
+
+    }
+
+    public void clearLoanApplication(LoanApplication loanApplication) {
+
+        try {
+            loanService.clearLoan(loanApplication);
+            UiUtils.showMessageBox("Action successfull", "Loan Application rejected");
+        } catch (Exception ex) {
+            UiUtils.ComposeFailure("Action failed", ex.getLocalizedMessage());
+        }
+
+    }
+
+    public void defaultLoanApplication(LoanApplication loanApplication) {
+
+        try {
+            loanService.defaultLoan(loanApplication);
+            UiUtils.showMessageBox("Action successfull", "Loan Application rejected");
+        } catch (Exception ex) {
+            UiUtils.ComposeFailure("Action failed", ex.getLocalizedMessage());
+        }
 
     }
 
@@ -120,8 +176,6 @@ public class LoanApplicationsView extends PaginatedTableView<LoanApplication, Lo
         this.selectedCountries = selectedCountries;
     }
 
-    
-
     public List<Country> getCountries() {
         return countries;
     }
@@ -130,14 +184,20 @@ public class LoanApplicationsView extends PaginatedTableView<LoanApplication, Lo
         this.countries = countries;
     }
 
-  
-
     public SortField getSelectedSortField() {
         return selectedSortField;
     }
 
     public void setSelectedSortField(SortField selectedSortField) {
         this.selectedSortField = selectedSortField;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
 }

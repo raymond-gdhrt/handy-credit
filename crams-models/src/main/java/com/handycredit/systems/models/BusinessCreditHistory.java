@@ -6,6 +6,7 @@
 package com.handycredit.systems.models;
 
 import com.handycredit.systems.constants.InterestRateInterval;
+import com.handycredit.systems.constants.LoanApplicationStatus;
 import com.handycredit.systems.constants.LoanSource;
 import java.util.Date;
 import javax.persistence.Column;
@@ -36,6 +37,7 @@ public class BusinessCreditHistory extends BaseEntity {
     private float interestRate;
     private float actualAmountPaid;
     private float expectedAmountToPay;
+    private LoanApplicationStatus loanApplicationStatus;
     private InterestRateInterval rateType;
 
     @ManyToOne(optional = true)
@@ -115,7 +117,7 @@ public class BusinessCreditHistory extends BaseEntity {
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "interest_rate_interval", length = 5)
+    @Column(name = "interest_rate_interval", length = 100)
     public InterestRateInterval getRateType() {
         return rateType;
     }
@@ -131,6 +133,16 @@ public class BusinessCreditHistory extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "loan_status", length = 200)
+    public LoanApplicationStatus getLoanApplicationStatus() {
+        return loanApplicationStatus;
+    }
+
+    public void setLoanApplicationStatus(LoanApplicationStatus loanApplicationStatus) {
+        this.loanApplicationStatus = loanApplicationStatus;
     }
 
 }

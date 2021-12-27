@@ -26,10 +26,10 @@
 
         <h:outputStylesheet name="css/primeicons.css" library="freya-layout"/>
         <h:outputStylesheet name="css/primeflex.min.css" library="freya-layout"/>
-        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="freya-layout"/>
+      
         <h:outputStylesheet name="css/custom.css" library="freya-layout"/>
-        <h:outputStylesheet name="css/demo.css" library="demo" />
-        <h:outputStylesheet name="css/custom.css" library="freya-layout"/>
+         <h:outputStylesheet name="css/#{guestPreferences.layout}.css" library="freya-layout" />
+        <h:outputStylesheet name="css/demo-#{guestPreferences.darkMode}.css" library="demo" />
 
     </h:body>
 

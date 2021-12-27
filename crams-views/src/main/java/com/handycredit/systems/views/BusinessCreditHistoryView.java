@@ -134,7 +134,7 @@ public class BusinessCreditHistoryView extends PaginatedTableView<BusinessCredit
     public StreamedContent loadTemplateForDownload() {
         InputStream stream = getClass().getResourceAsStream("/custom-files/credit_history_upload_template.csv");
 
-        return new DefaultStreamedContent(stream, "text/csv", "Crams_credit_histoy_UploadTemplate.csv");
+        return new DefaultStreamedContent(stream, "text/csv", "Crams_credit_history_UploadTemplate.csv");
     }
 
     public Boolean showSaveUploadsButton() {

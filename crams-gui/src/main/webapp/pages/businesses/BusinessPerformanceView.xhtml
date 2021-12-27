@@ -115,7 +115,7 @@
 
                                                                 <p:ajax event="dialogReturn" listener="#{businessPerformanceView.reloadFilterReset()}" update=":businessPerformanceView:transactionsTable" />
                                                             </p:commandButton>
-                                                            <p:commandButton title="Download template for uploading clients" icon="fa fa-download" value="Template" styleClass="secondary-button"
+                                                            <p:commandButton title="Download template for uploading transactions" icon="fa fa-download" value="Template" styleClass="secondary-button"
                                                                              style="margin-left: 5px;width:100px"  ajax="false" 
                                                                              actionListener="#{businessPerformanceView.loadTemplateForDownload()}">
                                                                 <p:fileDownload value="#{businessPerformanceView.loadTemplateForDownload()}"  />
@@ -141,44 +141,36 @@
 
                                         <p:column>
                                             <f:facet name="header">
-                                                <h:outputText value="Name" />
+                                                <h:outputText value="Subject" />
                                             </f:facet>
-                                            <h:outputText value="#{model.name}" />
+                                            <h:outputText value="#{model.subject}" />
                                         </p:column>
                                         <p:column>
                                             <f:facet name="header">
-                                                <h:outputText value="Code" />
+                                                <h:outputText value="Amount" />
                                             </f:facet>
-                                            <h:outputText value="#{model.code}" />
-                                        </p:column>
-
-                                        <p:column>
-                                            <f:facet name="header">
-                                                <h:outputText value="Country" />
-                                            </f:facet>
-                                            <h:outputText value="#{model.country}" />
+                                            <h:outputText value="#{model.amount}" />
                                         </p:column>
 
                                         <p:column>
                                             <f:facet name="header">
-                                                <h:outputText value="Currency" />
+                                                <h:outputText value="Type" />
                                             </f:facet>
-                                            <h:outputText value="#{model.reportingCurrency}" />
+                                            <h:outputText value="#{model.transactiontype}" />
                                         </p:column>
 
                                         <p:column>
                                             <f:facet name="header">
-                                                <h:outputText value="Email" />
+                                                <h:outputText value="Date" />
                                             </f:facet>
-                                            <h:outputText value="#{model.emailAddress}" />
+                                            <h:outputText value="#{model.date}" />
                                         </p:column>
 
-
-
+                                    
                                         <p:column headerText="Action" width="140" exportable="false" style="text-align: center" >
 
                                             <p:commandButton  process="@this" icon="fa fa-edit" styleClass="ui-button-help"
-                                                              immediate="true"  rendered="#{componentRenderer.hasCreateFundersPerm}"
+                                                              immediate="true"  rendered="#{componentRenderer.administrator}"
                                                               actionListener="#{transactionFormDialog.show}">
                                                 <f:setPropertyActionListener value="#{model}"
                                                                              target="#{transactionFormDialog.model}" />
@@ -204,7 +196,7 @@
                                             <p:commandButton icon="fa fa-trash" title="Delete"  
                                                              styleClass="ui-button-danger" style="margin-left: 5px"
                                                              action="#{businessPerformanceView.deleteFunder(model)}"
-                                                             rendered="#{componentRenderer.hasDeleteFundersPerm}"
+                                                             rendered="#{componentRenderer.businessOwner}"
                                                              update="transactionsTable">
                                                 <p:confirm header="Confirmation"
                                                            message="You are about to delete a transaction. Do you wish to continue?"
@@ -228,7 +220,7 @@
 
 
                                                 <div class="p-col-12 p-md-12 " >
-                                                    <p>Headings should be in upper-camel case i.e. Name, PhoneNumber, EmailAddress, RegistrationNumber and Location. Column order doesn't matter. Category names should match those already in the system </p>
+                                                    <p>Headings should be in upper-camel case i.e. Subject,Amount, Type, and Date. Column order doesn't matter. Date should be i the format dd/mm/yyyy eg 28/03/2015 </p>
 
                                                 </div>
                                                 <div class="p-col-12 p-md-12">
@@ -242,7 +234,7 @@
                                                         invalidFileMessage="Only csv type is allowed"
                                                         update="counterText uploadSaveBtn"
 
-                                                        fileUploadListener="#{businessPerformanceView.handleExcelFileUpload}"/>
+                                                        fileUploadListener="#{businessPerformanceView.handleCSVFileUpload}"/>
 
                                                     <p:commandButton id="uploadSaveBtn" icon="pi pi-save" process="@this" disabled="#{!businessPerformanceView.showSaveUploadsButton()}" actionListener="#{businessPerformanceView.saveUploadedTransactions()}" 
                                                                      oncomplete="PF('fileUploadDialogue').hide()" update="businessPerformanceView" value="Save" />

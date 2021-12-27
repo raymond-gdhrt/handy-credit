@@ -12,7 +12,7 @@
         </style>
     </ui:define>
     <ui:define name="content">
-        <title>#{loanCreationForm.model.isNew()?'Add loan':loanCreationForm.model.name}</title>
+        <title>#{loanCreationForm.model.isNew()?'Add loan':loanCreationForm.model.title}</title>
         <h:form id="loanCreationForm" styleClass="card">
             <div class="p-grid ui-fluid" style="">
                 <div class="ui-col-12 ui-md-6">
@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 
-                 <div class="ui-col-12 ui-md-6">
+                 <div class="ui-col-12 ui-md-3">
                     <h5>Min amount</h5>
                     <div class="ui-inputgroup">
 
@@ -71,7 +71,7 @@
                     </div>
                 </div>
                 
-                 <div class="ui-col-12 ui-md-6">
+                 <div class="ui-col-12 ui-md-3">
                     <h5>Max amount</h5>
                     <div class="ui-inputgroup">
 

@@ -10,7 +10,7 @@
         <div class="ui-g ui-fluid">
             <div class="ui-g-12">
                 <h:form id="loanApplicationsView" enctype="multipart/form-data"
-                        rendered="#{componentRenderer.administrator}">
+                        rendered="#{componentRenderer.loanProvider}">
 
                     <div class="p-grid overlay-demo">
                         <div class="p-col-12 p-md-3">
@@ -109,7 +109,7 @@
                                                         </div>  
                                                         <div class="p-mr-2 p-mb-2">
 
-                                                      
+
                                                         </div>
                                                     </div>
 
@@ -121,27 +121,41 @@
                                             <h:outputText value="#{row + 1}" />
                                         </p:column>
 
-                                        <p:column width="200" headerText="Title">
-                                            <h:outputText value="#{model.title}" />
+                                        <p:column width="200" headerText="Loan">
+                                            <h:outputText value="#{model.loan.title}" />
+                                        </p:column>
+                                        <p:column width="100" headerText="Reason">
+                                            <h:outputText value="#{model.loanRequestReason}" />
                                         </p:column>
                                         <p:column width="200" headerText="Description">
-                                            <h:outputText value="#{model.description}" />
+                                            <h:outputText value="#{model.reasonDescription}" />
                                         </p:column>
 
-                                        <p:column width="200" headerText="Interest ">
+                                        <p:column width="100" headerText="Date applied ">
 
-                                            <h:outputText value="#{model.interestRate} #{model.interestRateInterval}" />
+                                            <h:outputText value="#{model.dateCreated}" />
                                         </p:column>
 
-                                        <p:column headerText="Email address">
+                                        <p:column width="100" headerText="Applicant">
 
-                                            <h:outputText value="#{model.userAccount.emailAddress}" />
+                                            <h:outputText value="#{model.business.name}" />
                                         </p:column>
 
-                                        <p:column headerText="Loan provider">
+                                        <p:column headerText="Amount">
 
-                                            <h:outputText value="#{model.loan}" />
-                                               
+                                            <h:outputText value="#{model.amount}" />
+
+                                        </p:column>
+                                        <p:column headerText="Payment period">
+
+                                            <h:outputText value="#{model.proposedPaymentPeriodInDays}" />
+
+                                        </p:column>
+
+                                        <p:column headerText="Status">
+
+                                            <h:outputText value="#{model.status}" />
+
                                         </p:column>
 
 
@@ -158,13 +172,38 @@
 
 
                                             <p:commandButton icon="fa fa-eye" title="View" 
-                                                             styleClass="ui-button-primary"  style="margin-left: 5px"
+                                                             styleClass="primary-button"  style="margin-left: 5px"
 
                                                              action="#{loanProfileView.getViewPath}">
                                                 <f:setPropertyActionListener value="#{model}"
                                                                              target="#{loanProfileView.model}" />
 
                                             </p:commandButton>
+
+                                            <p:commandButton icon="fa fa-check" title="Mark as Approved " 
+                                                             styleClass="success-button"  style="margin-left: 5px"
+                                                             update="loanApplicationsView"
+                                                             rendered="#{model.status eq 'Submitted'}"
+                                                             action="#{loanApplicationsView.approveLoanApplication(model)}"/>
+
+                                            <p:commandButton icon="fa fa-check" title="Mark as disbursed" 
+                                                             styleClass="success-button"  style="margin-left: 5px"
+                                                             update="loanApplicationsView"
+                                                             rendered="#{model.status eq 'Approved'}"
+                                                             action="#{loanApplicationsView.disburseLoanApplication(model)}"/>
+
+                                            <p:commandButton icon="fa fa-check" title="Mark as cleared" 
+                                                             styleClass="success-button"  style="margin-left: 5px"
+                                                             update="loanApplicationsView"
+                                                             rendered="#{model.status eq 'Paid'}"
+                                                             action="#{loanApplicationsView.clearLoanApplication(model)}"/>
+
+                                            <p:commandButton icon="fa fa-check" title="Mark as rejected" 
+                                                             styleClass="warning-button"  style="margin-left: 5px"
+                                                             update="loanApplicationsView"
+                                                             rendered="#{model.status eq 'Submitted'}"
+                                                             action="#{loanApplicationsView.rejectLoanApplication(model)}"/>
+
 
 
 
@@ -177,7 +216,7 @@
                                                              rendered="#{componentRenderer.administrator and  model.status eq 'Draft'}"
                                                              update="loansTable">
                                                 <p:confirm header="Confirmation"
-                                                           message="You are about to delete a loan. Do you wish to continue?"
+                                                           message="You are about to trash a loan application. Do you wish to continue?"
                                                            icon="ui-icon-alert" />
                                             </p:commandButton>
 

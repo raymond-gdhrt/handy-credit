@@ -53,7 +53,7 @@ public class UploadedCreditHistory {
             transaction.setActualClearDate(actualClearDate);
             transaction.setName(subject);
             transaction.setSource(LoanSource.valueOf(source));
-            transaction.setRateType(InterestRateInterval.valueOf(rateType.toUpperCase()));
+            transaction.setRateType(InterestRateInterval.valueOf(rateType.toLowerCase()));
 
             System.out.println("Added " + this.toString() + "...");
 

@@ -5,6 +5,7 @@
  */
 package com.handycredit.systems.models;
 
+import com.handycredit.systems.constants.LoanApplicationStatus;
 import com.handycredit.systems.constants.LoanRequestReason;
 import java.util.Date;
 import java.util.Set;
@@ -37,6 +38,7 @@ public class LoanApplication extends BaseEntity {
     private LoanRequestReason loanRequestReason;
     private String reasonDescription;
     private Business business;
+    private LoanApplicationStatus status=LoanApplicationStatus.Submitted;
     private Date dateSubmitted;
     private Date dateApproved;
     private Date dateRejected;
@@ -195,7 +197,7 @@ public class LoanApplication extends BaseEntity {
     }
 
     @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinTable(name = "loan_application_fiiled_dynamic_fields", joinColumns = @JoinColumn(name = "loan_application_id"), inverseJoinColumns = @JoinColumn(name = "filled_dynamic_field_id"))
+    @JoinTable(name = "loan_application_filled_dynamic_fields", joinColumns = @JoinColumn(name = "loan_application_id"), inverseJoinColumns = @JoinColumn(name = "filled_dynamic_field_id"))
     public Set<FilledDynamicField> getFilledFields() {
         return filledFields;
     }
@@ -204,7 +206,7 @@ public class LoanApplication extends BaseEntity {
         this.filledFields = filledFields;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "loan_application_collaterals", joinColumns = @JoinColumn(name = "loan_application_id"), inverseJoinColumns = @JoinColumn(name = "collateral_id"))
     public Set<Collateral> getAttachedCollaterals() {
         return attachedCollaterals;
@@ -213,5 +215,17 @@ public class LoanApplication extends BaseEntity {
     public void setAttachedCollaterals(Set<Collateral> attachedCollaterals) {
         this.attachedCollaterals = attachedCollaterals;
     }
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 100)
+    public LoanApplicationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(LoanApplicationStatus status) {
+        this.status = status;
+    }
+    
+    
 
 }

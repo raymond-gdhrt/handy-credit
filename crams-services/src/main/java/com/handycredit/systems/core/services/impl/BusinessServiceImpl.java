@@ -45,4 +45,29 @@ public class BusinessServiceImpl extends GenericServiceImpl<Business> implements
         return super.searchUniqueByPropertyEqual("userAccount", user, RecordStatus.ACTIVE);
 
     }
+
+    public int calculateCapacityScore() {
+
+        return 0;
+    }
+
+    public int calculateCollateralScore() {
+
+        return 0;
+    }
+
+    public int calculateCapitalScore() {
+
+        return 0;
+    }
+
+    public int calculateCharacterScore() {
+
+        return 0;
+    }
+
+    public int calculateConditionScore() {
+
+        return 0;
+    }
 }

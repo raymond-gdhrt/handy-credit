@@ -5,10 +5,17 @@
  */
 package com.handycredit.systems.core.services.impl;
 
+import com.handycredit.systems.constants.LoanApplicationStatus;
+import com.handycredit.systems.core.services.BusinessCreditHistoryService;
+import com.handycredit.systems.core.services.BusinessCreditProfileService;
 import com.handycredit.systems.core.services.LoanApplicationService;
+import com.handycredit.systems.models.BusinessCreditHistory;
 import com.handycredit.systems.models.LoanApplication;
+import java.util.Date;
 import org.sers.webutils.model.exception.OperationFailedException;
 import org.sers.webutils.model.exception.ValidationFailedException;
+import org.sers.webutils.server.core.utils.ApplicationContextProvider;
+import org.sers.webutils.server.core.utils.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,16 +27,136 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LoanApplicationServiceImpl extends GenericServiceImpl<LoanApplication> implements LoanApplicationService {
 
-   
-
     @Override
     public boolean isDeletable(LoanApplication entity) throws OperationFailedException {
         return false;
     }
 
     @Override
-    public LoanApplication saveInstance(LoanApplication instance) throws ValidationFailedException, OperationFailedException {
-        return super.save(instance);
+    public LoanApplication saveInstance(LoanApplication loanApplication) throws ValidationFailedException, OperationFailedException {
+        if (loanApplication == null) {
+            throw new ValidationFailedException("No details provided");
+        }
+
+        if (loanApplication.getBusiness() == null) {
+            throw new ValidationFailedException("Missing business details");
+        }
+
+        if (loanApplication.getLoan() == null) {
+            throw new ValidationFailedException("Missing loan details");
+        }
+
+        if (loanApplication.getLoan().getMaximumAmount() < loanApplication.getAmount()) {
+            throw new ValidationFailedException("Amount higher than maximum loan limit");
+        }
+
+        if (loanApplication.getLoan().getMinimumAmount() > loanApplication.getAmount()) {
+            throw new ValidationFailedException("Amount lower than minimum loan limit");
+        }
+
+        if (loanApplication.isNew()) {
+            loanApplication.setStatus(LoanApplicationStatus.Submitted);
+            loanApplication.setDateSubmitted(new Date());
+            loanApplication = super.save(loanApplication);
+            loanApplication.setCreditRiskProfile(ApplicationContextProvider.getBean(BusinessCreditProfileService.class).createProfile(loanApplication));
+
+        }
+
+        return super.save(loanApplication);
 
     }
+
+    @Override
+    public LoanApplication approveLoan(LoanApplication loanApplication) throws ValidationFailedException {
+        if (loanApplication.isNew()) {
+            throw new ValidationFailedException("Entity not yet persisted");
+        }
+        loanApplication.setStatus(LoanApplicationStatus.Approved);
+        loanApplication.setDateApproved(new Date());
+        return super.save(loanApplication);
+    }
+
+    @Override
+    public LoanApplication rejectLoan(LoanApplication loanApplication, String reason) throws ValidationFailedException {
+        if (loanApplication.isNew()) {
+            throw new ValidationFailedException("Entity not yet persisted");
+        }
+        loanApplication.setRejectionNotes(reason);
+        loanApplication.setStatus(LoanApplicationStatus.Rejected);
+        loanApplication.setDateRejected(new Date());
+        return super.save(loanApplication);
+    }
+
+    @Override
+    public LoanApplication disburseLoan(LoanApplication loanApplication) throws ValidationFailedException {
+        if (loanApplication.isNew()) {
+            throw new ValidationFailedException("Entity not yet persisted");
+        }
+        loanApplication.setStatus(LoanApplicationStatus.Running);
+        loanApplication.setDateGivenOut(new Date());
+        return super.save(loanApplication);
+    }
+
+    @Override
+    public LoanApplication clearLoan(LoanApplication loanApplication) throws ValidationFailedException, OperationFailedException {
+        if (loanApplication.isNew()) {
+            throw new ValidationFailedException("Entity not yet persisted");
+        }
+        loanApplication.setStatus(LoanApplicationStatus.Cleared);
+        loanApplication.setDateCleared(new Date());
+        BusinessCreditHistory creditHistory = new BusinessCreditHistory();
+        creditHistory.setBusiness(loanApplication.getBusiness());
+        creditHistory.setRateType(loanApplication.getLoan().getInterestRateInterval());
+        creditHistory.setAmountBorrowed(loanApplication.getAmount());
+        creditHistory.setName(loanApplication.getLoan().getTitle());
+        creditHistory.setActualClearDate(new Date());
+        creditHistory.setLoanApplicationStatus(LoanApplicationStatus.Cleared);
+        
+        creditHistory.setExpectedClearanceDate(DateUtils.getDateAfterDays(loanApplication.getDateGivenOut(), loanApplication.getProposedPaymentPeriodInDays()));
+
+        ApplicationContextProvider.getBean(BusinessCreditHistoryService.class).saveInstance(creditHistory);
+
+        return super.save(loanApplication);
+    }
+
+    @Override
+    public LoanApplication defaultLoan(LoanApplication loanApplication) throws ValidationFailedException ,OperationFailedException{
+        if (loanApplication.isNew()) {
+            throw new ValidationFailedException("Entity not yet persisted");
+        }
+        loanApplication.setStatus(LoanApplicationStatus.Defaulted);
+        loanApplication.setDateDefaulted(new Date());
+         BusinessCreditHistory creditHistory = new BusinessCreditHistory();
+        creditHistory.setBusiness(loanApplication.getBusiness());
+        creditHistory.setRateType(loanApplication.getLoan().getInterestRateInterval());
+        creditHistory.setAmountBorrowed(loanApplication.getAmount());
+        creditHistory.setName(loanApplication.getLoan().getTitle());
+        creditHistory.setLoanApplicationStatus(LoanApplicationStatus.Defaulted);
+        
+        creditHistory.setExpectedClearanceDate(DateUtils.getDateAfterDays(loanApplication.getDateGivenOut(), loanApplication.getProposedPaymentPeriodInDays()));
+
+        ApplicationContextProvider.getBean(BusinessCreditHistoryService.class).saveInstance(creditHistory);
+
+        return super.save(loanApplication);
+    }
+
+    @Override
+    public LoanApplication withdrawLoan(LoanApplication loanApplication) throws ValidationFailedException {
+        if (loanApplication.isNew()) {
+            throw new ValidationFailedException("Entity not yet persisted");
+        }
+
+        if (loanApplication.getStatus().equals(LoanApplicationStatus.Running)) {
+            throw new ValidationFailedException("A running loan cant be closed");
+        }
+
+        if (loanApplication.getStatus().equals(LoanApplicationStatus.Cleared)) {
+            throw new ValidationFailedException("A cleared loan cant be closed");
+        }
+
+        loanApplication.setStatus(LoanApplicationStatus.Closed);
+        loanApplication.setDateDefaulted(new Date());
+        return super.save(loanApplication);
+    }
+
 }

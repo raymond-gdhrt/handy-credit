@@ -84,7 +84,7 @@
                                         <f:facet name="header">
                                             <div class="p-d-flex p-jc-between">
                                                 <div >
-                                                    <span class="table-header-text">Credit history for </span>
+                                                    <span class="table-header-text">Credit history for #{businessCreditHistoryView.loggedInBusiness.name}</span>
 
                                                 </div>
 
@@ -93,20 +93,20 @@
                                                         <div class="p-mr-2 p-mb-2">
                                                             <p:commandButton value="Export" 
                                                                              process="clientsTable" icon="fa fa-upload" 
-
+                                                                             style="width:80px"
                                                                              styleClass="secondary-button" ajax="false">
                                                                 <p:dataExporter type="pdf"  target="creditHistorysTable" fileName="creditHistorys"/>
                                                             </p:commandButton>
-                                                        </div>  
-                                                        <div class="p-mr-2 p-mb-2">
-                                                            <p:commandButton title="Download template for uploading clients" icon="fa fa-download" value="Template" styleClass="secondary-button"
-                                                                             style="margin-left: 5px"  ajax="false" 
+
+                                                            <p:commandButton title="Download template for uploading credit history" 
+                                                                             icon="fa fa-download" value="Template" styleClass="help-button"
+                                                                             style="margin-left: 5px;width:100px"  ajax="false" 
                                                                              actionListener="#{businessCreditHistoryView.loadTemplateForDownload()}">
-                                                                <p:fileDownload value="#{businessCreditHistoryView.streamedContent}"  />
+                                                                <p:fileDownload value="#{businessCreditHistoryView.loadTemplateForDownload()}"  />
                                                             </p:commandButton>
 
                                                             <p:commandButton icon="fa fa-upload" value="Upload" styleClass="primary-button"
-                                                                             style="margin-left: 5px" process="@this" 
+                                                                             style="margin-left: 5px;width:80px" process="@this" 
                                                                              title="Upload communications from file" 
                                                                              oncomplete="PF('fileUploadDialogue').show()" 
                                                                              validateClient="true"
@@ -128,36 +128,50 @@
 
                                         <p:column>
                                             <f:facet name="header">
-                                                <h:outputText value="Name" />
+                                                <h:outputText value="Subject" />
                                             </f:facet>
                                             <h:outputText value="#{model.name}" />
                                         </p:column>
                                         <p:column>
                                             <f:facet name="header">
-                                                <h:outputText value="Code" />
+                                                <h:outputText value="Source" />
                                             </f:facet>
-                                            <h:outputText value="#{model.code}" />
+                                            <h:outputText value="#{model.source}" />
                                         </p:column>
 
                                         <p:column>
                                             <f:facet name="header">
-                                                <h:outputText value="Country" />
+                                                <h:outputText value="Amount" />
                                             </f:facet>
-                                            <h:outputText value="#{model.country}" />
+                                            <h:outputText value="#{model.amountBorrowed}" />
                                         </p:column>
 
                                         <p:column>
                                             <f:facet name="header">
-                                                <h:outputText value="Currency" />
+                                                <h:outputText value="Expected clearance date" />
                                             </f:facet>
-                                            <h:outputText value="#{model.reportingCurrency}" />
+                                            <h:outputText value="#{model.expectedClearanceDate}" />
                                         </p:column>
 
                                         <p:column>
                                             <f:facet name="header">
-                                                <h:outputText value="Email" />
+                                                <h:outputText value="Actual clearance date" />
                                             </f:facet>
-                                            <h:outputText value="#{model.emailAddress}" />
+                                            <h:outputText value="#{model.actualClearDate}" />
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Interest rate" />
+                                            </f:facet>
+                                            <h:outputText value="#{model.interestRate}" />
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Rate type" />
+                                            </f:facet>
+                                            <h:outputText value="#{model.rateType}" />
                                         </p:column>
 
 
@@ -215,11 +229,11 @@
 
 
                                                 <div class="p-col-12 p-md-12 " >
-                                                    <p>Headings should be in upper-camel case i.e. Name, PhoneNumber, EmailAddress, RegistrationNumber and Location. Column order doesn't matter. Category names should match those already in the system </p>
+                                                    <p>Headings should be in upper-camel case i.e. Subject, Source, Amount, ExpectedClearanceDate, ActualClearanceDate, InterestRate and RateType. Column order doesn't matter. Rate and source names should match those already in the system </p>
 
                                                 </div>
                                                 <div class="p-col-12 p-md-12">
-                                                    <h:outputText id="counterText" value="#{businessCreditHistoryView.counterMassage}"/>
+                                                    <h:outputText id="counterText" value="#{businessCreditHistoryView.counterMessage}"/>
                                                     <p:fileUpload 
                                                         multiple="false"
                                                         style="width: 100%" 
@@ -229,7 +243,7 @@
                                                         invalidFileMessage="Only csv type is allowed"
                                                         update="counterText uploadSaveBtn"
 
-                                                        fileUploadListener="#{businessCreditHistoryView.handleExcelFileUpload}"/>
+                                                        fileUploadListener="#{businessCreditHistoryView.handleCSVFileUpload}"/>
 
                                                     <p:commandButton id="uploadSaveBtn" icon="pi pi-save" process="@this" disabled="#{!businessCreditHistoryView.showSaveUploadsButton()}" 
                                                                      actionListener="#{businessCreditHistoryView.saveUploadedHistory()}" 

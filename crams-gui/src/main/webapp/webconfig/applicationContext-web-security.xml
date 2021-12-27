@@ -155,7 +155,7 @@
             <bean
                 class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
                 <property name="defaultTargetUrl"
-					value="/pages/dashboard/Dashboard.xhtml" />
+					value="/Dashboard" />
             </bean>
         </property>
 

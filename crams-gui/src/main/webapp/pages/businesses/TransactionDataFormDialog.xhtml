@@ -12,92 +12,47 @@
         </style>
     </ui:define>
     <ui:define name="content">
-        <title>#{transactionFormDialog.model.isNew()?'Add business':transactionFormDialog.business.name}</title>
-        <h:form id="transactionFormDialog" styleClass="card">
-            <div class="p-grid ui-fluid" style="">
-                <div class="ui-col-12 ui-md-6">
-                    <h5>Business name</h5>
-                    <div class="ui-inputgroup">
+        <title>#{transactionFormDialog.model.isNew()?'Add transaction':transactionFormDialog.business.name}</title>
+        <h:form id="transactionFormDialog" styleClass="p-grid">
+            <div class="p-col-12 card" >
 
-                        <p:inputText value="#{transactionFormDialog.model.name}" required="true" />
+                <div class="ui-col-12 ui-md-6">
+                    <h5>Subject</h5>
+                    <div class="ui-inputgroup">
+                        <p:inputText id="sub" value="#{transactionFormDialog.model.subject}" required="true" />
+
                     </div>
                 </div>
                 <div class="ui-col-12 ui-md-6">
-                    <h5>Business registration number /TIN</h5>
+                    <h5>Amount</h5>
                     <div class="ui-inputgroup">
 
-                        <p:inputText value="#{transactionFormDialog.model.registrationNumber}" required="true" />
-                    </div>
-                </div>
-                
-                <div class="ui-col-12 ui-md-6">
-                    <h5>Phone number</h5>
-                    <div class="ui-inputgroup">
-
-                        <p:inputText value="#{transactionFormDialog.model.phoneNumber}" required="true" />
+                        <p:inputNumber value="#{transactionFormDialog.model.amount}" 
+                                       required="true" />
                     </div>
                 </div>
 
                 <div class="ui-col-12 ui-md-6">
-                    <h5>Website</h5>
+                    <h5>Type</h5>
                     <div class="ui-inputgroup">
+                        <p:selectOneRadio id="country" value="#{transactionFormDialog.model.transactiontype}">
+                            <f:selectItems value="#{transactionFormDialog.types}"/>
+                        </p:selectOneRadio>
 
-                        <p:inputText value="#{transactionFormDialog.model.website}" required="true" />
                     </div>
                 </div>
 
-                <div class="ui-col-12 ui-md-6">
-                    <h5>Twitter handle</h5>
-                    <div class="ui-inputgroup">
-
-                        <p:inputText value="#{transactionFormDialog.model.twitterHandle}" required="true" />
-                    </div>
-                </div>
 
 
 
                 <div class="ui-col-12 ui-md-6">
-                    <h5>Facebook page link</h5>
+                    <h5>Date</h5>
                     <div class="ui-inputgroup">
 
-                        <p:inputText value="#{transactionFormDialog.model.facebookLink}" required="true" />
+                        <p:calendar maxdate="#{now}" value="#{transactionFormDialog.model.date}" required="true" />
                     </div>
                 </div>
-              
-
-                <div class="ui-col-12 ui-md-6">
-                    <h5>District</h5>
-                    <div class="ui-inputgroup">
-                        <p:selectOneMenu id="country" value="#{transactionFormDialog.model.district}" 
-                                         converter="countryConverter" filter="true" 
-                                         style="width:95% ">
-                            <f:selectItem itemLabel="Select country" itemValue=""/>
-                            <f:selectItems value="#{transactionFormDialog.districts}"/>
-                        </p:selectOneMenu>
-
-                    </div>
-                </div>
-                
-                  <div class="ui-col-12 ui-md-12">
-                    <h5>Physical address</h5>
-                    <div class="ui-inputgroup">
-
-                        <p:inputTextarea value="#{transactionFormDialog.model.physcialAddress}" rows="4" required="true" />
-                    </div>
-                </div>
-                
-                  <div class="ui-col-12 ui-md-12">
-                    <h5>About business (Short details about business)</h5>
-                    <div class="ui-inputgroup">
-
-                        <p:inputTextarea value="#{transactionFormDialog.model.description}" rows="5" required="true" />
-                    </div>
-                </div>
-
-
-
-
-                <div class="ui-col-12 ui-md-12" style="margin-top: 50px;">
+                <div class="ui-col-12 ui-md-12" style="margin-top: 10px;">
                     <div class="p-grid p-justify-end">
                         <div class="p-col-2">
                             <p:commandButton value="Cancel" 
@@ -108,7 +63,7 @@
                         </div>
                         <div class="p-col-2">
                             <p:commandButton value="Save" 
-                                             process="@form"
+                                             process="transactionFormDialog @this"
                                              actionListener="#{transactionFormDialog.save}"
                                              update="transactionFormDialog" validateClient="true" />
                         </div>

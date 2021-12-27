@@ -46,7 +46,7 @@ public class TransactionDataFormDialog extends DialogForm<BusinessTransaction> {
     }
 
     public TransactionDataFormDialog() {
-        super(HyperLinks.TRANSACTION_DATA_DIALOG_FORM, 700, 500);
+        super(HyperLinks.TRANSACTION_DATA_DIALOG_FORM, 800, 400);
     }
 
     @Override

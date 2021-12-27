@@ -20,16 +20,27 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LoanServiceImpl extends GenericServiceImpl<Loan> implements LoanService {
 
-   
-
     @Override
     public boolean isDeletable(Loan entity) throws OperationFailedException {
         return false;
     }
 
     @Override
-    public Loan saveInstance(Loan instance) throws ValidationFailedException, OperationFailedException {
-        return super.save(instance);
+    public Loan saveInstance(Loan loan) throws ValidationFailedException, OperationFailedException {
+        if (loan.getMaximumAmount() < loan.getMinimumAmount()) {
+            throw new ValidationFailedException("Invalid amount range");
+        }
+
+        if (loan.getTitle() == null) {
+
+            throw new ValidationFailedException("Missing tittle");
+        }
+
+        if (loan.getInterestRateInterval() == null) {
+            throw new ValidationFailedException("Missing interval");
+
+        }
+        return super.save(loan);
 
     }
 }
