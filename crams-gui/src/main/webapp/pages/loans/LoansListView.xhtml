@@ -31,14 +31,7 @@
                             </div> <!-- comment -->
 
 
-                            <div class="p-col-12 p-md-6 p-lg-3" >
-                                <p:selectCheckboxMenu id="countries" label="Filter category" value="#{loansListView.selectedCountries}" 
-                                                      converter="countryConverter"  style="height: 100%" >
-
-                                    <f:selectItems value="#{loansListView.countries}"/>
-                                    <p:ajax event="change" update="loansListView" listener="#{loansListView.reloadFilterReset()}"/>
-                                </p:selectCheckboxMenu>
-                            </div>
+                         
                             <div class="p-col-12 p-md-6 p-lg-3" >
                                 <p:commandButton icon="fa fa-search" styleClass="ui-button-help"
                                                  id="searchBtn" style="margin-right: 18px"
@@ -94,7 +87,7 @@
                                                 </h4>
                                                 <p:commandButton value="Apply now" 
                                                                  styleClass="help-button"
-                                                                 actionListener="#{loansListView.loadLoanApplication(loan, loansListView.business)}"                                        
+                                                                 actionListener="#{loansListView.loadLoanApplication(loan)}"                                        
 
                                                                  oncomplete="PF('loan_application_dialogue').show()"
                                                                  update=":loansListView:loanApplicationForm">
@@ -139,14 +132,8 @@
                                                    value="#{loansListView.selectedLoanApplication.proposedPaymentPeriodInDays}"
                                                    required="true" placeholder="Proposed payment period" />
                                 </div>
-
-                                <div class="p-col-12 p-md-12 p-lg-12">
-                                    <p:outputLabel for="deatils">Details</p:outputLabel>
-                                    <p:inputTextarea id="deatils"
-                                                     value="#{loansListView.selectedLoanApplication.reasonDescription}"
-                                                     required="true" placeholder="Enter extra details" />
-                                </div>
-                                <p:outputPanel rendered="true" styleClass="p-field p-col-12 p-md-12">
+                                
+                                 <p:outputPanel rendered="true" styleClass="p-field p-col-12 p-md-6">
                                     <p:outputLabel for="select">Collateral</p:outputLabel>
                                     <p:selectCheckboxMenu id="select" value="#{loansListView.selectedLoanApplication.attachedCollaterals}" 
                                                           multiple="true"       converter="collateralConverter"  >
@@ -154,6 +141,23 @@
                                         <f:selectItems value="#{loansListView.loadCollaterals(loansListView.business)}"/>
                                     </p:selectCheckboxMenu>
                                 </p:outputPanel>
+                                
+                                 <p:outputPanel rendered="true" styleClass="p-field p-col-12 p-md-6">
+                                    <p:outputLabel for="reason">Reason</p:outputLabel>
+                                    <p:selectOneMenu id="reason" value="#{loansListView.selectedLoanApplication.loanRequestReason}" 
+                                                          >
+
+                                        <f:selectItems var="reason" itemLabel="#{reason.uiName}" value="#{loansListView.requestReasons}"/>
+                                    </p:selectOneMenu>
+                                </p:outputPanel>
+
+                                <div class="p-col-12 p-md-12 p-lg-12">
+                                    <p:outputLabel for="deatils">Details</p:outputLabel>
+                                    <p:inputTextarea id="deatils"
+                                                     value="#{loansListView.selectedLoanApplication.reasonDescription}"
+                                                     required="true" placeholder="Enter extra details" />
+                                </div>
+                               
 
 
 

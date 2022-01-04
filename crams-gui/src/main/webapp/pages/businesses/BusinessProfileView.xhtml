@@ -102,7 +102,7 @@
                         </div>
 
                     </div>
-                    <div class="p-col-12 p-md-12">
+                    <p:outputPanel rendered="#{componentRenderer.businessOwner}" styleClass="p-col-12 p-md-12">
                         <div class="card">
                             <p:tabView>
 
@@ -112,12 +112,38 @@
                                 </p:tab>
                                 
                                   <p:tab title="Collaterals" >
-
+                                      <p:dataTable var="collateral" rows="10" value="#{businessProfileView.collaterals}">
+                                          <f:facet name="header" >
+                                              
+                                              <p:commandButton value="Add new" process="@this"
+                                                               actionListener="#{collateralFormDialog.show}" >
+                                                  <f:setPropertyActionListener value="#{null}" target="#{collateralFormDialog.model}" />
+                                                  <f:setPropertyActionListener value="#{businessProfileView.model}" target="#{collateralFormDialog.business}" />
+                                                  
+                                              </p:commandButton>
+                                          </f:facet>
+                                          
+                                          <p:column headerText="Name">
+                                              
+                                              <h:outputText value="#{collateral.name}" />
+                                          </p:column>
+                                          
+                                          <p:column headerText="Estimated value">
+                                              
+                                              <h:outputText value="#{collateral.estimatedValue}" />
+                                          </p:column>
+                                          
+                                          <p:column headerText="Status">
+                                              
+                                               <h:outputText value="#{collateral.status}" />
+                                          </p:column>
+                                          
+                                      </p:dataTable>
 
                                 </p:tab>
                             </p:tabView>
                         </div>
-                    </div> 
+                    </p:outputPanel>
 
                     <p:blockUI block="businessProfileView" >
                         <p:graphicImage value="/resources/images/workingicon.png" />

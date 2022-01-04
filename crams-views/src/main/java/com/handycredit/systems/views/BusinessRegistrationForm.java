@@ -3,6 +3,7 @@ package com.handycredit.systems.views;
 import com.googlecode.genericdao.search.Search;
 import com.handycredit.systems.constants.AccountStatus;
 import com.handycredit.systems.constants.BusinessCategory;
+import com.handycredit.systems.constants.CompanySize;
 import com.handycredit.systems.constants.UgandanDistrict;
 import com.handycredit.systems.core.services.BusinessService;
 import com.handycredit.systems.core.utils.AppUtils;
@@ -38,6 +39,7 @@ public class BusinessRegistrationForm extends WebFormView<Business, BusinessRegi
     private BusinessService businessService;
     private List<UgandanDistrict> districts;
     private List<BusinessCategory> businessTypes;
+     private List<CompanySize> companySizes;
     Search search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE);
     private UserService userService;
     private String customUiMessage;
@@ -54,6 +56,7 @@ public class BusinessRegistrationForm extends WebFormView<Business, BusinessRegi
         this.businessService = ApplicationContextProvider.getBean(BusinessService.class);
         this.districts = Arrays.asList(UgandanDistrict.values());
         this.businessTypes = Arrays.asList(BusinessCategory.values());
+         this.companySizes = Arrays.asList(CompanySize.values());
 
     }
 
@@ -250,5 +253,15 @@ public class BusinessRegistrationForm extends WebFormView<Business, BusinessRegi
     public void setShowFinalSection(boolean showFinalSection) {
         this.showFinalSection = showFinalSection;
     }
+
+    public List<CompanySize> getCompanySizes() {
+        return companySizes;
+    }
+
+    public void setCompanySizes(List<CompanySize> companySizes) {
+        this.companySizes = companySizes;
+    }
+    
+    
 
 }

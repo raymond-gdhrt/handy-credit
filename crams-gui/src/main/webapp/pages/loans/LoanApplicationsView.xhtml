@@ -16,25 +16,25 @@
                         <div class="p-col-12 p-md-3">
                             <div class="card">
                                 <h:outputText value="Total" />
-                                <h2 class="p-text-right">267</h2>
-                            </div>
-                        </div>
-                        <div class="p-col-12 p-md-3">
-                            <div class="card">
-                                <h:outputText value="Draft" />
-                                <h2 class="p-text-right">399</h2>
+                                <h2 class="p-text-right">#{loanApplicationsView.total}</h2>
                             </div>
                         </div>
                         <div class="p-col-12 p-md-3">
                             <div class="card">
                                 <h:outputText value="Approved" />
-                                <h2 class="p-text-right">20</h2>
+                                <h2 class="p-text-right">#{loanApplicationsView.approved}</h2>
                             </div>
                         </div>
                         <div class="p-col-12 p-md-3">
                             <div class="card">
-                                <h:outputText value="Rejected" />
-                                <h2 class="p-text-right">400</h2>
+                                <h:outputText value="Running" />
+                                <h2 class="p-text-right">#{loanApplicationsView.running}</h2>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-md-3">
+                            <div class="card">
+                                <h:outputText value="Cleared" />
+                                <h2 class="p-text-right">#{loanApplicationsView.cleared}</h2>
                             </div>
                         </div>
 
@@ -57,14 +57,7 @@
                             </div> <!-- comment -->
 
 
-                            <div class="p-col-12 p-md-6 p-lg-3" >
-                                <p:selectCheckboxMenu id="countries" label="Filter country" value="#{loanApplicationsView.selectedCountries}" 
-                                                      converter="countryConverter"  style="height: 100%" >
 
-                                    <f:selectItems value="#{loanApplicationsView.countries}"/>
-                                    <p:ajax event="change" update="loanApplicationsView" listener="#{loanApplicationsView.reloadFilterReset()}"/>
-                                </p:selectCheckboxMenu>
-                            </div>
                             <div class="p-col-12 p-md-6 p-lg-3" >
                                 <p:commandButton icon="fa fa-search" styleClass="ui-button-help"
                                                  id="searchBtn" style="margin-right: 18px"
@@ -160,63 +153,64 @@
 
 
                                         <p:column headerText="Action" width="140" exportable="false" style="text-align: center" >
-
-                                            <p:commandButton  process="@this" icon="fa fa-edit" styleClass="ui-button-help"
-                                                              immediate="true"  rendered="#{componentRenderer.administrator and model.status eq 'Draft'}"
-                                                              actionListener="#{loanFormDialog.show}">
-                                                <f:setPropertyActionListener value="#{model}"
-                                                                             target="#{loanFormDialog.model}" />
-
-                                                <p:ajax event="dialogReturn" update="loansTable" />
-                                            </p:commandButton>
-
-
-                                            <p:commandButton icon="fa fa-eye" title="View" 
+                                            <p:commandButton icon="fa fa-eye" title="View Details" 
                                                              styleClass="primary-button"  style="margin-left: 5px"
-
-                                                             action="#{loanProfileView.getViewPath}">
-                                                <f:setPropertyActionListener value="#{model}"
-                                                                             target="#{loanProfileView.model}" />
+                                                             update=":loanApplicationsView:detailsForm"
+                                                             actionListener="#{loanApplicationsView.loadSelectedLoanApplication(model)}"
+                                                             oncomplete="PF('details_dialog').show()"
+                                                             >
 
                                             </p:commandButton>
+
+
+
 
                                             <p:commandButton icon="fa fa-check" title="Mark as Approved " 
                                                              styleClass="success-button"  style="margin-left: 5px"
                                                              update="loanApplicationsView"
-                                                             rendered="#{model.status eq 'Submitted'}"
-                                                             action="#{loanApplicationsView.approveLoanApplication(model)}"/>
+                                                             rendered="#{model.status eq 'Submitted' or model.status==null}"
+                                                             action="#{loanApplicationsView.approveLoanApplication(model)}">
+                                                <p:confirm header="Confirmation"
+                                                           message="You are marking this application as approved. Do you wish to continue?"
+                                                           icon="ui-icon-alert" />
+                                            </p:commandButton>
 
                                             <p:commandButton icon="fa fa-check" title="Mark as disbursed" 
                                                              styleClass="success-button"  style="margin-left: 5px"
                                                              update="loanApplicationsView"
                                                              rendered="#{model.status eq 'Approved'}"
-                                                             action="#{loanApplicationsView.disburseLoanApplication(model)}"/>
+                                                             action="#{loanApplicationsView.disburseLoanApplication(model)}">
+                                                <p:confirm header="Confirmation"
+                                                           message="You are marking this application as disbursed. Do you wish to continue?"
+                                                           icon="ui-icon-alert" />
+                                            </p:commandButton>
 
                                             <p:commandButton icon="fa fa-check" title="Mark as cleared" 
                                                              styleClass="success-button"  style="margin-left: 5px"
                                                              update="loanApplicationsView"
-                                                             rendered="#{model.status eq 'Paid'}"
-                                                             action="#{loanApplicationsView.clearLoanApplication(model)}"/>
+                                                             rendered="#{model.status eq 'Running'}"
+                                                             action="#{loanApplicationsView.clearLoanApplication(model)}">
+                                                <p:confirm header="Confirmation"
+                                                           message="You are marking this application as cleared/paid. Do you wish to continue?"
+                                                           icon="ui-icon-alert" />
+                                            </p:commandButton>
 
                                             <p:commandButton icon="fa fa-check" title="Mark as rejected" 
                                                              styleClass="warning-button"  style="margin-left: 5px"
                                                              update="loanApplicationsView"
                                                              rendered="#{model.status eq 'Submitted'}"
-                                                             action="#{loanApplicationsView.rejectLoanApplication(model)}"/>
-
-
-
-
-
-
-
+                                                             action="#{loanApplicationsView.rejectLoanApplication(model)}">
+                                                <p:confirm header="Confirmation"
+                                                           message="You are marking this application as rejected. Do you wish to continue?"
+                                                           icon="ui-icon-alert" />
+                                            </p:commandButton>
                                             <p:commandButton icon="fa fa-trash" title="Delete"  
                                                              styleClass="ui-button-danger" style="margin-left: 5px"
                                                              action="#{loanApplicationsView.deleteAuthor(model)}"
-                                                             rendered="#{componentRenderer.administrator and  model.status eq 'Draft'}"
+                                                             rendered="#{componentRenderer.administrator and  model.status eq 'Submitted'}"
                                                              update="loansTable">
                                                 <p:confirm header="Confirmation"
-                                                           message="You are about to trash a loan application. Do you wish to continue?"
+                                                           message="You are about to trash this application. Do you wish to continue?"
                                                            icon="ui-icon-alert" />
                                             </p:commandButton>
 
@@ -224,17 +218,87 @@
 
                                     </p:dataTable>
 
-                                    <p:blockUI block="loanApplicationsView" trigger="searchBtn">
-                                        <p:graphicImage value="/resources/images/workingicon.png" />
-                                    </p:blockUI>
-
-
 
                                 </div>
                             </div>
                         </div>
                     </ui:fragment>
-                    <p:blockUI block="loanApplicationsView" >
+                    <p:dialog  resizable="true" widgetVar="details_dialog"
+                               width="600px"  closable="true"
+                               header="Application Details" 
+                               minHeight="40"   showEffect="fade" modal="true">
+                        <p:outputPanel id="detailsForm"  styleClass="ui-fluid" >
+                            <p:outputPanel rendered="#{not empty loanApplicationsView.selectedLoanApplication }" 
+                                           styleClass="p-grid">
+
+                                <div class="p-col-12 p-md-12 p-lg-3">
+                                    <h5>Capacity: <span>#{loanApplicationsView.selectedLoanApplication.creditRiskProfile.capacityScore}</span></h5>
+
+                                </div>
+                                <div class="p-col-12 p-md-12 p-lg-3">
+                                    <h5>Capital: <span>#{loanApplicationsView.selectedLoanApplication.creditRiskProfile.capitalScore}</span></h5>
+
+                                </div>
+                                <div class="p-col-12 p-md-12 p-lg-3">
+                                    <h5>Character: <span>#{loanApplicationsView.selectedLoanApplication.creditRiskProfile.characterScore}</span></h5>
+
+                                </div>
+                                <div class="p-col-12 p-md-12 p-lg-3">
+                                    <h5>Collateral: <span>#{loanApplicationsView.selectedLoanApplication.creditRiskProfile.collateralScore}</span></h5>
+
+                                </div>
+
+                              
+                                <div class="p-col-12 p-md-12 p-lg-6">
+                                    <p:outputLabel for="amount">Amount</p:outputLabel>
+                                    <p:inputNumber id="amount" disabled="true"
+                                                   value="#{loanApplicationsView.selectedLoanApplication.amount}"
+                                                   required="true"  />
+                                </div>
+
+                                <div class="p-col-12 p-md-12 p-lg-6">
+                                    <p:outputLabel for="days">Duration (Days)</p:outputLabel>
+                                    <p:inputNumber id="days" disabled="true"
+                                                   value="#{loanApplicationsView.selectedLoanApplication.proposedPaymentPeriodInDays}"
+                                                   required="true" placeholder="Proposed payment period" />
+                                </div>
+
+                                <p:outputPanel rendered="true" styleClass="p-field p-col-12 p-md-6">
+                                    <p:outputLabel for="select">Collateral</p:outputLabel>
+                                    <p:repeat id="select" var="collateral" value="#{loanApplicationsView.selectedLoanApplication.attachedCollaterals}" 
+                                                           >
+                                        <p>#{collateral.name}: (#{collateral.estimatedValue})</p>
+                                       
+
+                                    </p:repeat>
+                                </p:outputPanel>
+
+                                <p:outputPanel rendered="true" styleClass="p-field p-col-12 p-md-6">
+                                    <p:outputLabel for="reason">Reason</p:outputLabel>
+                                    <h:outputText id="reason" value="#{loanApplicationsView.selectedLoanApplication.loanRequestReason}" 
+                                                       >
+
+                                    </h:outputText>
+                                </p:outputPanel>
+
+                                <div class="p-col-12 p-md-12 p-lg-12">
+                                    <p:outputLabel for="deatils">Details</p:outputLabel>
+                                    <p:inputTextarea id="deatils" disabled="true"
+                                                     value="#{loanApplicationsView.selectedLoanApplication.reasonDescription}"
+                                                     required="true" placeholder="Enter extra details" />
+                                </div>
+
+
+
+
+                            </p:outputPanel>
+
+                        </p:outputPanel>
+
+                    </p:dialog>
+
+
+                    <p:blockUI block="loanApplicationsView" trigger="searchBtn" >
                         <p:graphicImage value="/resources/images/workingicon.png" />
                     </p:blockUI>    
                     <p:confirmDialog global="true">

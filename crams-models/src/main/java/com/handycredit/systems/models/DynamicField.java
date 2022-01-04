@@ -1,5 +1,6 @@
 package com.handycredit.systems.models;
 
+import com.handycredit.systems.constants.FieldType;
 import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -8,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
-import org.pahappa.systems.constants.FieldType;
 import org.sers.webutils.model.BaseEntity;
 
 @Entity

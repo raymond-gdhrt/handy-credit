@@ -34,18 +34,18 @@ public class CollateralFormDialog extends DialogForm<Collateral> {
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(CollateralFormDialog.class.getSimpleName());
-  
+
     private CollateralService businessService;
-    
+
     private List<CollateralStatus> statuses;
     private Business business;
-   
+
     @PostConstruct
     public void init() {
 
         this.businessService = ApplicationContextProvider.getApplicationContext().getBean(CollateralService.class);
-        this.statuses= Arrays.asList(CollateralStatus.values());
-     
+        this.statuses = Arrays.asList(CollateralStatus.values());
+
     }
 
     public CollateralFormDialog() {
@@ -54,11 +54,11 @@ public class CollateralFormDialog extends DialogForm<Collateral> {
 
     @Override
     public void persist() throws ValidationFailedException, OperationFailedException {
-      if(super.model.getBusiness()==null){
-      super.model.setBusiness(business);
-      }
-            this.businessService.saveInstance(super.model);
-            
+        if (super.model.getBusiness() == null) {
+            super.model.setBusiness(business);
+        }
+        this.businessService.saveInstance(super.model);
+
     }
 
     @Override
@@ -80,8 +80,12 @@ public class CollateralFormDialog extends DialogForm<Collateral> {
         this.statuses = statuses;
     }
 
-    
-   
+    public Business getBusiness() {
+        return business;
+    }
 
-  
+    public void setBusiness(Business business) {
+        this.business = business;
+    }
+
 }

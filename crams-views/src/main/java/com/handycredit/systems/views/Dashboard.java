@@ -4,6 +4,7 @@ import com.googlecode.genericdao.search.Search;
 import com.handycredit.systems.core.services.BusinessService;
 import com.handycredit.systems.core.services.LoanProviderService;
 import com.handycredit.systems.models.Business;
+import com.handycredit.systems.models.BusinessCreditProfile;
 import com.handycredit.systems.models.Loan;
 import com.handycredit.systems.models.LoanApplication;
 import com.handycredit.systems.models.LoanProvider;
@@ -87,6 +88,11 @@ public class Dashboard extends WebAppExceptionHandler implements Serializable {
 
     public void setLoggedInBusiness(Business loggedInBusiness) {
         this.loggedInBusiness = loggedInBusiness;
+    }
+    public BusinessCreditProfile calculateAverageProfile(){
+    
+    
+    
     }
 
 }

@@ -8,8 +8,10 @@ import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 
 import com.googlecode.genericdao.search.Search;
 import com.handycredit.systems.core.services.BusinessService;
+import com.handycredit.systems.core.services.CollateralService;
 import com.handycredit.systems.models.Business;
 import com.handycredit.systems.models.BusinessCreditHistory;
+import com.handycredit.systems.models.Collateral;
 import com.handycredit.systems.security.HyperLinks;
 import java.util.List;
 import java.util.logging.Level;
@@ -30,6 +32,7 @@ public class BusinessProfileView extends WebFormView<Business, BusinessProfileVi
     private Search search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE);
     private Business selectedBusiness;
     private List<BusinessCreditHistory> histories;
+     private List<Collateral> collaterals;
 
     @Override
     public void beanInit() {
@@ -46,6 +49,7 @@ public class BusinessProfileView extends WebFormView<Business, BusinessProfileVi
         this.search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE).addFilterEqual("business", super.model
         );
         businessService = ApplicationContextProvider.getApplicationContext().getBean(BusinessService.class);
+        this.collaterals=ApplicationContextProvider.getBean(CollateralService.class).getInstances(search, 0, 0);
 
     }
 
@@ -95,5 +99,15 @@ public class BusinessProfileView extends WebFormView<Business, BusinessProfileVi
     public void setHistories(List<BusinessCreditHistory> histories) {
         this.histories = histories;
     }
+
+    public List<Collateral> getCollaterals() {
+        return collaterals;
+    }
+
+    public void setCollaterals(List<Collateral> collaterals) {
+        this.collaterals = collaterals;
+    }
+    
+    
 
 }
