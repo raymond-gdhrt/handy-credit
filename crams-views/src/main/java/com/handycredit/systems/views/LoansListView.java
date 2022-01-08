@@ -13,6 +13,7 @@ import org.sers.webutils.server.core.service.excel.reports.ExcelReport;
 import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 
 import com.googlecode.genericdao.search.Search;
+import com.handycredit.systems.constants.LoanRequestReason;
 import com.handycredit.systems.core.services.BusinessCreditProfileService;
 import com.handycredit.systems.core.services.BusinessService;
 import com.handycredit.systems.core.services.CollateralService;
@@ -26,15 +27,12 @@ import com.handycredit.systems.models.LoanApplication;
 import com.handycredit.systems.security.HyperLinks;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Set;
 import org.primefaces.PrimeFaces;
-import org.sers.webutils.model.Country;
 import org.sers.webutils.model.RecordStatus;
 import org.sers.webutils.model.exception.OperationFailedException;
 import org.sers.webutils.model.exception.ValidationFailedException;
 import org.sers.webutils.model.utils.SearchField;
 import org.sers.webutils.model.utils.SortField;
-import org.sers.webutils.server.core.service.SetupService;
 import org.sers.webutils.server.shared.SharedAppData;
 
 @ManagedBean(name = "loansListView")
@@ -48,12 +46,11 @@ public class LoansListView extends PaginatedTableView<Loan, LoansListView, Dashb
     private Loan selectedLoan;
     private Search search;
     private List<SearchField> searchFields;
-    private List<Country> selectedCountries;
-    private List<Country> countries;
     private Business business;
     private SortField selectedSortField;
     private LoanApplication selectedLoanApplication;
     private BusinessCreditProfile creditProfile;
+    private List<LoanRequestReason> requestReasons;
 
     @PostConstruct
     public void init() {
@@ -62,7 +59,7 @@ public class LoansListView extends PaginatedTableView<Loan, LoansListView, Dashb
             new SearchField("Code", "code"), new SearchField("Email", "emailAddress"), new SearchField("Address", "physcialAddress")});
         this.business = ApplicationContextProvider.getBean(BusinessService.class).getBusinessByUserAccount(SharedAppData.getLoggedInUser());
         loanService = ApplicationContextProvider.getApplicationContext().getBean(LoanService.class);
-        this.countries = ApplicationContextProvider.getBean(SetupService.class).getAllCountries();
+        requestReasons= Arrays.asList(LoanRequestReason.values());
         reloadFilterReset();
     }
 
@@ -73,7 +70,7 @@ public class LoansListView extends PaginatedTableView<Loan, LoansListView, Dashb
     }
 
     @Override
-    public void reloadFilterReset() {
+    public void reloadFilterReset() { 
         this.search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE);
         List<LoanApplication> applications = ApplicationContextProvider.getBean(LoanApplicationService.class)
                 .getInstances(new Search().addFilterEqual("business", this.business), 0, 0);
@@ -82,7 +79,7 @@ public class LoansListView extends PaginatedTableView<Loan, LoansListView, Dashb
             appliedLoans.add(application.getLoan().getId());
         });
 
-        search.addFilterNotIn("id",appliedLoans);
+        search.addFilterNotIn("id", appliedLoans);
         super.setTotalRecords(loanService.countInstances(this.search));
         try {
             super.reloadFilterReset();
@@ -102,10 +99,10 @@ public class LoansListView extends PaginatedTableView<Loan, LoansListView, Dashb
 
     }
 
-    public void loadLoanApplication(Loan loan, Business business) {
-        selectedLoanApplication = new LoanApplication();
-        selectedLoanApplication.setBusiness(business);
-        selectedLoanApplication.setLoan(loan);
+    public void loadLoanApplication(Loan loan) {
+        this.selectedLoanApplication = new LoanApplication();
+        this.selectedLoanApplication.setBusiness(business);
+        this.selectedLoanApplication.setLoan(loan);
 
     }
 
@@ -114,7 +111,7 @@ public class LoansListView extends PaginatedTableView<Loan, LoansListView, Dashb
         try {
             ApplicationContextProvider.getBean(LoanApplicationService.class).saveInstance(loanApplication);
             PrimeFaces.current().executeScript("PF('loan_application_dialog').hide()");
-
+            this.selectedLoanApplication = null;
         } catch (Exception ex) {
             UiUtils.ComposeFailure("Action failed", ex.getLocalizedMessage());
         }
@@ -168,22 +165,6 @@ public class LoansListView extends PaginatedTableView<Loan, LoansListView, Dashb
         this.selectedLoan = selectedLoan;
     }
 
-    public List<Country> getSelectedCountries() {
-        return selectedCountries;
-    }
-
-    public void setSelectedCountries(List<Country> selectedCountries) {
-        this.selectedCountries = selectedCountries;
-    }
-
-    public List<Country> getCountries() {
-        return countries;
-    }
-
-    public void setCountries(List<Country> countries) {
-        this.countries = countries;
-    }
-
     public SortField getSelectedSortField() {
         return selectedSortField;
     }
@@ -215,5 +196,15 @@ public class LoansListView extends PaginatedTableView<Loan, LoansListView, Dashb
     public void setCreditProfile(BusinessCreditProfile creditProfile) {
         this.creditProfile = creditProfile;
     }
+
+    public List<LoanRequestReason> getRequestReasons() {
+        return requestReasons;
+    }
+
+    public void setRequestReasons(List<LoanRequestReason> requestReasons) {
+        this.requestReasons = requestReasons;
+    }
+    
+    
 
 }

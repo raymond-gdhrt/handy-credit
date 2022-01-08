@@ -11,5 +11,6 @@ package com.handycredit.systems.constants;
  * @author RayGdhrt
  */
 public enum LoanProviderType {
-SACCO,Moneylender;
+SACCO,
+Moneylender;
 }

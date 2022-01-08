@@ -164,16 +164,7 @@
             <version>3.12.1.GA</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.11</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>3.9</version>
-        </dependency>
+      
 
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -411,18 +402,6 @@
         </dependency>
 
        
-
-        <dependency>
-            <groupId>net.glxn</groupId>
-            <artifactId>qrgen</artifactId>  <!-- QR code support -->
-            <version>1.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>itextpdf</artifactId>
-            <version>5.5.6</version>
-        </dependency>
 
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

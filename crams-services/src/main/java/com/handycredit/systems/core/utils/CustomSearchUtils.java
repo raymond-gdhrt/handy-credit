@@ -92,16 +92,15 @@ public class CustomSearchUtils {
         return search;
     }
 
-   
-	public static Search genereateSearchObjectForUsers(String query, Gender gender, Country country, SortField sortField) {
+    public static Search genereateSearchObjectForUsers(String query, Gender gender, Country country, SortField sortField) {
         Search search = generateSearchTerms(query, Arrays.asList("username", "firstName", "lastName", "emailAddress"));
-        
+
         if (gender != null) {
             search.addFilterEqual("gender", gender);
         }
-        
-        if(country != null) {
-        	search.addFilterEqual("country", country);
+
+        if (country != null) {
+            search.addFilterEqual("country", country);
         }
 
         if (sortField != null) {
@@ -109,87 +108,87 @@ public class CustomSearchUtils {
         }
 
         return search;
-	}
+    }
 
+    public static Search genereateSearchObjectForTransactionRanges(String searchTerm, SortField sortField) {
+        Search search = generateSearchTerms(searchTerm, Arrays.asList("depositCharge", "withdrawCharge"));
 
-	public static Search genereateSearchObjectForTransactionRanges(String searchTerm, SortField sortField) {
-		Search search = generateSearchTerms(searchTerm, Arrays.asList("depositCharge", "withdrawCharge"));
-		
-		if(sortField != null) {
-			search.addSort(sortField.getSort());
-		}
-		
-		return search;
-	}
+        if (sortField != null) {
+            search.addSort(sortField.getSort());
+        }
 
-	public static Search genereateSearchObjectForRanges(String searchTerm, SortField sortField) {
-		Search search = generateSearchTerms(searchTerm, Arrays.asList("minimum", "maximum"));
-		
-		if(sortField != null) {
-			search.addSort(sortField.getSort());
-		}
-		
-		return search;
-	}
+        return search;
+    }
 
-	public static Search genereateSearchObjectForApiRequests(String searchTerm, EndPointCategory category, 
-			Date dateFrom, Date dateTo, SortField sortField) {
-		Search search = generateSearchTerms(searchTerm, Arrays.asList("endPoint", "requesterIPAddress", "postBody", "otherDataAsJSON", "username"));
+    public static Search genereateSearchObjectForRanges(String searchTerm, SortField sortField) {
+        Search search = generateSearchTerms(searchTerm, Arrays.asList("minimum", "maximum"));
+
+        if (sortField != null) {
+            search.addSort(sortField.getSort());
+        }
+
+        return search;
+    }
+
+    public static Search genereateSearchObjectForApiRequests(String searchTerm, EndPointCategory category,
+            Date dateFrom, Date dateTo, SortField sortField) {
+        Search search = generateSearchTerms(searchTerm, Arrays.asList("endPoint", "requesterIPAddress", "postBody", "otherDataAsJSON", "username"));
 
         if (category != null) {
             search.addFilterEqual("endPointCategory", category);
         }
-        
-        if(dateFrom != null) {
-        	search.addFilterGreaterOrEqual("dateCreated", dateFrom);
-        }
-        
-        if(dateTo != null) {
-        	search.addFilterLessOrEqual("dateCreated", dateTo);
+
+        if (dateFrom != null) {
+            search.addFilterGreaterOrEqual("dateCreated", dateFrom);
         }
 
-		if(sortField != null) {
-			search.addSort(sortField.getSort());
-		}
-        
-		return search;
-	}
-	
-	
-	
-	public static Search genereateSearchObjectForCompanyApiRequests(String searchTerm, String name, 
-			Date dateFrom, Date dateTo, SortField sortField) {
-		Search search = generateSearchTerms(searchTerm, Arrays.asList("endPoint", "requesterIPAddress", "postBody", "otherDataAsJSON", "username"));
+        if (dateTo != null) {
+            search.addFilterLessOrEqual("dateCreated", dateTo);
+        }
+
+        if (sortField != null) {
+            search.addSort(sortField.getSort());
+        }
+
+        return search;
+    }
+
+    public static Search genereateSearchObjectForCompanyApiRequests(String searchTerm, String name,
+            Date dateFrom, Date dateTo, SortField sortField) {
+        Search search = generateSearchTerms(searchTerm, Arrays.asList("endPoint", "requesterIPAddress", "postBody", "otherDataAsJSON", "username"));
 
         if (name != null) {
             search.addFilterEqual("name", name);
         }
-        
-        if(dateFrom != null) {
-        	search.addFilterGreaterOrEqual("dateCreated", dateFrom);
-        }
-        
-        if(dateTo != null) {
-        	search.addFilterLessOrEqual("dateCreated", dateTo);
+
+        if (dateFrom != null) {
+            search.addFilterGreaterOrEqual("dateCreated", dateFrom);
         }
 
-		if(sortField != null) {
-			search.addSort(sortField.getSort());
-		}
-        
-		return search;
-	}
-	
-	public static Search genereateSearchObjectForApiRequestsByStatus(String searchTerm, boolean authSuccessful) {
-		Search search = generateSearchTerms(searchTerm, Arrays.asList("endPoint"));
+        if (dateTo != null) {
+            search.addFilterLessOrEqual("dateCreated", dateTo);
+        }
 
-            search.addFilterEqual("authSuccessful", authSuccessful);
-        
-		return search;
-	}
+        if (sortField != null) {
+            search.addSort(sortField.getSort());
+        }
+
+        return search;
+    }
+
+    public static Search genereateSearchObjectForApiRequestsByStatus(String searchTerm, boolean authSuccessful) {
+        Search search = generateSearchTerms(searchTerm, Arrays.asList("endPoint"));
+
+        search.addFilterEqual("authSuccessful", authSuccessful);
+
+        return search;
+    }
 
     private static String StringEscapeUtils(String token) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (token == null) {
+            return null;
+        }
+        return StringUtils.replace(token, "'", "''");
     }
-	
+
 }
