@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import org.apache.commons.lang.WordUtils;
+import org.apache.commons.text.WordUtils;
 import org.primefaces.PrimeFaces;
 import org.sers.webutils.client.views.presenters.ViewPath;
 import org.sers.webutils.client.views.presenters.WebFormView;

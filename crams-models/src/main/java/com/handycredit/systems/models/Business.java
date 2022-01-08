@@ -28,7 +28,7 @@ import org.sers.webutils.model.security.User;
  *
  * @author RayGdhrt
  */
-@Entity
+ @Entity
 @Table(name = "businesses")
 public class Business extends BaseEntity {
 

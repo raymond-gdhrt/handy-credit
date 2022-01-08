@@ -30,7 +30,7 @@ public abstract class GenericServiceImpl<T extends BaseEntity> extends BaseDAOIm
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.pahappa.systems.akinamama.utils.backend.core.services.GenericService#
+	 * com.handycredit.systems.core.services.GenericService#
 	 * countInstances(com.googlecode.genericdao.search.Search)
 	 */
 	@Override

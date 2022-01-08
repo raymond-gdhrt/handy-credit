@@ -5,9 +5,11 @@
  */
 package com.handycredit.systems.views;
 
+import com.handycredit.systems.constants.Transactiontype;
 import com.handycredit.systems.constants.UgandanDistrict;
-import com.handycredit.systems.core.services.BusinessService;
+import com.handycredit.systems.core.services.TransactionDataService;
 import com.handycredit.systems.models.Business;
+import com.handycredit.systems.models.BusinessTransaction;
 import com.handycredit.systems.security.HyperLinks;
 import java.util.Arrays;
 import java.util.List;
@@ -23,32 +25,35 @@ import org.sers.webutils.server.core.utils.ApplicationContextProvider;
  *
  * @author RayGdhrt
  */
-@ManagedBean(name = "businessFormDialog", eager = true)
+@ManagedBean(name = "transactionFormDialog", eager = true)
 @SessionScoped
-public class BusinessFormDialog extends DialogForm<Business> {
+public class TransactionDataFormDialog extends DialogForm<BusinessTransaction> {
 
     private static final long serialVersionUID = 1L;
-    private static final Logger LOGGER = Logger.getLogger(BusinessFormDialog.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(TransactionDataFormDialog.class.getSimpleName());
   
-    private BusinessService businessService;
+    private TransactionDataService businessService;
+    private Business business;
     
-    private List<UgandanDistrict> districts;
+    private List<Transactiontype> types;
    
     @PostConstruct
     public void init() {
 
-        this.businessService = ApplicationContextProvider.getApplicationContext().getBean(BusinessService.class);
-        this.districts= Arrays.asList(UgandanDistrict.values());
+        this.businessService = ApplicationContextProvider.getApplicationContext().getBean(TransactionDataService.class);
+        this.types= Arrays.asList(Transactiontype.values());
      
     }
 
-    public BusinessFormDialog() {
-        super(HyperLinks.BUSINESS_DIALOG_FORM, 700, 600);
+    public TransactionDataFormDialog() {
+        super(HyperLinks.TRANSACTION_DATA_DIALOG_FORM, 800, 400);
     }
 
     @Override
     public void persist() throws ValidationFailedException, OperationFailedException {
-      
+      if(super.model.getBusiness()==null){
+      super.model.setBusiness(business);
+      }
             this.businessService.saveInstance(super.model);
             
     }
@@ -56,7 +61,7 @@ public class BusinessFormDialog extends DialogForm<Business> {
     @Override
     public void resetModal() {
         super.resetModal();
-        super.model = new Business();
+        super.model = new BusinessTransaction();
     }
 
     @Override
@@ -64,13 +69,23 @@ public class BusinessFormDialog extends DialogForm<Business> {
         super.setFormProperties();
     }
 
-    public List<UgandanDistrict> getDistricts() {
-        return districts;
+    public Business getBusiness() {
+        return business;
     }
 
-    public void setDistricts(List<UgandanDistrict> districts) {
-        this.districts = districts;
+    public void setBusiness(Business business) {
+        this.business = business;
     }
+
+    public List<Transactiontype> getTypes() {
+        return types;
+    }
+
+    public void setTypes(List<Transactiontype> types) {
+        this.types = types;
+    }
+
+    
 
    
 

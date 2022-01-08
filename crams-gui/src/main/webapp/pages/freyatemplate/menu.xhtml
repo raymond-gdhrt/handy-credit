@@ -29,7 +29,17 @@
                     <p:menuitem id="businesesPV" rendered="#{componentRenderer.businessOwner and not componentRenderer.administrator }"
                                 value="My profile"
                                 icon="pi pi-briefcase" 
-                                url="/BusinessProfile" />
+                                url="/pages/businesses/BusinessProfileView.xhtml" />
+                    
+                     <p:menuitem id="transactions" rendered="#{componentRenderer.businessOwner and not componentRenderer.administrator }"
+                                value="Business performance"
+                                icon="pi pi-briefcase" 
+                                url="/pages/businesses/BusinessPerformanceView.xhtml" />
+                     
+                     <p:menuitem id="creditHistory" rendered="#{componentRenderer.businessOwner and not componentRenderer.administrator }"
+                                value="Credit history"
+                                icon="pi pi-briefcase" 
+                                url="/pages/businesses/CreditHistoryView.xhtml" />
 
                     <p:menuitem id="loanProviders" 
                                 rendered="#{componentRenderer.administrator}"

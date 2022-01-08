@@ -1,0 +1,4 @@
+Subject,Source,Amount,InterestRate,RateType,ExpectedClearanceDate,ActualClearanceDate
+Salary Loan from centenary,SACCO,2500000,12.01,monthly,31/05/2013,31/08/2014
+Small loan for business expansion,MoneyLender,3600000,5.2,yearly,22/01/2015,22/06/2016
+ business expansion loan,Bank,730000,4.5,quaterly,5/12/2018,5/8/2018

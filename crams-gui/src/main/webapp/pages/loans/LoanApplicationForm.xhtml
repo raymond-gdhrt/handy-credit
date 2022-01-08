@@ -4,7 +4,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:pe="http://primefaces.org/ui/extensions"
-                template="/pages/freyaatemplate/template.xhtml">
+                template="/pages/freyatemplate/template.xhtml">
 
     <ui:define name="content">
         <h:form id="loanApplicationForm" enctype="multipart/form-data">
@@ -27,15 +27,15 @@
                                         </div>
                                         
                                          <div class="p-col-12 p-md-12 p-lg-6">
-                                            <p:outputLabel for="amount">Duration (Days)</p:outputLabel>
-                                            <p:inputNumber id="amount"
+                                            <p:outputLabel for="days">Duration (Days)</p:outputLabel>
+                                            <p:inputNumber id="days"
                                                          value="#{loanApplicationForm.model.proposedPaymentPeriodInDays}"
                                                          required="true" placeholder="Proposed payment period" />
                                         </div>
                                         
                                          <div class="p-col-12 p-md-12 p-lg-6">
                                             <p:outputLabel for="deatils">Details</p:outputLabel>
-                                            <p:inputTextarea id="amount"
+                                            <p:inputTextarea id="deatils"
                                                          value="#{loanApplicationForm.model.reasonDescription}"
                                                          required="true" placeholder="Enter extra details" />
                                         </div>
@@ -61,7 +61,8 @@
                                 <div class="ui-g-1">
                                     <p:button value="Back" styleClass="ui-button-secondary"
                                               icon="fa fa-backward" 
-                                              outcome="#{loanApplicationForm.parentView}" />
+                                              
+                                              target="/pages/Loans/LoansListView" />
                                 </div>
 
                             </div>

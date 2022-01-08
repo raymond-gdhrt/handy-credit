@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/pages/freyatemplate/dialog-template.xhtml">
+    <ui:define name="head">
+        <style type="text/css">
+            .capitalized {
+                text-transform: capitalize;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <title>#{transactionFormDialog.model.isNew()?'Add transaction':transactionFormDialog.business.name}</title>
+        <h:form id="transactionFormDialog" styleClass="p-grid">
+            <div class="p-col-12 card" >
+
+                <div class="ui-col-12 ui-md-6">
+                    <h5>Subject</h5>
+                    <div class="ui-inputgroup">
+                        <p:inputText id="sub" value="#{transactionFormDialog.model.subject}" required="true" />
+
+                    </div>
+                </div>
+                <div class="ui-col-12 ui-md-6">
+                    <h5>Amount</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:inputNumber value="#{transactionFormDialog.model.amount}" 
+                                       required="true" />
+                    </div>
+                </div>
+
+                <div class="ui-col-12 ui-md-6">
+                    <h5>Type</h5>
+                    <div class="ui-inputgroup">
+                        <p:selectOneRadio id="country" value="#{transactionFormDialog.model.transactiontype}">
+                            <f:selectItems value="#{transactionFormDialog.types}"/>
+                        </p:selectOneRadio>
+
+                    </div>
+                </div>
+
+
+
+
+                <div class="ui-col-12 ui-md-6">
+                    <h5>Date</h5>
+                    <div class="ui-inputgroup">
+
+                        <p:calendar maxdate="#{now}" value="#{transactionFormDialog.model.date}" required="true" />
+                    </div>
+                </div>
+                <div class="ui-col-12 ui-md-12" style="margin-top: 10px;">
+                    <div class="p-grid p-justify-end">
+                        <div class="p-col-2">
+                            <p:commandButton value="Cancel" 
+                                             validateClient="false"
+                                             process="@this"
+                                             action="#{transactionFormDialog.hide}"
+                                             styleClass="ui-button-outlined ui-button-help" />
+                        </div>
+                        <div class="p-col-2">
+                            <p:commandButton value="Save" 
+                                             process="transactionFormDialog @this"
+                                             actionListener="#{transactionFormDialog.save}"
+                                             update="transactionFormDialog" validateClient="true" />
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

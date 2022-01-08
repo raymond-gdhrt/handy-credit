@@ -8,9 +8,8 @@ import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import java.util.Date;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
 import com.handycredit.systems.constants.EndPointCategory;
+import org.apache.commons.lang3.StringUtils;
 import org.sers.webutils.model.Country;
 import org.sers.webutils.model.Gender;
 import org.sers.webutils.model.RecordStatus;
@@ -42,7 +41,7 @@ public class CustomSearchUtils {
     private static boolean generateSearchTerms(List<String> searchFields, String query, List<Filter> filters) {
         if (searchFields != null && !searchFields.isEmpty()) {
             for (String token : query.replaceAll("  ", " ").split(" ")) {
-                String searchTerm = "%" + StringEscapeUtils.escapeSql(token) + "%";
+                String searchTerm = "%" + StringEscapeUtils(token) + "%";
                 Filter[] orFilters = new Filter[searchFields.size()];
                 int counter = 0;
                 for (String searchField : searchFields) {
@@ -188,5 +187,9 @@ public class CustomSearchUtils {
         
 		return search;
 	}
+
+    private static String StringEscapeUtils(String token) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 	
 }
