@@ -38,7 +38,8 @@ public class LoanApplication extends BaseEntity {
     private LoanRequestReason loanRequestReason;
     private String reasonDescription;
     private Business business;
-    private LoanApplicationStatus status=LoanApplicationStatus.Submitted;
+    private float neededAmount;
+    private LoanApplicationStatus status = LoanApplicationStatus.Submitted;
     private Date dateSubmitted;
     private Date dateApproved;
     private Date dateRejected;
@@ -225,7 +226,14 @@ public class LoanApplication extends BaseEntity {
     public void setStatus(LoanApplicationStatus status) {
         this.status = status;
     }
-    
-    
+
+    @Column(name = "needed_amount", length = 100)
+    public float getNeededAmount() {
+        return neededAmount;
+    }
+
+    public void setNeededAmount(float neededAmount) {
+        this.neededAmount = neededAmount;
+    }
 
 }

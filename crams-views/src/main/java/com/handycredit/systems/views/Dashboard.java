@@ -60,7 +60,7 @@ public class Dashboard extends WebAppExceptionHandler implements Serializable {
 
     public void initLoanProvidersData() {
         this.loggedInLoanProvider = ApplicationContextProvider.getBean(LoanProviderService.class).getLoanProviderByUserAccount(loggedInUser);
-        Search search = new Search().addFilterEqual("loanProvider", this.loggedInBusiness);
+        Search search = new Search().addFilterEqual("loanProvider", this.loggedInLoanProvider);
     }
 
     public void initAdminData() {
@@ -89,10 +89,6 @@ public class Dashboard extends WebAppExceptionHandler implements Serializable {
     public void setLoggedInBusiness(Business loggedInBusiness) {
         this.loggedInBusiness = loggedInBusiness;
     }
-    public BusinessCreditProfile calculateAverageProfile(){
-    
-    
-    
-    }
+   
 
 }
