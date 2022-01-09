@@ -17,15 +17,16 @@ import com.handycredit.systems.security.HyperLinks;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.bean.ViewScoped;
 import org.sers.webutils.client.views.presenters.WebFormView;
 import org.sers.webutils.model.RecordStatus;
 import org.sers.webutils.model.exception.OperationFailedException;
 import org.sers.webutils.server.shared.SharedAppData;
 
 @ManagedBean(name = "businessProfileView")
-@SessionScoped
+@ViewScoped
 @ViewPath(path = HyperLinks.BUSINESS_PROFILE_VIEW)
-public class BusinessProfileView extends WebFormView<Business, BusinessProfileView, BusinessesView> {
+public class BusinessProfileView extends WebFormView<Business, BusinessProfileView, Dashboard> {
 
     private static final long serialVersionUID = 1L;
     private BusinessService businessService;
@@ -47,19 +48,16 @@ public class BusinessProfileView extends WebFormView<Business, BusinessProfileVi
             super.model = this.businessService.getBusinessByUserAccount(SharedAppData.getLoggedInUser());
 
         }
-    }
-
-    @Override
-    public void pageLoadInit() {
-        this.search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE).addFilterEqual("business", super.model
-        );
-        businessService = ApplicationContextProvider.getApplicationContext().getBean(BusinessService.class);
         this.loanApplications = ApplicationContextProvider.getBean(LoanApplicationService.class).getInstances(new Search()
                 .addFilterEqual("business", super.model)
                 .addFilterEqual("recordStatus", RecordStatus.ACTIVE), 0, 0);
         this.collaterals = this.collateralService.getInstances(new Search()
                 .addFilterEqual("business", super.model)
                 .addFilterEqual("recordStatus", RecordStatus.ACTIVE), 0, 0);
+    }
+
+    @Override
+    public void pageLoadInit() {
 
     }
 
@@ -84,8 +82,6 @@ public class BusinessProfileView extends WebFormView<Business, BusinessProfileVi
         this.selectedLoanApplication = loanApplication;
 
     }
-
-  
 
     public void deleteCollateral(Collateral collateral) {
 

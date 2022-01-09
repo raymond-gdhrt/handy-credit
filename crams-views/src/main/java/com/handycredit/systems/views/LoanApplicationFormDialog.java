@@ -5,23 +5,24 @@
  */
 package com.handycredit.systems.views;
 
+import com.googlecode.genericdao.search.Search;
 import com.handycredit.systems.constants.CollateralStatus;
+import com.handycredit.systems.constants.LoanRequestReason;
+import com.handycredit.systems.core.services.BusinessCreditProfileService;
 import com.handycredit.systems.core.services.CollateralService;
-import com.handycredit.systems.core.utils.AppUtils;
+import com.handycredit.systems.core.services.LoanApplicationService;
 import com.handycredit.systems.models.Business;
+import com.handycredit.systems.models.BusinessCreditProfile;
 import com.handycredit.systems.models.Collateral;
+import com.handycredit.systems.models.LoanApplication;
 import com.handycredit.systems.security.HyperLinks;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
-import org.apache.commons.io.IOUtils;
-import org.primefaces.event.FileUploadEvent;
+import org.sers.webutils.model.RecordStatus;
 import org.sers.webutils.model.exception.OperationFailedException;
 import org.sers.webutils.model.exception.ValidationFailedException;
 import org.sers.webutils.server.core.utils.ApplicationContextProvider;
@@ -30,29 +31,30 @@ import org.sers.webutils.server.core.utils.ApplicationContextProvider;
  *
  * @author RayGdhrt
  */
-@ManagedBean(name = "collateralFormDialog", eager = true)
+@ManagedBean(name = "loanApplicationFormDialog", eager = true)
 @SessionScoped
-public class CollateralFormDialog extends DialogForm<Collateral> {
+public class LoanApplicationFormDialog extends DialogForm<LoanApplication> {
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(CollateralFormDialog.class.getSimpleName());
-
-    private CollateralService businessService;
-
+    private LoanApplicationService loanApplicationService;
+    private List<LoanRequestReason> requestReasons;
     private List<CollateralStatus> statuses;
     private Business business;
+    private BusinessCreditProfile creditProfile;
     private boolean editDetails=true;
 
     @PostConstruct
     public void init() {
 
-        this.businessService = ApplicationContextProvider.getApplicationContext().getBean(CollateralService.class);
+        this.loanApplicationService = ApplicationContextProvider.getBean(LoanApplicationService.class);
         this.statuses = Arrays.asList(CollateralStatus.values());
+        requestReasons = Arrays.asList(LoanRequestReason.values());
 
     }
 
-    public CollateralFormDialog() {
-        super(HyperLinks.COLLATERAL_DIALOG_FORM, 700, 600);
+    public LoanApplicationFormDialog() {
+        super(HyperLinks.LOAN_APPLICATION_FORM_DIALOG, 700, 600);
     }
 
     @Override
@@ -60,37 +62,28 @@ public class CollateralFormDialog extends DialogForm<Collateral> {
         if (super.model.getBusiness() == null) {
             super.model.setBusiness(business);
         }
-        this.businessService.saveInstance(super.model);
+        this.loanApplicationService.saveInstance(super.model);
 
     }
 
-    /*
-    Upload images to cloudinary
-     */
-    public void imageUploadEvent(FileUploadEvent event) {
-        try {
-            if (super.model.isNew()) {
-                super.model = this.businessService.saveInstance(super.model);
-            }
+    public List<Collateral> loadCollaterals(Business business) {
 
-            byte[] contents = IOUtils.toByteArray(event.getFile().getInputstream());
-            String imageUrl = new AppUtils().uploadCloudinaryImage(contents, "crams_collaterals/" + super.model.getId());
-            System.out.println("Image url = " + imageUrl);
-
-            super.model.setAttachementLink(imageUrl);
-            super.model = businessService.saveInstance(super.model);
-
-        } catch (Exception ex) {
-            FacesMessage msg = new FacesMessage("Failed", "Image upload failed");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            Logger.getLogger(CollateralFormDialog.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        return ApplicationContextProvider.getBean(CollateralService.class)
+                .getInstances(new Search()
+                        .addFilterEqual("recordStatus", RecordStatus.ACTIVE)
+                        .addFilterEqual("business", business), 0, 0);
     }
 
+    public void calculateCreditProfile() throws ValidationFailedException, OperationFailedException{
+    this.creditProfile= ApplicationContextProvider.getBean(BusinessCreditProfileService.class).createProfile(super.model);
+    
+    }
+    
     @Override
     public void resetModal() {
         super.resetModal();
-        super.model = new Collateral();
+        super.model = new LoanApplication();
+        this.creditProfile=null;
     }
 
     @Override
@@ -114,12 +107,12 @@ public class CollateralFormDialog extends DialogForm<Collateral> {
         this.business = business;
     }
 
-    public CollateralService getBusinessService() {
-        return businessService;
+    public List<LoanRequestReason> getRequestReasons() {
+        return requestReasons;
     }
 
-    public void setBusinessService(CollateralService businessService) {
-        this.businessService = businessService;
+    public void setRequestReasons(List<LoanRequestReason> requestReasons) {
+        this.requestReasons = requestReasons;
     }
 
     public boolean isEditDetails() {
@@ -130,4 +123,13 @@ public class CollateralFormDialog extends DialogForm<Collateral> {
         this.editDetails = editDetails;
     }
 
+    public BusinessCreditProfile getCreditProfile() {
+        return creditProfile;
+    }
+
+    public void setCreditProfile(BusinessCreditProfile creditProfile) {
+        this.creditProfile = creditProfile;
+    }
+
+  
 }

@@ -90,13 +90,13 @@
 
 
                                     <h4>More details</h4>
-                                     <h5>Date of opening: <span style="font-weight: lighter"><h:outputText value="#{businessProfileView.model.dateOfOpening}">
+                                    <h5>Date of opening: <span style="font-weight: lighter"><h:outputText value="#{businessProfileView.model.dateOfOpening}">
                                                 <f:convertDateTime pattern="dd-MMM-yyyy 'at' HH:MM a"/>
                                             </h:outputText></span> </h5>
                                     <h5>Signup date: <span style="font-weight: lighter"><h:outputText value="#{businessProfileView.model.dateCreated}">
                                                 <f:convertDateTime pattern="dd-MMM-yyyy 'at' HH:MM a"/>
                                             </h:outputText></span> </h5>
-                                  
+
                                 </div>
                             </div>
                         </div>
@@ -107,38 +107,113 @@
                             <p:tabView>
 
                                 <p:tab title="Loan applications" >
+                                    <p:dataTable var="loanApplication"   rowIndexVar="row" rows="10" value="#{businessProfileView.loanApplications}">
+                                        <f:facet name="header"  >
+                                            <div style="display: flex">
+                                                <h5>#{businessProfileView.loanApplications.size() } records found</h5>
 
+                                            </div>
+                                        </f:facet>
+
+                                        <p:column headerText="Loan name">
+
+                                            <h:outputText value="#{loanApplication.loan.title}" />
+                                        </p:column>
+
+                                        <p:column headerText="Amount requested">
+
+                                            <h:outputText value="#{loanApplication.amount}" />
+                                        </p:column>
+
+                                        <p:column headerText="Request reason">
+
+                                            <h:outputText value="#{loanApplication.loanRequestReason.uiName}" />
+                                        </p:column>
+
+                                        <p:column headerText="Status">
+
+                                            <h:outputText value="#{loanApplication.status}" />
+                                        </p:column>
+
+                                        <p:column headerText="Date added">
+
+                                            <h:outputText value="#{loanApplication.dateCreated}" />
+                                        </p:column>
+                                        <p:column style="text-align: center" headerText="Action">
+                                            <p:commandButton title="View"  process="@this" style="width: 10%; margin-left: 0px"
+                                                             actionListener="#{loanApplicationFormDialog.show}" >
+                                                <f:setPropertyActionListener value="#{loanApplication}" target="#{loanApplicationFormDialog.model}" />
+                                                <f:setPropertyActionListener value="#{false}" target="#{loanApplicationFormDialog.editDetails}" />
+
+                                                <f:setPropertyActionListener value="#{businessProfileView.model}" target="#{loanApplicationFormDialog.business}" />
+
+                                            </p:commandButton>
+                                            <p:commandButton value="Edit"  process="@this" style="width: 10%; margin-left: 5px"
+                                                             actionListener="#{loanApplicationFormDialog.show}" >
+                                                <f:setPropertyActionListener value="#{null}" target="#{loanApplicationFormDialog.model}" />
+                                                <f:setPropertyActionListener value="#{true}" target="#{loanApplicationFormDialog.editDetails}" />
+                                                <f:setPropertyActionListener value="#{businessProfileView.model}" target="#{loanApplicationFormDialog.business}" />
+
+                                            </p:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
 
                                 </p:tab>
-                                
-                                  <p:tab title="Collaterals" >
-                                      <p:dataTable var="collateral" rows="10" value="#{businessProfileView.collaterals}">
-                                          <f:facet name="header" >
-                                              
-                                              <p:commandButton value="Add new" process="@this"
-                                                               actionListener="#{collateralFormDialog.show}" >
-                                                  <f:setPropertyActionListener value="#{null}" target="#{collateralFormDialog.model}" />
-                                                  <f:setPropertyActionListener value="#{businessProfileView.model}" target="#{collateralFormDialog.business}" />
-                                                  
-                                              </p:commandButton>
-                                          </f:facet>
-                                          
-                                          <p:column headerText="Name">
-                                              
-                                              <h:outputText value="#{collateral.name}" />
-                                          </p:column>
-                                          
-                                          <p:column headerText="Estimated value">
-                                              
-                                              <h:outputText value="#{collateral.estimatedValue}" />
-                                          </p:column>
-                                          
-                                          <p:column headerText="Status">
-                                              
-                                               <h:outputText value="#{collateral.status}" />
-                                          </p:column>
-                                          
-                                      </p:dataTable>
+
+                                <p:tab title="Collaterals" >
+                                    <p:dataTable var="collateral"   rowIndexVar="row" rows="10" value="#{businessProfileView.collaterals}">
+                                        <f:facet name="header"  >
+                                            <div style="display: flex">
+                                                <h5>#{businessProfileView.collaterals.size() } records found</h5>
+                                                <p:commandButton value="Add new"  process="@this" style="width: 10%; margin-left: auto"
+                                                                 actionListener="#{collateralFormDialog.show}" >
+                                                    <f:setPropertyActionListener value="#{null}" target="#{collateralFormDialog.model}" />
+                                                    <f:setPropertyActionListener value="#{businessProfileView.model}" target="#{collateralFormDialog.business}" />
+
+                                                </p:commandButton>
+                                            </div>
+                                        </f:facet>
+
+                                        <p:column headerText="Name">
+
+                                            <h:outputText value="#{collateral.name}" />
+                                        </p:column>
+
+                                        <p:column headerText="Estimated value">
+
+                                            <h:outputText value="#{collateral.estimatedValue}" />
+                                        </p:column>
+
+                                        <p:column headerText="Status">
+
+                                            <h:outputText value="#{collateral.status}" />
+                                        </p:column>
+
+                                        <p:column headerText="Date added">
+
+                                            <h:outputText value="#{collateral.dateCreated}" />
+                                        </p:column>
+
+                                        <p:column style="text-align: center" headerText="Action">
+
+                                            <p:commandButton title="View"  process="@this" style="width: 10%; margin-left: 0px"
+                                                             actionListener="#{collateralFormDialog.show}" >
+                                                <f:setPropertyActionListener value="#{collateral}" target="#{collateralFormDialog.model}" />
+                                                <f:setPropertyActionListener value="#{false}" target="#{collateralFormDialog.editDetails}" />
+
+                                                <f:setPropertyActionListener value="#{businessProfileView.model}" target="#{collateralFormDialog.business}" />
+
+                                            </p:commandButton>
+                                            <p:commandButton value="Edit"  process="@this" style="width: 10%; margin-left: 5px"
+                                                             actionListener="#{collateralFormDialog.show}" >
+                                                <f:setPropertyActionListener value="#{null}" target="#{collateralFormDialog.model}" />
+                                                <f:setPropertyActionListener value="#{true}" target="#{collateralFormDialog.editDetails}" />
+                                                <f:setPropertyActionListener value="#{businessProfileView.model}" target="#{collateralFormDialog.business}" />
+
+                                            </p:commandButton>
+                                        </p:column>
+
+                                    </p:dataTable>
 
                                 </p:tab>
                             </p:tabView>
