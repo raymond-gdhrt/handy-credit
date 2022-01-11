@@ -19,10 +19,10 @@ import org.sers.webutils.model.BaseEntity;
 public class SystemSetting extends BaseEntity {
 
     private String systemName;
-    private String mailSenderSmtpHost = "smtp.sendgrid.net";
+    private String mailSenderSmtpHost = "smtp.gmail.com";
     private String mailSenderSmtpPort = "587";
-    private String mailSenderAddress="apikey";
-    private String mailSenderPassword="";
+    private String mailSenderAddress="credithandy@gmail.com";
+    private String mailSenderPassword="pass@handycredit";
     private String themeName = "blue";
     private String defaultCurrencyCode = "USD";
     private int defaultCurrencyDecimalPlaces = 1;

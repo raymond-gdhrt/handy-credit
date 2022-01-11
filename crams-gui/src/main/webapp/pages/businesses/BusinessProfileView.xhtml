@@ -35,11 +35,11 @@
                                             <p:commandButton title="Print profile" value="Print" 
                                                              style="width: 100px; margin-left: 10px" 
                                                              process="businessProfileView" icon="pi pi-upload" 
-                                                             styleClass="ui-button-secondary" ajax="false">
+                                                             styleClass="secondary-button" ajax="false">
                                                 <p:dataExporter type="pdf"  target="businessHeadsTable" fileName="#{businessProfileView.model.name}"/>
                                             </p:commandButton>
 
-                                            <p:commandButton  process="@this" icon="fa fa-edit" styleClass="ui-button-help"
+                                            <p:commandButton  process="@this" icon="fa fa-edit" styleClass="help-button"
                                                               immediate="true" rendered="#{componentRenderer.businessOwner}"
                                                               value="Edit" style="width: 100px; margin-left: 10px"
                                                               title="Edit business details" 
@@ -140,7 +140,7 @@
                                             <h:outputText value="#{loanApplication.dateCreated}" />
                                         </p:column>
                                         <p:column style="text-align: center" headerText="Action">
-                                            <p:commandButton title="View"  process="@this" style="width: 10%; margin-left: 0px"
+                                            <p:commandButton title="View" styleClass="help-button" icon="fa fa-eye"  process="@this" style="margin-left: 0px"
                                                              actionListener="#{loanApplicationFormDialog.show}" >
                                                 <f:setPropertyActionListener value="#{loanApplication}" target="#{loanApplicationFormDialog.model}" />
                                                 <f:setPropertyActionListener value="#{false}" target="#{loanApplicationFormDialog.editDetails}" />
@@ -148,13 +148,7 @@
                                                 <f:setPropertyActionListener value="#{businessProfileView.model}" target="#{loanApplicationFormDialog.business}" />
 
                                             </p:commandButton>
-                                            <p:commandButton value="Edit"  process="@this" style="width: 10%; margin-left: 5px"
-                                                             actionListener="#{loanApplicationFormDialog.show}" >
-                                                <f:setPropertyActionListener value="#{null}" target="#{loanApplicationFormDialog.model}" />
-                                                <f:setPropertyActionListener value="#{true}" target="#{loanApplicationFormDialog.editDetails}" />
-                                                <f:setPropertyActionListener value="#{businessProfileView.model}" target="#{loanApplicationFormDialog.business}" />
-
-                                            </p:commandButton>
+                                           
                                         </p:column>
                                     </p:dataTable>
 
@@ -196,15 +190,8 @@
 
                                         <p:column style="text-align: center" headerText="Action">
 
-                                            <p:commandButton title="View"  process="@this" style="width: 10%; margin-left: 0px"
-                                                             actionListener="#{collateralFormDialog.show}" >
-                                                <f:setPropertyActionListener value="#{collateral}" target="#{collateralFormDialog.model}" />
-                                                <f:setPropertyActionListener value="#{false}" target="#{collateralFormDialog.editDetails}" />
-
-                                                <f:setPropertyActionListener value="#{businessProfileView.model}" target="#{collateralFormDialog.business}" />
-
-                                            </p:commandButton>
-                                            <p:commandButton value="Edit"  process="@this" style="width: 10%; margin-left: 5px"
+                                           
+                                            <p:commandButton title="View/Edit" rendered="#{collateral.status ne 'inUse'}" icon="fa fa-edit" styleClass="help-button"  process="@this" style="width: 10%; margin-left: 5px"
                                                              actionListener="#{collateralFormDialog.show}" >
                                                 <f:setPropertyActionListener value="#{null}" target="#{collateralFormDialog.model}" />
                                                 <f:setPropertyActionListener value="#{true}" target="#{collateralFormDialog.editDetails}" />

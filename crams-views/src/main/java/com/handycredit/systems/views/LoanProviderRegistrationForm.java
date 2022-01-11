@@ -94,7 +94,7 @@ public class LoanProviderRegistrationForm extends WebFormView<LoanProvider, Loan
             if (verificationCode.equalsIgnoreCase(super.model.getLastVerificationCode())) {
 
                 password = "loanProvider" + AppUtils.generateOTP(4);
-                new EmailService().sendMail(super.model.getEmailAddress(), "CRAMS Login details", "Your CRAMs account wwas successfully created, Your logu=in credentials are <h2>Username: <b>" + super.model.getEmailAddress() + "</b> </h2> <h2>Password: <b>" + password + "</b> </h2>");
+                new EmailService().sendMail(super.model.getEmailAddress(), "CRAMS Login details", "Your CRAMs account was successfully created, Your login credentials are <h2>Username: <b>" + super.model.getEmailAddress() + "</b> </h2> <h2>Password: <b>" + password + "</b> </h2>");
                 super.model.setAccountStatus(AccountStatus.verified);
                 super.model.setUserAccount(createDefaultUser(super.model));
                 this.loanProviderService.saveOutsideContext(super.model);

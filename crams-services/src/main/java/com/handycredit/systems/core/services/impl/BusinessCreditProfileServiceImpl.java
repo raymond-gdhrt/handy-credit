@@ -50,6 +50,27 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
 
     @Override
     public BusinessCreditProfile createProfile(LoanApplication loanApplication) throws ValidationFailedException, OperationFailedException {
+        if (loanApplication == null) {
+            throw new ValidationFailedException("No details provided");
+        }
+
+        if (loanApplication.getBusiness() == null) {
+            throw new ValidationFailedException("Missing business details");
+        }
+
+        if (loanApplication.getLoan() == null) {
+            throw new ValidationFailedException("Missing loan details");
+        }
+
+        if (loanApplication.getLoan().getMaximumAmount() < loanApplication.getAmount()) {
+            throw new ValidationFailedException("Amount higher than maximum loan limit");
+        }
+
+        if (loanApplication.getLoan().getMinimumAmount() > loanApplication.getAmount()) {
+            throw new ValidationFailedException("Amount lower than minimum loan limit");
+        }
+
+        System.out.println("Started creating profile...");
         BusinessCreditProfile businessCreditProfile = new BusinessCreditProfile();
         businessCreditProfile.setLoan(loanApplication.getLoan());
         businessCreditProfile.setBusiness(loanApplication.getBusiness());
@@ -57,6 +78,7 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
         businessCreditProfile.setCapacityScore(calculateCapacityScore(loanApplication.getAmount(), loanApplication.getBusiness()));
         businessCreditProfile.setCharacterScore(calculateCharacterScore(loanApplication.getAmount(), loanApplication.getBusiness()));
         businessCreditProfile.setCollateralScore(calculateCollateralScore(loanApplication.getAmount(), loanApplication.getAttachedCollaterals()));
+        businessCreditProfile.setConditionsScore(calculateConditionsScore(loanApplication.getBusiness()));
 
         return super.save(businessCreditProfile);
 
@@ -64,6 +86,7 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
 
     @Override
     public float calculateCollateralScore(float loanAmount, Set<Collateral> collaterals) {
+        System.out.println("Calculating collateral score...");
         float collateralValue = 0.0f;
         for (Collateral collateral : collaterals) {
             collateralValue = collateralValue + collateral.getEstimatedValue();
@@ -76,6 +99,7 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
 
     @Override
     public float calculateCapitalScore(LoanApplication loanApplication) {
+        System.out.println("Calculating capital score...");
         if (loanApplication.getAmount() == 0) {
             return 0;
         }
@@ -89,6 +113,7 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
 
     @Override
     public float calculateCapacityScore(float loanAmount, Business business) {
+        System.out.println("Calculating capacity score...");
         float expenses = 0, income = 0.0f;
         List<BusinessTransaction> transactions = ApplicationContextProvider.getBean(TransactionDataService.class).getInstances(
                 new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE)
@@ -106,20 +131,21 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
             return 1;
         }
 
-        return (income - expenses) / loanAmount;
+        return (income - expenses) / loanAmount *100;
     }
 
     @Override
     public float calculateCharacterScore(float loanAmount, Business business) {
+        System.out.println("Calculating character score...");
         float cleared = 0, numberCleared, numberDefaulted, defaiulted = 0, ongoing = 0.0f;
         List<BusinessCreditHistory> transactions = ApplicationContextProvider.getBean(BusinessCreditHistoryService.class).getInstances(
                 new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE)
                         .addFilterEqual("business", business), 0, 0);
         for (BusinessCreditHistory transaction : transactions) {
-            if (transaction.getLoanApplicationStatus().equals(LoanApplicationStatus.Cleared)) {
+            if (LoanApplicationStatus.Cleared.equals(transaction.getLoanApplicationStatus())) {
                 cleared = cleared + transaction.getAmountBorrowed();
             } else {
-                if (transaction.getLoanApplicationStatus().equals(LoanApplicationStatus.Running)) {
+                if (LoanApplicationStatus.Running.equals(transaction.getLoanApplicationStatus())) {
                     ongoing = ongoing + transaction.getAmountBorrowed();
                 } else {
                     defaiulted = defaiulted + transaction.getAmountBorrowed();
@@ -130,29 +156,34 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
         if (cleared == 0 && defaiulted == 0) {
             return 1;
         }
+        
+        if (cleared >defaiulted ) {
+            return 1;
+        }
 
-        return (cleared - defaiulted) / loanAmount;
+        return java.lang.Math.abs((cleared - defaiulted)) / loanAmount *100;
     }
 
     @Override
     public float calculateConditionsScore(Business business) {
+        System.out.println("Calculating condition score...");
         float finalScore = 0;
         Date date1 = new Date();
 
         if (business.getFacebookLink() != null) {
-            finalScore = (float) (finalScore + 0.2);
+            finalScore = (float) (finalScore + 2);
         }
 
         if (business.getWebsite() != null) {
-            finalScore = (float) (finalScore + 0.5);
+            finalScore = (float) (finalScore + 5);
         }
 
         if (business.getLinkedInLink() != null) {
-            finalScore = (float) (finalScore + 0.3);
+            finalScore = (float) (finalScore + 3);
         }
 
         if (business.getTwitterHandle() != null) {
-            finalScore = (float) (finalScore + 0.2);
+            finalScore = (float) (finalScore + 2);
         }
 
         if (business.getRegistrationNumber() != null) {
@@ -165,11 +196,12 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
 
         }
 
-        return finalScore;
+        return finalScore ;
     }
 
     @Override
     public BusinessCreditProfile calculateGeneralProfile(Business business) {
+        System.out.println("Calculating general score...");
         Search search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE)
                 .addFilterEqual("business", business);
         List<BusinessCreditProfile> creditProfiles = getInstances(search, 0, 0);

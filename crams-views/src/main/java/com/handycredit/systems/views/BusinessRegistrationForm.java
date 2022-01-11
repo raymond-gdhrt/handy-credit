@@ -98,7 +98,7 @@ public class BusinessRegistrationForm extends WebFormView<Business, BusinessRegi
             if (verificationCode.equalsIgnoreCase(super.model.getLastVerificationCode())) {
                 password = "business" + AppUtils.generateOTP(4);
 
-                new EmailService().sendMail(super.model.getEmailAddress(), "CRAMS Login details", "Your CRAMs account wwas successfully created, Your logu=in credentials are <h2>Username: <b>" + super.model.getEmailAddress() + "</b> </h2> <h2>Password: <b>" + password + "</b> </h2>");
+                new EmailService().sendMail(super.model.getEmailAddress(), "CRAMS Login details", "Your CRAMs account wwas successfully created, Your login credentials are <h5>Username: <b>" + super.model.getEmailAddress() + "</b> </h5> <h5>Password: <b>" + password + "</b> </h5>");
                 super.model.setAccountStatus(AccountStatus.verified);
                 super.model.setUserAccount(createDefaultUser(super.model));
                 this.businessService.saveOutsideContext(super.model);

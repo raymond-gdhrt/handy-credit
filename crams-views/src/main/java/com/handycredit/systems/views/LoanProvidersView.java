@@ -13,16 +13,15 @@ import org.sers.webutils.server.core.service.excel.reports.ExcelReport;
 import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 
 import com.googlecode.genericdao.search.Search;
+import com.handycredit.systems.constants.LoanProviderType;
 import com.handycredit.systems.core.services.LoanProviderService;
 import com.handycredit.systems.models.LoanProvider;
 import com.handycredit.systems.security.HyperLinks;
 import java.util.Arrays;
-import org.sers.webutils.model.Country;
 import org.sers.webutils.model.RecordStatus;
 import org.sers.webutils.model.exception.OperationFailedException;
 import org.sers.webutils.model.utils.SearchField;
 import org.sers.webutils.model.utils.SortField;
-import org.sers.webutils.server.core.service.SetupService;
 
 @ManagedBean(name = "loanProvidersView")
 @SessionScoped
@@ -30,36 +29,35 @@ import org.sers.webutils.server.core.service.SetupService;
 public class LoanProvidersView extends PaginatedTableView<LoanProvider, LoanProvidersView, LoanProvidersView> {
 
     private static final long serialVersionUID = 1L;
-    private LoanProviderService funderService;
+    private LoanProviderService loanProviderService;
     private String searchTerm;
     private LoanProvider selectedLoanProvider;
     private Search search;
-    private List<SearchField> searchFields;
-    private List<Country> selectedCountries;
-    private List<Country> countries;
+    private List<LoanProviderType> loanProviderTypes;
+    private LoanProviderType selectedType;
     private SortField selectedSortField;
 
     @PostConstruct
     public void init() {
 
-        this.searchFields = Arrays.asList(new SearchField[]{new SearchField("Name", "name"),
-            new SearchField("Code", "code"), new SearchField("Email", "emailAddress"), new SearchField("Address", "physcialAddress")});
-
-        funderService = ApplicationContextProvider.getApplicationContext().getBean(LoanProviderService.class);
-        this.countries = ApplicationContextProvider.getBean(SetupService.class).getAllCountries();
+        loanProviderService = ApplicationContextProvider.getApplicationContext().getBean(LoanProviderService.class);
+        this.loanProviderTypes = Arrays.asList(LoanProviderType.values());
         reloadFilterReset();
     }
 
     @Override
     public void reloadFromDB(int offset, int limit, Map<String, Object> filters) throws Exception {
 
-        super.setDataModels(funderService.getInstances(this.search, offset, limit));
+        super.setDataModels(loanProviderService.getInstances(this.search, offset, limit));
     }
 
     @Override
     public void reloadFilterReset() {
         this.search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE);
-        super.setTotalRecords(funderService.countInstances(this.search));
+        if (this.selectedType != null) {
+            search.addFilterEqual("type", this.selectedType);
+        }
+        super.setTotalRecords(loanProviderService.countInstances(this.search));
         try {
             super.reloadFilterReset();
         } catch (Exception e) {
@@ -67,14 +65,14 @@ public class LoanProvidersView extends PaginatedTableView<LoanProvider, LoanProv
         }
     }
 
-    public void deleteLoanProvider(LoanProvider funder) {
+    public void deleteLoanProvider(LoanProvider loanProvider) {
 
         try {
-            funderService.deleteInstance(funder);
+            loanProviderService.deleteInstance(loanProvider);
             UiUtils.showMessageBox("Action successfull", "LoanProvider deleted");
         } catch (OperationFailedException ex) {
             UiUtils.ComposeFailure("Action failed", ex.getLocalizedMessage());
-           }
+        }
 
     }
 
@@ -112,25 +110,13 @@ public class LoanProvidersView extends PaginatedTableView<LoanProvider, LoanProv
         this.selectedLoanProvider = selectedLoanProvider;
     }
 
-    public List<Country> getSelectedCountries() {
-        return selectedCountries;
+    public List<LoanProviderType> getLoanProviderTypes() {
+        return loanProviderTypes;
     }
 
-    public void setSelectedCountries(List<Country> selectedCountries) {
-        this.selectedCountries = selectedCountries;
+    public void setLoanProviderTypes(List<LoanProviderType> loanProviderTypes) {
+        this.loanProviderTypes = loanProviderTypes;
     }
-
-    
-
-    public List<Country> getCountries() {
-        return countries;
-    }
-
-    public void setCountries(List<Country> countries) {
-        this.countries = countries;
-    }
-
-  
 
     public SortField getSelectedSortField() {
         return selectedSortField;
@@ -138,6 +124,14 @@ public class LoanProvidersView extends PaginatedTableView<LoanProvider, LoanProv
 
     public void setSelectedSortField(SortField selectedSortField) {
         this.selectedSortField = selectedSortField;
+    }
+
+    public LoanProviderType getSelectedType() {
+        return selectedType;
+    }
+
+    public void setSelectedType(LoanProviderType selectedType) {
+        this.selectedType = selectedType;
     }
 
 }

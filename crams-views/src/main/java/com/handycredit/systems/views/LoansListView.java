@@ -59,7 +59,7 @@ public class LoansListView extends PaginatedTableView<Loan, LoansListView, Dashb
             new SearchField("Code", "code"), new SearchField("Email", "emailAddress"), new SearchField("Address", "physcialAddress")});
         this.business = ApplicationContextProvider.getBean(BusinessService.class).getBusinessByUserAccount(SharedAppData.getLoggedInUser());
         loanService = ApplicationContextProvider.getApplicationContext().getBean(LoanService.class);
-        requestReasons= Arrays.asList(LoanRequestReason.values());
+        requestReasons = Arrays.asList(LoanRequestReason.values());
         reloadFilterReset();
     }
 
@@ -70,7 +70,7 @@ public class LoansListView extends PaginatedTableView<Loan, LoansListView, Dashb
     }
 
     @Override
-    public void reloadFilterReset() { 
+    public void reloadFilterReset() {
         this.search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE);
         List<LoanApplication> applications = ApplicationContextProvider.getBean(LoanApplicationService.class)
                 .getInstances(new Search().addFilterEqual("business", this.business), 0, 0);
@@ -99,11 +99,12 @@ public class LoansListView extends PaginatedTableView<Loan, LoansListView, Dashb
 
     }
 
-    public void loadLoanApplication(Loan loan) {
-        this.selectedLoanApplication = new LoanApplication();
-        this.selectedLoanApplication.setBusiness(business);
-        this.selectedLoanApplication.setLoan(loan);
-
+    public LoanApplication loadLoanApplication(Loan loan) {
+        LoanApplication loanApplication = new LoanApplication();
+        loanApplication.setBusiness(business);
+        loanApplication.setLoan(loan);
+        this.creditProfile = null;
+        return loanApplication;
     }
 
     public void makeLoanApplication(LoanApplication loanApplication) {
@@ -126,9 +127,9 @@ public class LoansListView extends PaginatedTableView<Loan, LoansListView, Dashb
                         .addFilterEqual("business", business), 0, 0);
     }
 
-    public BusinessCreditProfile loadProfile(Business business) throws ValidationFailedException, OperationFailedException {
+    public void loadProfile() throws ValidationFailedException, OperationFailedException {
 
-        return ApplicationContextProvider.getBean(BusinessCreditProfileService.class).createProfile(selectedLoanApplication);
+        this.creditProfile = ApplicationContextProvider.getBean(BusinessCreditProfileService.class).createProfile(selectedLoanApplication);
     }
 
     /**
@@ -204,7 +205,5 @@ public class LoansListView extends PaginatedTableView<Loan, LoansListView, Dashb
     public void setRequestReasons(List<LoanRequestReason> requestReasons) {
         this.requestReasons = requestReasons;
     }
-    
-    
 
 }

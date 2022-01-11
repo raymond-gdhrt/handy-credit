@@ -98,6 +98,22 @@ public class Collateral extends BaseEntity {
         this.otherDetails = otherDetails;
     }
     
+      @Override
+    public boolean equals(Object object) {
+        return object instanceof Collateral && (super.getId() != null) ? super.getId().equals(((Collateral) object).getId())
+                : (object == this);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.getId() != null ? this.getClass().hashCode() + super.getId().hashCode() : super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return  name + " (" + estimatedValue +")";
+    }
+    
     
     
 }

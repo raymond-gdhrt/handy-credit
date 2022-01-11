@@ -20,7 +20,7 @@
                 <fr:menu widgetVar="FreyaMenuWidget">
                     <p:menuitem id="om_dashboard" value="Dashboard" icon="pi pi-home" 
                               
-                                url="/Dashboard"  />
+                                url="#{request.contextPath}/Dashboard"  />
                     <p:menuitem id="busineses" rendered="#{componentRenderer.administrator}"
                                 value="Businesses"
                                 icon="pi pi-briefcase" 
@@ -74,13 +74,13 @@
                                 
                                 value="System Settings"
                                 icon="pi pi-bars" 
-                                url="/Settings"/>
+                                url="#{request.contextPath}/Settings"/>
                          
                           <p:menuitem id="roles" 
                                 
                                 value="Roles"
                                 icon="pi pi-bars" 
-                                url="/Roles"/>
+                                url="#{request.contextPath}/Roles"/>
                     </p:submenu>
 
                    

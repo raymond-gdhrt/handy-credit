@@ -14,10 +14,12 @@ import com.handycredit.systems.core.services.LoanApplicationService;
 import com.handycredit.systems.models.Business;
 import com.handycredit.systems.models.BusinessCreditProfile;
 import com.handycredit.systems.models.Collateral;
+import com.handycredit.systems.models.Loan;
 import com.handycredit.systems.models.LoanApplication;
 import com.handycredit.systems.security.HyperLinks;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -41,12 +43,13 @@ public class LoanApplicationFormDialog extends DialogForm<LoanApplication> {
     private List<LoanRequestReason> requestReasons;
     private List<CollateralStatus> statuses;
     private Business business;
+    private Loan loan;
     private BusinessCreditProfile creditProfile;
-    private boolean editDetails=true;
+    private boolean editDetails = true;
 
     @PostConstruct
     public void init() {
-
+        System.out.println("Initialising laon application dialog...");
         this.loanApplicationService = ApplicationContextProvider.getBean(LoanApplicationService.class);
         this.statuses = Arrays.asList(CollateralStatus.values());
         requestReasons = Arrays.asList(LoanRequestReason.values());
@@ -62,6 +65,10 @@ public class LoanApplicationFormDialog extends DialogForm<LoanApplication> {
         if (super.model.getBusiness() == null) {
             super.model.setBusiness(business);
         }
+        
+         if (super.model.getCreditRiskProfile()== null) {
+            super.model.setCreditRiskProfile(creditProfile);
+        }
         this.loanApplicationService.saveInstance(super.model);
 
     }
@@ -71,19 +78,24 @@ public class LoanApplicationFormDialog extends DialogForm<LoanApplication> {
         return ApplicationContextProvider.getBean(CollateralService.class)
                 .getInstances(new Search()
                         .addFilterEqual("recordStatus", RecordStatus.ACTIVE)
+                        .addFilterEqual("status", CollateralStatus.free)
                         .addFilterEqual("business", business), 0, 0);
     }
 
-    public void calculateCreditProfile() throws ValidationFailedException, OperationFailedException{
-    this.creditProfile= ApplicationContextProvider.getBean(BusinessCreditProfileService.class).createProfile(super.model);
-    
+    public void calculateCreditProfile() {
+        try {
+            this.creditProfile = ApplicationContextProvider.getBean(BusinessCreditProfileService.class).createProfile(super.model);
+        } catch (ValidationFailedException | OperationFailedException ex) {
+            UiUtils.ComposeFailure("Warning", ex.getLocalizedMessage());
+        }
+
     }
-    
+
     @Override
     public void resetModal() {
         super.resetModal();
         super.model = new LoanApplication();
-        this.creditProfile=null;
+        this.creditProfile = null;
     }
 
     @Override
@@ -105,6 +117,7 @@ public class LoanApplicationFormDialog extends DialogForm<LoanApplication> {
 
     public void setBusiness(Business business) {
         this.business = business;
+        super.model.setBusiness(this.business);
     }
 
     public List<LoanRequestReason> getRequestReasons() {
@@ -131,5 +144,13 @@ public class LoanApplicationFormDialog extends DialogForm<LoanApplication> {
         this.creditProfile = creditProfile;
     }
 
-  
+    public Loan getLoan() {
+        return loan;
+    }
+
+    public void setLoan(Loan loan) {
+        this.loan = loan;
+        super.model.setLoan(this.loan);
+    }
+
 }

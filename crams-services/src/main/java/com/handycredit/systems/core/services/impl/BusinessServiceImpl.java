@@ -46,28 +46,5 @@ public class BusinessServiceImpl extends GenericServiceImpl<Business> implements
 
     }
 
-    public int calculateCapacityScore() {
-
-        return 0;
-    }
-
-    public int calculateCollateralScore() {
-
-        return 0;
-    }
-
-    public int calculateCapitalScore() {
-
-        return 0;
-    }
-
-    public int calculateCharacterScore() {
-
-        return 0;
-    }
-
-    public int calculateConditionScore() {
-
-        return 0;
-    }
+   
 }

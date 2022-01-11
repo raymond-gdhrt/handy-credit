@@ -31,7 +31,7 @@
                             </div> <!-- comment -->
 
 
-                         
+
                             <div class="p-col-12 p-md-6 p-lg-3" >
                                 <p:commandButton icon="fa fa-search" styleClass="ui-button-help"
                                                  id="searchBtn" style="margin-right: 18px"
@@ -64,13 +64,12 @@
                                             </div>
                                             <div class="p-col-4">
                                                 <h3>#{loan.title}</h3>
-                                                <h5>#{loan.description}</h5>
+                                                <h5 style="opacity: .6">#{loan.description}</h5>
 
-                                                <p:rating readonly="true"  value="#{3}" />
                                                 <h5><p:link> <i class="pi pi-user"/><span
                                                             class="product-category">#{loan.loanProvider.name}</span></p:link></h5>
                                             </div>
-                                            <div class="p-col-4">
+                                            <div  style="margin-top: 50px" class="p-col-4">
                                                 <h4> Minimum amount:
                                                     <h:outputText value="#{loan.minimumAmount}" style="opacity: 0.7" >
                                                         <f:convertNumber currencySymbol="UGX" type="currency"/>
@@ -83,7 +82,7 @@
                                                     </h:outputText>
                                                 </h4>
 
-                                                <h4>Interest rate: <span style="opacity: 0.8">#{loan.interestRate}  #{loan.interestRateInterval}</span>
+                                                <h4>Interest rate: <span style="opacity: 0.8">#{loan.interestRate}%  #{loan.interestRateInterval}</span>
                                                 </h4>
                                                 <p:commandButton value="Apply now" 
                                                                  styleClass="help-button"
@@ -91,6 +90,14 @@
 
                                                                  oncomplete="PF('loan_application_dialogue').show()"
                                                                  update=":loansListView:loanApplicationForm">
+
+                                                </p:commandButton>
+                                                <p:commandButton title="Apply for loan" value="Apply for loan"  process="@this" style="margin-left: 5px"
+                                                                 actionListener="#{loanApplicationFormDialog.show}" >
+                                                    <f:setPropertyActionListener value="#{loansListView.loadLoanApplication(model)}" target="#{loanApplicationFormDialog.model}" />
+                                                    <f:setPropertyActionListener value="#{true}" target="#{loanApplicationFormDialog.editDetails}" />
+                                                    <f:setPropertyActionListener value="#{loan}" target="#{loanApplicationFormDialog.loan}" />
+                                                    <f:setPropertyActionListener value="#{loansListView.business}" target="#{loanApplicationFormDialog.business}" />
 
                                                 </p:commandButton>
 
@@ -113,12 +120,41 @@
 
                     <p:dialog  resizable="true" widgetVar="loan_application_dialogue"
                                width="500px" 
-                               header="Apply for loan" 
+                               header="Apply for #{loansListView.selectedLoanApplication.loan.title}" 
                                minHeight="40"   showEffect="fade" modal="true">
                         <p:outputPanel id="loanApplicationForm"  styleClass="ui-fluid" >
                             <p:outputPanel rendered="#{not empty loansListView.selectedLoanApplication }" 
                                            styleClass="p-grid">
+                                <p:outputPanel styleClass="p-col-12 " rendered="#{loansListView.creditProfile !=null }"  id="credit_profile">
+                                    <div class="ui-g" style="">
+                                        <div class="ui-col-12 ui-md-12">
+                                            <p style="opacity: .7;font-size: 20px; font-weight: bolder" >Credit scores</p>
 
+                                        </div>
+                                        <div class="ui-col-12 ui-md-4">
+                                            <h5>Capacity: <span>#{loansListView.creditProfile.capacityScore}</span></h5>
+
+                                        </div>
+
+
+                                        <div class="ui-col-12 ui-md-4">
+                                            <h5>Capital: <span>#{loansListView.creditProfile.capitalScore}</span></h5>
+
+                                        </div>
+                                        <div class="ui-col-12 ui-md-4">
+                                            <h5>Character: <span>#{loansListView.creditProfile.characterScore}</span></h5>
+
+                                        </div>
+                                        <div class="ui-col-12 ui-md-4">
+                                            <h5>Conditions: <span>#{loansListView.creditProfile.conditionsScore}</span></h5>
+
+                                        </div>
+                                        <div class="ui-col-12 ui-md-4">
+                                            <h5>Collateral: <span>#{loanApplicationFormDialog.creditProfile.collateralScore}</span></h5>
+
+                                        </div>
+                                    </div>
+                                </p:outputPanel>
                                 <div class="p-col-12 p-md-12 p-lg-6">
                                     <p:outputLabel for="amount">Amount</p:outputLabel>
                                     <p:inputNumber id="amount"
@@ -132,8 +168,8 @@
                                                    value="#{loansListView.selectedLoanApplication.proposedPaymentPeriodInDays}"
                                                    required="true" placeholder="Proposed payment period" />
                                 </div>
-                                
-                                 <p:outputPanel rendered="true" styleClass="p-field p-col-12 p-md-6">
+
+                                <p:outputPanel rendered="true" styleClass="p-field p-col-12 p-md-6">
                                     <p:outputLabel for="select">Collateral</p:outputLabel>
                                     <p:selectCheckboxMenu id="select" value="#{loansListView.selectedLoanApplication.attachedCollaterals}" 
                                                           multiple="true"       converter="collateralConverter"  >
@@ -141,11 +177,11 @@
                                         <f:selectItems value="#{loansListView.loadCollaterals(loansListView.business)}"/>
                                     </p:selectCheckboxMenu>
                                 </p:outputPanel>
-                                
-                                 <p:outputPanel rendered="true" styleClass="p-field p-col-12 p-md-6">
+
+                                <p:outputPanel rendered="true" styleClass="p-field p-col-12 p-md-6">
                                     <p:outputLabel for="reason">Reason</p:outputLabel>
                                     <p:selectOneMenu id="reason" value="#{loansListView.selectedLoanApplication.loanRequestReason}" 
-                                                          >
+                                                     >
 
                                         <f:selectItems var="reason" itemLabel="#{reason.uiName}" value="#{loansListView.requestReasons}"/>
                                     </p:selectOneMenu>
@@ -157,7 +193,7 @@
                                                      value="#{loansListView.selectedLoanApplication.reasonDescription}"
                                                      required="true" placeholder="Enter extra details" />
                                 </div>
-                               
+
 
 
 
@@ -165,16 +201,22 @@
 
                         </p:outputPanel>
 
-                        <f:facet name="footer">
-                            <p:commandButton icon="pi pi-check" value="Save"   
+                        <f:facet  id="footer" name="footer">
+                            <p:commandButton icon="pi pi-check" value="Save" id="save"  rendered="#{loansListView.creditProfile !=null}"
                                              actionListener="#{loansListView.makeLoanApplication(loansListView.selectedLoanApplication)}" 
                                              styleClass="primary-button"
                                              process="loanApplicationForm @this" update="@form"  />
+                            <p:commandButton icon="pi pi-check" id="profile" value="Profile"   rendered="#{loansListView.creditProfile ==null}"
+                                             actionListener="#{loansListView.loadProfile()}" 
+                                             styleClass="warning-button"
+                                             process="loanApplicationForm @this" update="loanApplicationForm "  />
 
 
                         </f:facet>
 
-
+                        <p:blockUI block="loanApplicationForm" trigger="profile" >
+                            <p:graphicImage value="/resources/images/workingicon.png" />
+                        </p:blockUI>  
                     </p:dialog>
                     <p:blockUI block="loansListView" >
                         <p:graphicImage value="/resources/images/workingicon.png" />

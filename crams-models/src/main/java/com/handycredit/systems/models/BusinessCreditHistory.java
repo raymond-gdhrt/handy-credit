@@ -37,7 +37,7 @@ public class BusinessCreditHistory extends BaseEntity {
     private float interestRate;
     private float actualAmountPaid;
     private float expectedAmountToPay;
-    private LoanApplicationStatus loanApplicationStatus;
+    private LoanApplicationStatus loanApplicationStatus = LoanApplicationStatus.Cleared;
     private InterestRateInterval rateType;
 
     @ManyToOne(optional = true)
@@ -144,5 +144,7 @@ public class BusinessCreditHistory extends BaseEntity {
     public void setLoanApplicationStatus(LoanApplicationStatus loanApplicationStatus) {
         this.loanApplicationStatus = loanApplicationStatus;
     }
+    
+    
 
 }

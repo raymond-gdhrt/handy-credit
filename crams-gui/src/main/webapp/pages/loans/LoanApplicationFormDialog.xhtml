@@ -12,86 +12,121 @@
         </style>
     </ui:define>
     <ui:define name="content">
-        <title>#{loanApplicationFormDialog.model.isNew()?'Add business':loanApplicationFormDialog.model.name}</title>
-        <h:form id="collateralFormDialog" styleClass="card" style="border-radius: 2px !important">
+        <title>Application for #{loanApplicationFormDialog.loan.title}</title>
+        <h:form id="loanApplicationFormDialog" styleClass="card" style="border-radius: 2px !important">
             <div class="p-grid ui-fluid" style="">
-                <p:outputPanel id="credit_profile">
-                    <div class="p-col-12 p-md-12 p-lg-3">
-                        <h5>Capacity: <span>#{loanApplicationsView.selectedLoanApplication.creditRiskProfile.capacityScore}</span></h5>
+                <p:outputPanel styleClass="ui-col-12 ui-md-12" rendered="#{loanApplicationFormDialog.creditProfile !=null}"  id="credit_profile">
+                    <div class="ui-g" style="">
+                        <div class="ui-col-12 ui-md-12">
+                            <p style="opacity: .7;font-size: 20px; font-weight: bolder" >Credit scores</p>
 
-                    </div>
-                    <div class="p-col-12 p-md-12 p-lg-3">
-                        <h5>Capital: <span>#{loanApplicationsView.selectedLoanApplication.creditRiskProfile.capitalScore}</span></h5>
+                        </div>
+                        <div class="ui-col-12 ui-md-4">
+                            <h5>Capacity: <span style="color:blue">#{loanApplicationFormDialog.creditProfile.capacityScore}</span></h5>
 
-                    </div>
-                    <div class="p-col-12 p-md-12 p-lg-3">
-                        <h5>Character: <span>#{loanApplicationsView.selectedLoanApplication.creditRiskProfile.characterScore}</span></h5>
+                        </div>
 
-                    </div>
-                    <div class="p-col-12 p-md-12 p-lg-3">
-                        <h5>Collateral: <span>#{loanApplicationsView.selectedLoanApplication.creditRiskProfile.collateralScore}</span></h5>
 
+                        <div class="ui-col-12 ui-md-4">
+                            <h5>Capital: <span style="color:pink">#{loanApplicationFormDialog.creditProfile.capitalScore}</span></h5>
+
+                        </div>
+                        <div class="ui-col-12 ui-md-4">
+                            <h5>Character: <span style="color:green">#{loanApplicationFormDialog.creditProfile.characterScore}</span></h5>
+
+                        </div>
+                        <div class="ui-col-12 ui-md-4">
+                            <h5>Conditions: <span style="color:purple">#{loanApplicationFormDialog.creditProfile.conditionsScore}</span></h5>
+
+                        </div>
+                        <div class="ui-col-12 ui-md-4">
+                            <h5>Collateral: <span style="color:orange">#{loanApplicationFormDialog.creditProfile.collateralScore}</span></h5>
+
+                        </div>
                     </div>
                 </p:outputPanel>
-                <div class="p-col-12 p-md-12 p-lg-6">
+                <div class="ui-col-12 ui-md-12">
+                    <p style="opacity: .7;font-size: 20px; font-weight: bolder" >Application details</p>
+
+                </div>
+                <div class="ui-col-12 ui-md-6 ">
                     <p:outputLabel for="amount">Amount</p:outputLabel>
-                    <p:inputNumber id="amount"
+                    <p:inputNumber id="amount" decimalPlaces="0" 
                                    value="#{loanApplicationFormDialog.model.amount}"
                                    required="true"  />
                 </div>
 
-                <div class="p-col-12 p-md-12 p-lg-6">
+                <div class="ui-col-12 ui-md-6">
                     <p:outputLabel for="days">Duration (Days)</p:outputLabel>
-                    <p:inputNumber id="days"
+                    <p:inputNumber id="days" decimalPlaces="0" minValue="1"
                                    value="#{loanApplicationFormDialog.model.proposedPaymentPeriodInDays}"
                                    required="true" placeholder="Proposed payment period" />
                 </div>
 
-                <p:outputPanel rendered="true" styleClass="p-field p-col-12 p-md-6">
+                <p:outputPanel rendered="true" styleClass="p-field ui-col-12 ui-md-12">
                     <p:outputLabel for="select">Collateral</p:outputLabel>
                     <p:selectCheckboxMenu id="select" value="#{loanApplicationFormDialog.model.attachedCollaterals}" 
-                                          multiple="true"       converter="collateralConverter"  >
+                                          multiple="true"  style="height: 80%"     converter="collateralConverter"  >
 
                         <f:selectItems value="#{loanApplicationFormDialog.loadCollaterals(loansListView.business)}"/>
                     </p:selectCheckboxMenu>
                 </p:outputPanel>
 
-                <p:outputPanel rendered="true" styleClass="p-field p-col-12 p-md-6">
+                <p:outputPanel rendered="true"  styleClass="ui-col-12 ui-md-6">
                     <p:outputLabel for="reason">Reason</p:outputLabel>
                     <p:selectOneMenu id="reason" value="#{loanApplicationFormDialog.model.loanRequestReason}" 
-                                     >
+                                     style="height: 70%"       >
 
                         <f:selectItems var="reason" itemLabel="#{reason.uiName}" value="#{loansListView.requestReasons}"/>
                     </p:selectOneMenu>
                 </p:outputPanel>
+                <div class="ui-col-12 ui-md-6 ">
+                    <p:outputLabel for="amount2">Total need for your cause</p:outputLabel>
+                    <p:inputNumber id="amount2" 
+                                   value="#{loanApplicationFormDialog.model.neededAmount}"
+                                   required="true"  />
+                </div>
 
-                <div class="p-col-12 p-md-12 p-lg-12">
+                <div class="ui-col-12 ui-md-12">
                     <p:outputLabel for="deatils">Details</p:outputLabel>
-                    <p:inputTextarea id="deatils" disabled="#{not loanApplicationFormDialog.editDetails}"
+                    <p:inputTextarea id="deatils" rows="11"   disabled="#{not loanApplicationFormDialog.editDetails}"
                                      value="#{loanApplicationFormDialog.model.reasonDescription}"
                                      required="true" placeholder="Enter extra details" />
                 </div>
-                <div class="p-col-12 p-md-12" style="margin-top: 50px;">
+                <div class="ui-col-12 ui-md-12" style="margin-top: 10px;">
                     <div class="p-grid p-justify-end">
                         <div class="p-col-2">
                             <p:commandButton value="Cancel" 
                                              validateClient="false"
                                              process="@this"
+                                             rendered="#{loanApplicationFormDialog.editDetails}"
                                              action="#{loanApplicationFormDialog.hide}"
                                              styleClass="outlined-button button-help" />
                         </div>
                         <div class="p-col-2">
+
                             <p:commandButton value="Save" 
+                                             rendered="#{loanApplicationFormDialog.editDetails and loanApplicationFormDialog.creditProfile!=null}"
                                              process="@form"
-                                             rendered="#{loanApplicationFormDialog.editDetails}"
                                              actionListener="#{loanApplicationFormDialog.save}"
-                                             update="collateralFormDialog" validateClient="true" />
+                                             update="loanApplicationFormDialog" validateClient="true" />
+
+                            <p:commandButton value="Profile" id="profile-btn"
+                                             process="@form @this"
+                                             styleClass="warning-button"
+                                             rendered="#{loanApplicationFormDialog.editDetails and loanApplicationFormDialog.creditProfile==null}" 
+                                             actionListener="#{loanApplicationFormDialog.calculateCreditProfile()}"
+                                             update="loanApplicationFormDialog" validateClient="true" />
+
                         </div>
                     </div>
                 </div>
 
 
             </div>
+            <p:blockUI block="loanApplicationFormDialog" trigger="profile-btn" >
+                <p:graphicImage value="/resources/images/workingicon.png" />
+            </p:blockUI>    
         </h:form>
     </ui:define>
 </ui:composition>
