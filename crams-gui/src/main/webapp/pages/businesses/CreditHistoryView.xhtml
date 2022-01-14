@@ -189,7 +189,7 @@
 
 
                                             <p:commandButton icon="fa fa-eye" title="View" 
-                                                             styleClass="ui-button-primary"  style="margin-left: 5px"
+                                                             styleClass="help-button"  style="margin-left: 5px"
 
                                                              action="#{creditHistoryProfileView.getViewPath}">
                                                 <f:setPropertyActionListener value="#{model}"
@@ -203,7 +203,7 @@
 
 
                                             <p:commandButton icon="fa fa-trash" title="Delete"  
-                                                             styleClass="ui-button-danger" style="margin-left: 5px"
+                                                             styleClass="danger-button" style="margin-left: 5px"
                                                              action="#{businessCreditHistoryView.deleteFunder(model)}"
                                                              rendered="#{componentRenderer.businessOwner}"
                                                              update="creditHistorysTable">

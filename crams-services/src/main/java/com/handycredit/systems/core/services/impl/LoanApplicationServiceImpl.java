@@ -56,6 +56,10 @@ public class LoanApplicationServiceImpl extends GenericServiceImpl<LoanApplicati
             throw new ValidationFailedException("Amount lower than minimum loan limit");
         }
 
+        if (loanApplication.getNeededAmount() < loanApplication.getAmount()) {
+            throw new ValidationFailedException("Amount higher than the needed amount");
+        }
+
         if (loanApplication.isNew()) {
             loanApplication.setStatus(LoanApplicationStatus.Submitted);
             loanApplication.setDateSubmitted(new Date());

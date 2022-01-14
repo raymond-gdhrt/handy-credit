@@ -103,7 +103,7 @@
                                                         <div class="p-mr-6">
 
                                                             <p:commandButton value="Add" process="@this"
-                                                                             styleClass="ui-button-help" icon="fa fa-plus"
+                                                                             styleClass="help-button" icon="fa fa-plus"
                                                                              style="width:70px"
                                                                              immediate="true"  rendered="#{componentRenderer.businessOwner}"
                                                                              actionListener="#{transactionFormDialog.show}">
@@ -115,13 +115,14 @@
 
                                                                 <p:ajax event="dialogReturn" listener="#{businessPerformanceView.reloadFilterReset()}" update=":businessPerformanceView:transactionsTable" />
                                                             </p:commandButton>
-                                                            <p:commandButton title="Download template for uploading transactions" icon="fa fa-download" value="Template" styleClass="secondary-button"
+                                                            <p:commandButton title="Download template for uploading transactions" icon="fa fa-download" 
+                                                                             value="Template" styleClass="secondary-button"
                                                                              style="margin-left: 5px;width:100px"  ajax="false" 
                                                                              actionListener="#{businessPerformanceView.loadTemplateForDownload()}">
                                                                 <p:fileDownload value="#{businessPerformanceView.loadTemplateForDownload()}"  />
                                                             </p:commandButton>
 
-                                                            <p:commandButton icon="fa fa-upload" value="Upload" styleClass="primary-button"
+                                                            <p:commandButton icon="fa fa-upload" value="Upload" styleClass="success-button"
                                                                              style="margin-left: 5px;width:80px"  process="@this" 
                                                                              title="Upload clients from file" 
                                                                              oncomplete="PF('fileUploadDialogue').show()" 
@@ -194,7 +195,7 @@
 
 
                                             <p:commandButton icon="fa fa-trash" title="Delete"  
-                                                             styleClass="ui-button-danger" style="margin-left: 5px"
+                                                             styleClass="danger-button" style="margin-left: 5px"
                                                              action="#{businessPerformanceView.deleteFunder(model)}"
                                                              rendered="#{componentRenderer.businessOwner}"
                                                              update="transactionsTable">

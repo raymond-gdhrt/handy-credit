@@ -84,14 +84,7 @@
 
                                                 <h4>Interest rate: <span style="opacity: 0.8">#{loan.interestRate}%  #{loan.interestRateInterval}</span>
                                                 </h4>
-                                                <p:commandButton value="Apply now" 
-                                                                 styleClass="help-button"
-                                                                 actionListener="#{loansListView.loadLoanApplication(loan)}"                                        
-
-                                                                 oncomplete="PF('loan_application_dialogue').show()"
-                                                                 update=":loansListView:loanApplicationForm">
-
-                                                </p:commandButton>
+                                              
                                                 <p:commandButton title="Apply for loan" value="Apply for loan"  process="@this" style="margin-left: 5px"
                                                                  actionListener="#{loanApplicationFormDialog.show}" >
                                                     <f:setPropertyActionListener value="#{loansListView.loadLoanApplication(model)}" target="#{loanApplicationFormDialog.model}" />

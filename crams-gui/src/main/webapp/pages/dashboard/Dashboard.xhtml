@@ -15,14 +15,16 @@
 
                 window.redrawChart = function () {
                     var style = getComputedStyle(document.body);
-                    var primCol1 = style.getPropertyValue('--primaryColor') || '#2c84d8';
-                    var primLighterCol1 = style.getPropertyValue('--primaryLighterColor') || '#2c84d8';
-                    var primCol2 = style.getPropertyValue('--primaryColor') || '#FFBF00';
-                    var primLighterCol2 = style.getPropertyValue('--primaryLighterColor') || '#FFBF00';
-                    var primCol3 = style.getPropertyValue('--primaryColor') || '#40E0D0';
-                    var primLighterCol3 = style.getPropertyValue('--primaryLighterColor') || '#40E0D0';
-                    var primCol3 = style.getPropertyValue('--primaryColor') || '#CCCCFF';
-                    var primLighterCol3 = style.getPropertyValue('--primaryLighterColor') || '#CCCCFF';
+                    var primCol1 = style.getPropertyValue('--primaryColor1') || 'rgba(255, 99, 132, 1)';
+                    var primLighterCol1 = style.getPropertyValue('--primaryLighterColor1') || 'rgba(255, 99, 132, 0.2)';
+                    var primCol2 = style.getPropertyValue('--primaryColor2') || 'rgba(54, 162, 235, 1)';
+                    var primLighterCol2 = style.getPropertyValue('--primaryLighterColor2') || 'rgba(54, 162, 235, 0.2)';
+                    var primCol3 = style.getPropertyValue('--primaryColor3') || 'rgba(255, 206, 86, 1)';
+                    var primLighterCol3 = style.getPropertyValue('--primaryLighterColor3') || 'rgba(255, 206, 86, 0.2)';
+                    var primCol4 = style.getPropertyValue('--primaryColor4') || 'rgba(75, 192, 192, 1)';
+                    var primLighterCol4 = style.getPropertyValue('--primaryLighterColor4') || 'rgba(75, 192, 192, 0.2)';
+                    var primCol5 = style.getPropertyValue('--primaryColor5') || 'rgba(153, 102, 255, 1)';
+                    var primLighterCol5 = style.getPropertyValue('--primaryLighterColor5') || 'rgba(153, 102, 255, 0.2)';
 
                     myChart1 = new Chart(document.getElementById("chart1").getContext('2d'), {
                         type: 'line',
@@ -75,12 +77,12 @@
                                     data: #{dashboard.chartData.composeFloatData4String()},
                                     order: 2,
                                     borderColor: [
-                                        primCol1,
+                                        primCol4,
                                     ],
                                     borderWidth: 4,
                                     fill: true,
                                     backgroundColor: [
-                                        primLighterCol1
+                                        primLighterCol4
                                     ],
 
                                 },
@@ -89,12 +91,12 @@
                                     data: #{dashboard.chartData.composeFloatData5String()},
                                     order: 2,
                                     borderColor: [
-                                        primCol2,
+                                        primCol5,
                                     ],
                                     borderWidth: 4,
                                     fill: true,
                                     backgroundColor: [
-                                        primLighterCol2
+                                        primLighterCol5
                                     ],
 
                                 }
@@ -190,7 +192,7 @@
                     </div>
                 </div>
 
-                <div class="p-col-12 p-md-12 p-xl-8">
+                <div class="p-col-12 p-md-12 p-xl-12">
                     <div class="p-grid">
                         <div class="p-col-12">
                             <div class="card chart">
@@ -200,7 +202,7 @@
                                         <p class="subtitle">Line graph</p>
                                     </div>
                                 </div>
-                                <canvas id="chart1" style="max-height: 330px;"></canvas>
+                                <canvas id="chart1" style="height: 250px;"></canvas>
                             </div>
                         </div>
 
@@ -280,8 +282,100 @@
                     </div>
 
                 </div>
+                <p:outputPanel  rendered="true"  styleClass="p-col-12 p-md-8">
+                    <div class="card schedule">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h6>Credit profile interpretations</h6>
+                                <p class="subtitle">(All scores are given in percentages)</p>
+                            </div>
+
+                        </div>
+
+                        <ul>
+                            <li>
+                                <div class="schedule-header">
+                                    <h6>Capacity score</h6>
+
+                                </div>
+
+                                <p style="opacity: 0.7">
+                                    <h:outputText value="
+                                                  This represents a businesses&apos; ability to repay the loans. 
+                                                  Its calculated from the revenue, expenses, cash flow and repayment timing."
+                                                  escape="false"
+                                                  /> 
+                                </p>
+                            </li>
+                            <li>
+                                <div class="schedule-header">
+                                    <h6>Capital score</h6>
+
+                                </div>
+
+                                <p style="opacity: 0.7">
+                                    <h:outputText value="The cash you put toward starting your business is called capital, and it&apos;s a 
+                                                  good way to shows how serious a business is about its success. 
+                                                  It&apos;s gotten from how much a business is trying to contribute towards the cause of the loan needed and the type of reason for loan application. 
+                                                  This may come from deposits or money from other sources."
+                                                  escape="false"
+                                                  />
+                                </p>
+                            </li>
+
+                            <li>
+                                <div class="schedule-header">
+                                    <h6>Collateral score</h6>
+
+                                </div>
+
+                                <p style="opacity: 0.7">
+                                    <h:outputText value="Collateral is secondary source of repayment for the loan. This could be equipment, vehicles or 
+                                                  inventory. The collatearl score will be based 
+                                                  on a percentage of the collateral&apos;s value, which is called the loan-to-value ratio (LTV)."
+                                                  escape="false"
+                                                  />
+                                </p>
+                            </li>
+
+                            <li>
+                                <div class="schedule-header">
+                                    <h6>Conditions</h6>
+
+                                </div>
+
+                                <p style="opacity: 0.7">
+                                    <h:outputText value="This represents the legitmacy and competitiveness of the business, the type of industry, online presencs, 
+                                                  profitability of the business as per current economical and political environment, and duration of existance of the business."
+                                                  escape="false"
+                                                  />
+                                </p>
+                            </li>
+
+                            <li>
+                                <div class="schedule-header">
+                                    <h6>Character score</h6>
+
+                                </div>
+
+                                <p style="opacity: 0.7">
+                                    <h:outputText value="This represents a business&apos; credit history which may be required to personally 
+                                                  guarantee the loan. Statistics show that the way a person managed previous credit generally 
+                                                  indicates how he or she will manage the curret business credit. Any references or other background 
+                                                  information you can provide will be considered. "
+                                                  escape="false"
+                                                  />
+                                </p>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </p:outputPanel>
 
             </p:outputPanel>
+
+
 
             <p:outputPanel  rendered="#{componentRenderer.administrator}" styleClass="p-grid">
 
@@ -327,7 +421,96 @@
                         <i class="pi pi-cloud"></i>
                     </div>
                 </div>
+                <p:outputPanel  rendered="true"  styleClass="p-col-12 p-md-8">
+                    <div class="card schedule">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h6>Credit profile interpretations</h6>
+                                <p class="subtitle">(All scores are given in percentages)</p>
+                            </div>
 
+                        </div>
+
+                        <ul>
+                            <li>
+                                <div class="schedule-header">
+                                    <h6>Capacity score</h6>
+
+                                </div>
+
+                                <p style="opacity: 0.7">
+                                    <h:outputText value="
+                                                  This represents a businesses&apos; ability to repay the loans. 
+                                                  Its calculated from the revenue, expenses, cash flow and repayment timing."
+                                                  escape="false"
+                                                  /> 
+                                </p>
+                            </li>
+                            <li>
+                                <div class="schedule-header">
+                                    <h6>Capital score</h6>
+
+                                </div>
+
+                                <p style="opacity: 0.7">
+                                    <h:outputText value="The cash you put toward starting your business is called capital, and it&apos;s a 
+                                                  good way to shows how serious a business is about its success. 
+                                                  It&apos;s gotten from how much a business is trying to contribute towards the cause of the loan needed and the type of reason for loan application. 
+                                                  This may come from deposits or money from other sources."
+                                                  escape="false"
+                                                  />
+                                </p>
+                            </li>
+
+                            <li>
+                                <div class="schedule-header">
+                                    <h6>Collateral score</h6>
+
+                                </div>
+
+                                <p style="opacity: 0.7">
+                                    <h:outputText value="Collateral is secondary source of repayment for the loan. This could be equipment, vehicles or 
+                                                  inventory. The collatearl score will be based 
+                                                  on a percentage of the collateral&apos;s value, which is called the loan-to-value ratio (LTV)."
+                                                  escape="false"
+                                                  />
+                                </p>
+                            </li>
+
+                            <li>
+                                <div class="schedule-header">
+                                    <h6>Conditions</h6>
+
+                                </div>
+
+                                <p style="opacity: 0.7">
+                                    <h:outputText value="This represents the legitmacy and competitiveness of the business, the type of industry, online presencs, 
+                                                  profitability of the business as per current economical and political environment, and duration of existance of the business."
+                                                  escape="false"
+                                                  />
+                                </p>
+                            </li>
+
+                            <li>
+                                <div class="schedule-header">
+                                    <h6>Character score</h6>
+
+                                </div>
+
+                                <p style="opacity: 0.7">
+                                    <h:outputText value="This represents a business&apos; credit history which may be required to personally 
+                                                  guarantee the loan. Statistics show that the way a person managed previous credit generally 
+                                                  indicates how he or she will manage the curret business credit. Any references or other background 
+                                                  information you can provide will be considered. "
+                                                  escape="false"
+                                                  />
+                                </p>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </p:outputPanel>
 
             </p:outputPanel>
 
@@ -351,7 +534,96 @@
                     </div>
                 </div>
 
+                <p:outputPanel  rendered="true"  styleClass="p-col-12 p-md-8">
+                    <div class="card schedule">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h6>Credit profile interpretations</h6>
+                                <p class="subtitle">(All scores are given in percentages)</p>
+                            </div>
 
+                        </div>
+
+                        <ul>
+                            <li>
+                                <div class="schedule-header">
+                                    <h6>Capacity score</h6>
+
+                                </div>
+
+                                <p style="opacity: 0.7">
+                                    <h:outputText value="
+                                                  This represents a businesses&apos; ability to repay the loans. 
+                                                  Its calculated from the revenue, expenses, cash flow and repayment timing."
+                                                  escape="false"
+                                                  /> 
+                                </p>
+                            </li>
+                            <li>
+                                <div class="schedule-header">
+                                    <h6>Capital score</h6>
+
+                                </div>
+
+                                <p style="opacity: 0.7">
+                                    <h:outputText value="The cash you put toward starting your business is called capital, and it&apos;s a 
+                                                  good way to shows how serious a business is about its success. 
+                                                  It&apos;s gotten from how much a business is trying to contribute towards the cause of the loan needed and the type of reason for loan application. 
+                                                  This may come from deposits or money from other sources."
+                                                  escape="false"
+                                                  />
+                                </p>
+                            </li>
+
+                            <li>
+                                <div class="schedule-header">
+                                    <h6>Collateral score</h6>
+
+                                </div>
+
+                                <p style="opacity: 0.7">
+                                    <h:outputText value="Collateral is secondary source of repayment for the loan. This could be equipment, vehicles or 
+                                                  inventory. The collatearl score will be based 
+                                                  on a percentage of the collateral&apos;s value, which is called the loan-to-value ratio (LTV)."
+                                                  escape="false"
+                                                  />
+                                </p>
+                            </li>
+
+                            <li>
+                                <div class="schedule-header">
+                                    <h6>Conditions</h6>
+
+                                </div>
+
+                                <p style="opacity: 0.7">
+                                    <h:outputText value="This represents the legitmacy and competitiveness of the business, the type of industry, online presencs, 
+                                                  profitability of the business as per current economical and political environment, and duration of existance of the business."
+                                                  escape="false"
+                                                  />
+                                </p>
+                            </li>
+
+                            <li>
+                                <div class="schedule-header">
+                                    <h6>Character score</h6>
+
+                                </div>
+
+                                <p style="opacity: 0.7">
+                                    <h:outputText value="This represents a business&apos; credit history which may be required to personally 
+                                                  guarantee the loan. Statistics show that the way a person managed previous credit generally 
+                                                  indicates how he or she will manage the curret business credit. Any references or other background 
+                                                  information you can provide will be considered. "
+                                                  escape="false"
+                                                  />
+                                </p>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </p:outputPanel>
             </p:outputPanel>
         </div>
     </ui:define>

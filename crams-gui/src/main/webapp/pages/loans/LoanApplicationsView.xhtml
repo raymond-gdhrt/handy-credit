@@ -195,8 +195,8 @@
                                                            icon="ui-icon-alert" />
                                             </p:commandButton>
 
-                                            <p:commandButton icon="fa fa-check" title="Mark as rejected" 
-                                                             styleClass="warning-button"  style="margin-left: 5px"
+                                            <p:commandButton icon="fa fa-times" title="Mark as rejected" 
+                                                             styleClass="danger-button"  style="margin-left: 5px"
                                                              update="loanApplicationsView"
                                                              rendered="#{model.status eq 'Submitted'}"
                                                              action="#{loanApplicationsView.rejectLoanApplication(model)}">
@@ -274,7 +274,7 @@
                                 </p:outputPanel>
 
                                 <p:outputPanel rendered="true" styleClass="p-field p-col-12 p-md-6">
-                                    <p:outputLabel for="reason">Reason</p:outputLabel>
+                                    <p:outputLabel for="reason">Reason:  </p:outputLabel>
                                     <h:outputText id="reason" value="#{loanApplicationsView.selectedLoanApplication.loanRequestReason}" 
                                                        >
 

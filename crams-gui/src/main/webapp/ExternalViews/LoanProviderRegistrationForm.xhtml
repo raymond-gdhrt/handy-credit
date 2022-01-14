@@ -173,17 +173,15 @@
 
 
                             <p:fieldset id="postMessageSection" rendered="#{loanProviderRegistrationForm.showFinalSection}">
-                                 <div class="ui-fluid p-grid" style="padding: 20%">
-                                     
+                                <div class="ui-fluid p-grid" style="padding: 20%">
+
                                     <div class="ui-g-12 ui-md-12 ui-lg-12" style="margin-bottom:20px">
                                         <h4>#{loanProviderRegistrationForm.customUiMessage}</h4>
-                                        <a   href="#{request.contextPath}/ExternalViews/Login.xhtml">
 
-                                            <p:commandButton icon="fa fa-save" process="@this"
-                                                             value="Login" id="saveBtn4"
-                                                             styleClass="green-btn" 
-                                                             />
-                                        </a>
+                                        <h:link outcome="/pages/dashboard/Dashboard" styleClass="link_404" >
+                                            Proceed to login
+                                        </h:link>
+
 
 
                                     </div>

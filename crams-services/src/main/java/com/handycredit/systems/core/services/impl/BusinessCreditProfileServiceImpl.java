@@ -20,7 +20,6 @@ import com.handycredit.systems.models.LoanApplication;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import org.apache.commons.lang3.StringUtils;
 import org.sers.webutils.model.RecordStatus;
 import org.sers.webutils.model.exception.OperationFailedException;
 import org.sers.webutils.model.exception.ValidationFailedException;
@@ -61,6 +60,10 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
         if (loanApplication.getLoan() == null) {
             throw new ValidationFailedException("Missing loan details");
         }
+        
+        if (loanApplication.getNeededAmount() < loanApplication.getAmount()) {
+            throw new ValidationFailedException("Amount higher than the needed amount");
+        }
 
         if (loanApplication.getLoan().getMaximumAmount() < loanApplication.getAmount()) {
             throw new ValidationFailedException("Amount higher than maximum loan limit");
@@ -92,9 +95,14 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
             collateralValue = collateralValue + collateral.getEstimatedValue();
         }
         if (collateralValue == 0) {
-            return 0;
+            return 1;
         }
-        return collateralValue / loanAmount;
+       
+        float ratio =collateralValue / loanAmount;
+        if(ratio>1){
+         return 92;
+        }
+        return ratio*100;
     }
 
     @Override
@@ -107,8 +115,13 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
         if (loanApplication.getNeededAmount() == 0) {
             return 0;
         }
+        float needToCapitalRatio = (loanApplication.getNeededAmount() - loanApplication.getAmount()) / loanApplication.getNeededAmount();
 
-        return loanApplication.getNeededAmount() / loanApplication.getAmount() + loanApplication.getLoanRequestReason().getScore();
+        if (needToCapitalRatio >= 1) {
+            needToCapitalRatio = 80;
+
+        }
+        return needToCapitalRatio + loanApplication.getLoanRequestReason().getScore();
     }
 
     @Override
@@ -130,8 +143,11 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
         if (income - expenses == 0) {
             return 1;
         }
-
-        return (income - expenses) / loanAmount *100;
+        float profitToLoanRatio = (income - expenses) / loanAmount;
+        if (profitToLoanRatio >= 1) {
+            return 90;
+        }
+        return profitToLoanRatio * 100;
     }
 
     @Override
@@ -156,12 +172,17 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
         if (cleared == 0 && defaiulted == 0) {
             return 1;
         }
-        
-        if (cleared >defaiulted ) {
+
+        if (cleared > defaiulted) {
             return 1;
         }
 
-        return java.lang.Math.abs((cleared - defaiulted)) / loanAmount *100;
+        float loanRatio = (cleared - defaiulted) / loanAmount;
+        if (loanRatio >= 1) {
+            return 90;
+        }
+
+        return loanRatio * 100;
     }
 
     @Override
@@ -187,16 +208,25 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
         }
 
         if (business.getRegistrationNumber() != null) {
-            finalScore = (float) (finalScore + 5);
+            finalScore = (float) (finalScore + 10);
         }
 
         if (business.getDateOfOpening() != null) {
             long daysInBusiness = DateUtils.calculateDaysBetween(business.getDateOfOpening(), new Date());
-            finalScore = finalScore + Long.toString(daysInBusiness).length();
+
+            int daysScore = Long.toString(daysInBusiness).length();
+            if (daysScore > 30) {
+                daysScore = 60;
+            } else {
+
+                daysScore = daysScore * 3;
+            }
+
+            finalScore = finalScore + daysScore;
 
         }
 
-        return finalScore ;
+        return finalScore;
     }
 
     @Override
