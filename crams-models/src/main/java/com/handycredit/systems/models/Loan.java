@@ -44,8 +44,7 @@ public class Loan extends BaseEntity {
     private float minimumConditionsScore;
     private float minimumCollateralScore;
     private Set<DynamicField> dynamicFields;
-    private BusinessCategory targetBusinessCategory;
-    private LoanRequestReason targetRequestReason;
+    
     private AccountStatus targetAccountStatus;
 
     @ManyToOne(optional = false)
@@ -150,25 +149,7 @@ public class Loan extends BaseEntity {
         this.dynamicFields = dynamicFields;
     }
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "target_business_category")
-    public BusinessCategory getTargetBusinessCategory() {
-        return targetBusinessCategory;
-    }
-
-    public void setTargetBusinessCategory(BusinessCategory targetBusinessCategory) {
-        this.targetBusinessCategory = targetBusinessCategory;
-    }
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "target_request_reason")
-    public LoanRequestReason getTargetRequestReason() {
-        return targetRequestReason;
-    }
-
-    public void setTargetRequestReason(LoanRequestReason targetRequestReason) {
-        this.targetRequestReason = targetRequestReason;
-    }
+   
 
     @Enumerated(EnumType.STRING)
     @Column(name = "target_account_status")

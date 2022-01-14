@@ -5,17 +5,19 @@
  */
 package com.handycredit.systems.core.services.impl;
 
+import com.handycredit.systems.constants.CollateralStatus;
 import com.handycredit.systems.constants.LoanApplicationStatus;
-import com.handycredit.systems.core.services.BusinessCreditHistoryService;
 import com.handycredit.systems.core.services.BusinessCreditProfileService;
+import com.handycredit.systems.core.services.CollateralService;
 import com.handycredit.systems.core.services.LoanApplicationService;
-import com.handycredit.systems.models.BusinessCreditHistory;
+import com.handycredit.systems.models.Collateral;
 import com.handycredit.systems.models.LoanApplication;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.sers.webutils.model.exception.OperationFailedException;
 import org.sers.webutils.model.exception.ValidationFailedException;
 import org.sers.webutils.server.core.utils.ApplicationContextProvider;
-import org.sers.webutils.server.core.utils.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,15 +56,28 @@ public class LoanApplicationServiceImpl extends GenericServiceImpl<LoanApplicati
             throw new ValidationFailedException("Amount lower than minimum loan limit");
         }
 
+        if (loanApplication.getNeededAmount() < loanApplication.getAmount()) {
+            throw new ValidationFailedException("Amount higher than the needed amount");
+        }
+
         if (loanApplication.isNew()) {
             loanApplication.setStatus(LoanApplicationStatus.Submitted);
             loanApplication.setDateSubmitted(new Date());
-            loanApplication = super.save(loanApplication);
+
+        }
+
+        if (loanApplication.getCreditRiskProfile() == null) {
             loanApplication.setCreditRiskProfile(ApplicationContextProvider.getBean(BusinessCreditProfileService.class).createProfile(loanApplication));
 
         }
 
-        return super.save(loanApplication);
+        for (Collateral collateral : loanApplication.getAttachedCollaterals()) {
+
+            collateral.setStatus(CollateralStatus.inUse);
+
+        }
+
+        return super.merge(loanApplication);
 
     }
 
@@ -84,7 +99,13 @@ public class LoanApplicationServiceImpl extends GenericServiceImpl<LoanApplicati
         loanApplication.setRejectionNotes(reason);
         loanApplication.setStatus(LoanApplicationStatus.Rejected);
         loanApplication.setDateRejected(new Date());
-        return super.save(loanApplication);
+
+        for (Collateral collateral : loanApplication.getAttachedCollaterals()) {
+
+            collateral.setStatus(CollateralStatus.free);
+
+        }
+        return super.merge(loanApplication);
     }
 
     @Override
@@ -104,38 +125,22 @@ public class LoanApplicationServiceImpl extends GenericServiceImpl<LoanApplicati
         }
         loanApplication.setStatus(LoanApplicationStatus.Cleared);
         loanApplication.setDateCleared(new Date());
-        BusinessCreditHistory creditHistory = new BusinessCreditHistory();
-        creditHistory.setBusiness(loanApplication.getBusiness());
-        creditHistory.setRateType(loanApplication.getLoan().getInterestRateInterval());
-        creditHistory.setAmountBorrowed(loanApplication.getAmount());
-        creditHistory.setName(loanApplication.getLoan().getTitle());
-        creditHistory.setActualClearDate(new Date());
-        creditHistory.setLoanApplicationStatus(LoanApplicationStatus.Cleared);
-        
-        creditHistory.setExpectedClearanceDate(DateUtils.getDateAfterDays(loanApplication.getDateGivenOut(), loanApplication.getProposedPaymentPeriodInDays()));
 
-        ApplicationContextProvider.getBean(BusinessCreditHistoryService.class).saveInstance(creditHistory);
+        for (Collateral collateral : loanApplication.getAttachedCollaterals()) {
 
-        return super.save(loanApplication);
+            collateral.setStatus(CollateralStatus.free);
+
+        }
+        return super.merge(loanApplication);
     }
 
     @Override
-    public LoanApplication defaultLoan(LoanApplication loanApplication) throws ValidationFailedException ,OperationFailedException{
+    public LoanApplication defaultLoan(LoanApplication loanApplication) throws ValidationFailedException, OperationFailedException {
         if (loanApplication.isNew()) {
             throw new ValidationFailedException("Entity not yet persisted");
         }
         loanApplication.setStatus(LoanApplicationStatus.Defaulted);
         loanApplication.setDateDefaulted(new Date());
-         BusinessCreditHistory creditHistory = new BusinessCreditHistory();
-        creditHistory.setBusiness(loanApplication.getBusiness());
-        creditHistory.setRateType(loanApplication.getLoan().getInterestRateInterval());
-        creditHistory.setAmountBorrowed(loanApplication.getAmount());
-        creditHistory.setName(loanApplication.getLoan().getTitle());
-        creditHistory.setLoanApplicationStatus(LoanApplicationStatus.Defaulted);
-        
-        creditHistory.setExpectedClearanceDate(DateUtils.getDateAfterDays(loanApplication.getDateGivenOut(), loanApplication.getProposedPaymentPeriodInDays()));
-
-        ApplicationContextProvider.getBean(BusinessCreditHistoryService.class).saveInstance(creditHistory);
 
         return super.save(loanApplication);
     }

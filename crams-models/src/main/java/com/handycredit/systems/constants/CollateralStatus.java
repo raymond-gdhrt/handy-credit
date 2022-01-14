@@ -11,5 +11,5 @@ package com.handycredit.systems.constants;
  * @author RayGdhrt
  */
 public enum CollateralStatus {
-inUse, free,approved,created;
+inUse, free;
 }

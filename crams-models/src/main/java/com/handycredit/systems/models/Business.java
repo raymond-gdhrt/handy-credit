@@ -224,5 +224,16 @@ public class Business extends BaseEntity {
     public void setUserAccount(User userAccount) {
         this.userAccount = userAccount;
     }
+    
+      @Override
+    public boolean equals(Object object) {
+        return object instanceof Business && (super.getId() != null) ? super.getId().equals(((Business) object).getId())
+                : (object == this);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.getId() != null ? this.getClass().hashCode() + super.getId().hashCode() : super.hashCode();
+    }
 
 }

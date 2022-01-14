@@ -11,5 +11,5 @@ package com.handycredit.systems.constants;
  * @author RayGdhrt
  */
 public enum Transactiontype {
-expense, sale;
+Expense, Sale;
 }

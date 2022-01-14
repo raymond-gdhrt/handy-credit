@@ -24,34 +24,6 @@ public interface BusinessService extends GenericService<Business> {
      */
     Business getBusinessByUserAccount(User user);
 
-    /**
-     * 
-     * @return 
-     */
-    int calculateCapacityScore();
-
-    /**
-     * 
-     * @return 
-     */
-    int calculateCollateralScore();
-
-    /**
-     * 
-     * @return 
-     */
-    int calculateCapitalScore();
-
-    /**
-     * 
-     * @return 
-     */
-    int calculateCharacterScore();
-
-    /**
-     * 
-     * @return 
-     */
-    int calculateConditionScore();
+   
 
 }

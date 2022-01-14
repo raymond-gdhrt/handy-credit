@@ -22,103 +22,86 @@
                         <p:inputText value="#{loanCreationForm.model.title}" required="true" />
                     </div>
                 </div>
-                
-                 <div class="ui-col-12 ui-md-6">
-                    <h5>Reason</h5>
-                    <div class="ui-inputgroup">
 
-                        <p:selectOneMenu id="category" value="#{loanCreationForm.model.targetRequestReason}" 
-                                       
-                                         effect="fold" >
-                            <f:selectItem itemLabel="Select One" itemValue=""/>
-                            <f:selectItems value="#{loanCreationForm.loanRequestReasons}"/>
-                        </p:selectOneMenu>
-                    </div>
-                </div>
-                
 
-                <div class="ui-col-12 ui-md-6">
-                    <h5>Interval</h5>
+
+                <div class="ui-col-12 ui-md-3">
+                    <h5>Interest rate interval</h5>
                     <div class="ui-inputgroup">
 
                         <p:selectOneMenu  value="#{loanCreationForm.model.interestRateInterval}" 
-                                       
-                                         effect="fold" >
+
+                                          effect="fold" >
                             <f:selectItem itemLabel="Select One" itemValue=""/>
                             <f:selectItems value="#{loanCreationForm.rateIntervals}"/>
                         </p:selectOneMenu>
                     </div>
                 </div>
-                
-                <div class="ui-col-12 ui-md-6">
-                    <h5>Target business</h5>
+
+                <div class="ui-col-12 ui-md-3">
+                    <h5>Interest rate</h5>
                     <div class="ui-inputgroup">
 
-                        <p:selectOneMenu  value="#{loanCreationForm.model.targetBusinessCategory}" 
-                                         
-                                         effect="fold" >
-                            <f:selectItem itemLabel="All" itemValue=""/>
-                            <f:selectItems value="#{loanCreationForm.businessCategories}"/>
-                        </p:selectOneMenu>
+                        <p:inputNumber value="#{loanCreationForm.model.interestRate}" />
                     </div>
                 </div>
-                
-                 <div class="ui-col-12 ui-md-3">
+
+                <div class="ui-col-12 ui-md-6">
                     <h5>Min amount</h5>
                     <div class="ui-inputgroup">
 
                         <p:inputNumber decimalPlaces="0" value="#{loanCreationForm.model.minimumAmount}" required="true" />
                     </div>
                 </div>
-                
-                 <div class="ui-col-12 ui-md-3">
+
+                <div class="ui-col-12 ui-md-6">
                     <h5>Max amount</h5>
                     <div class="ui-inputgroup">
 
                         <p:inputNumber decimalPlaces="0" value="#{loanCreationForm.model.maximumAmount}" required="true" />
                     </div>
                 </div>
-                
-                 <div class="ui-col-12 ui-md-6">
+
+                <div class="ui-col-12 ui-md-6">
                     <h5>Min capacity score</h5>
                     <div class="ui-inputgroup">
 
                         <p:inputNumber decimalPlaces="0" value="#{loanCreationForm.model.minimumCapacityScore}" required="true" />
                     </div>
                 </div>
-                
-                  <div class="ui-col-12 ui-md-3">
+
+                <div class="ui-col-12 ui-md-3">
                     <h5>Min capital score</h5>
                     <div class="ui-inputgroup">
 
                         <p:inputNumber decimalPlaces="0" value="#{loanCreationForm.model.minimumCapitalScore}" required="true" />
                     </div>
                 </div>
-                
-                 <div class="ui-col-12 ui-md-3">
+
+                <div class="ui-col-12 ui-md-3">
                     <h5>Min character score</h5>
                     <div class="ui-inputgroup">
 
                         <p:inputNumber decimalPlaces="0" value="#{loanCreationForm.model.minimumCharacterScore}" required="true" />
                     </div>
                 </div>
-                
-                 <div class="ui-col-12 ui-md-3">
+
+                <div class="ui-col-12 ui-md-3">
                     <h5>Min collateral score</h5>
                     <div class="ui-inputgroup">
 
                         <p:inputNumber decimalPlaces="0" value="#{loanCreationForm.model.minimumCollateralScore}" required="true" />
                     </div>
                 </div>
-                
-                 <div class="ui-col-12 ui-md-3">
+
+                <div class="ui-col-12 ui-md-3">
                     <h5>Min conditions score</h5>
                     <div class="ui-inputgroup">
 
                         <p:inputNumber decimalPlaces="0" value="#{loanCreationForm.model.minimumConditionsScore}" required="true" />
                     </div>
                 </div>
-              
+
 
                 <div class="ui-col-12 ui-md-12">
                     <h5>Other details</h5>

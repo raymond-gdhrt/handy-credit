@@ -20,50 +20,50 @@
                 <fr:menu widgetVar="FreyaMenuWidget">
                     <p:menuitem id="om_dashboard" value="Dashboard" icon="pi pi-home" 
                               
-                                url="/Dashboard"  />
+                                url="#{request.contextPath}/Dashboard"  />
                     <p:menuitem id="busineses" rendered="#{componentRenderer.administrator}"
                                 value="Businesses"
                                 icon="pi pi-briefcase" 
-                                url="/Businesses" />
+                                url="#{request.contextPath}/Businesses" />
                     
                     <p:menuitem id="businesesPV" rendered="#{componentRenderer.businessOwner and not componentRenderer.administrator }"
                                 value="My profile"
                                 icon="pi pi-briefcase" 
-                                url="/pages/businesses/BusinessProfileView.xhtml" />
+                                url="#{request.contextPath}/pages/businesses/BusinessProfileView.xhtml" />
                     
                      <p:menuitem id="transactions" rendered="#{componentRenderer.businessOwner and not componentRenderer.administrator }"
                                 value="Business performance"
                                 icon="pi pi-bars" 
-                                url="/pages/businesses/BusinessPerformanceView.xhtml" />
+                                url="#{request.contextPath}/pages/businesses/BusinessPerformanceView.xhtml" />
                      
                      <p:menuitem id="creditHistory" rendered="#{componentRenderer.businessOwner and not componentRenderer.administrator }"
                                 value="Credit history"
                                 icon="pi pi-bars" 
-                                url="/pages/businesses/CreditHistoryView.xhtml" />
+                                url="#{request.contextPath}/pages/businesses/CreditHistoryView.xhtml" />
 
                     <p:menuitem id="loanProviders" 
                                 rendered="#{componentRenderer.administrator}"
                                 value="Loan providers"
                                 icon="pi pi-id-card" 
-                                url="/LoanProviders" />
+                                url="#{request.contextPath}/LoanProviders" />
                     
                     <p:menuitem id="loanApplications" 
                                 rendered="#{componentRenderer.administrator or componentRenderer.loanProvider}"
                                 value="Loan applications"
                                 icon="pi pi-th-large" 
-                                url="/LoanApplications" />
+                                url="#{request.contextPath}/LoanApplications" />
 
                     <p:menuitem id="loans" 
                                 rendered="#{componentRenderer.administrator or componentRenderer.loanProvider}"
                                 value="Loans"
                                 icon="pi pi-compass" 
-                                url="/Loans" />
+                                url="#{request.contextPath}/Loans" />
                     
                      <p:menuitem id="loansList" 
                                  rendered="#{ (not componentRenderer.administrator) and  componentRenderer.businessOwner}"
                                 value="Loans"
                                 icon="pi pi-compass" 
-                                url="/LoansList" />
+                                url="#{request.contextPath}/LoansList" />
                     
                     
                     <p:submenu  label="Tools" 
@@ -74,20 +74,20 @@
                                 
                                 value="System Settings"
                                 icon="pi pi-bars" 
-                                url="/Settings"/>
+                                url="#{request.contextPath}/Settings"/>
                          
                           <p:menuitem id="roles" 
                                 
                                 value="Roles"
                                 icon="pi pi-bars" 
-                                url="/Roles"/>
+                                url="#{request.contextPath}/Roles"/>
                     </p:submenu>
 
                    
                     <p:menuitem id="om_grid" 
                                 value="Logout"
                                 icon="pi pi-arrow-circle-left" 
-                                url="/ServiceLogout" />
+                                url="#{request.contextPath}/ServiceLogout" />
 
 
                 </fr:menu>

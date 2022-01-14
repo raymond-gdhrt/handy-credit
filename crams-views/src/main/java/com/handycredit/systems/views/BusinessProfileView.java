@@ -9,60 +9,85 @@ import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 import com.googlecode.genericdao.search.Search;
 import com.handycredit.systems.core.services.BusinessService;
 import com.handycredit.systems.core.services.CollateralService;
+import com.handycredit.systems.core.services.LoanApplicationService;
 import com.handycredit.systems.models.Business;
-import com.handycredit.systems.models.BusinessCreditHistory;
 import com.handycredit.systems.models.Collateral;
+import com.handycredit.systems.models.LoanApplication;
 import com.handycredit.systems.security.HyperLinks;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.bean.ViewScoped;
 import org.sers.webutils.client.views.presenters.WebFormView;
 import org.sers.webutils.model.RecordStatus;
 import org.sers.webutils.model.exception.OperationFailedException;
 import org.sers.webutils.server.shared.SharedAppData;
 
 @ManagedBean(name = "businessProfileView")
-@SessionScoped
+@ViewScoped
 @ViewPath(path = HyperLinks.BUSINESS_PROFILE_VIEW)
-public class BusinessProfileView extends WebFormView<Business, BusinessProfileView, BusinessesView> {
+public class BusinessProfileView extends WebFormView<Business, BusinessProfileView, Dashboard> {
 
     private static final long serialVersionUID = 1L;
     private BusinessService businessService;
+    private CollateralService collateralService;
     private String searchTerm;
     private Search search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE);
     private Business selectedBusiness;
-    private List<BusinessCreditHistory> histories;
-     private List<Collateral> collaterals;
+    private Collateral selectedCollateral;
+    private List<LoanApplication> loanApplications;
+    private LoanApplication selectedLoanApplication;
+    private List<Collateral> collaterals;
 
     @Override
     public void beanInit() {
 
         businessService = ApplicationContextProvider.getApplicationContext().getBean(BusinessService.class);
+        collateralService = ApplicationContextProvider.getApplicationContext().getBean(CollateralService.class);
         if (super.model == null) {
             super.model = this.businessService.getBusinessByUserAccount(SharedAppData.getLoggedInUser());
 
         }
+        this.loanApplications = ApplicationContextProvider.getBean(LoanApplicationService.class).getInstances(new Search()
+                .addFilterEqual("business", super.model)
+                .addFilterEqual("recordStatus", RecordStatus.ACTIVE), 0, 0);
+        this.collaterals = this.collateralService.getInstances(new Search()
+                .addFilterEqual("business", super.model)
+                .addFilterEqual("recordStatus", RecordStatus.ACTIVE), 0, 0);
     }
 
     @Override
     public void pageLoadInit() {
-        this.search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE).addFilterEqual("business", super.model
-        );
-        businessService = ApplicationContextProvider.getApplicationContext().getBean(BusinessService.class);
-        this.collaterals=ApplicationContextProvider.getBean(CollateralService.class).getInstances(search, 0, 0);
 
     }
 
     @Override
     public void persist() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        doNothing();
+
     }
 
-    public void deleteBusiness(Business business) {
+    public void loadCollateral(Collateral collateral) {
+        if (collateral == null) {
+            collateral = new Collateral();
+        }
+
+        this.selectedCollateral = collateral;
+
+    }
+
+    public void loadLoanApplication(LoanApplication loanApplication
+    ) {
+
+        this.selectedLoanApplication = loanApplication;
+
+    }
+
+    public void deleteCollateral(Collateral collateral) {
 
         try {
-            businessService.deleteInstance(business);
-            UiUtils.showMessageBox("Action successfull", "Business deleted");
+            collateralService.deleteInstance(collateral);
+            UiUtils.showMessageBox("Action successfull", "Collateral");
         } catch (OperationFailedException ex) {
             UiUtils.ComposeFailure("Action failed", ex.getLocalizedMessage());
             Logger.getLogger(BusinessProfileView.class.getName()).log(Level.SEVERE, null, ex);
@@ -92,14 +117,6 @@ public class BusinessProfileView extends WebFormView<Business, BusinessProfileVi
         this.selectedBusiness = selectedBusiness;
     }
 
-    public List<BusinessCreditHistory> getHistories() {
-        return histories;
-    }
-
-    public void setHistories(List<BusinessCreditHistory> histories) {
-        this.histories = histories;
-    }
-
     public List<Collateral> getCollaterals() {
         return collaterals;
     }
@@ -107,7 +124,25 @@ public class BusinessProfileView extends WebFormView<Business, BusinessProfileVi
     public void setCollaterals(List<Collateral> collaterals) {
         this.collaterals = collaterals;
     }
-    
-    
+
+    public List<LoanApplication> getLoanApplications() {
+        return loanApplications;
+    }
+
+    public Collateral getSelectedCollateral() {
+        return selectedCollateral;
+    }
+
+    public void setSelectedCollateral(Collateral selectedCollateral) {
+        this.selectedCollateral = selectedCollateral;
+    }
+
+    public LoanApplication getSelectedLoanApplication() {
+        return selectedLoanApplication;
+    }
+
+    public void setSelectedLoanApplication(LoanApplication selectedLoanApplication) {
+        this.selectedLoanApplication = selectedLoanApplication;
+    }
 
 }

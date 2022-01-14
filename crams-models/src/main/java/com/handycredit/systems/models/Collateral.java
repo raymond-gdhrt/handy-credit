@@ -26,7 +26,8 @@ public class Collateral extends BaseEntity {
 
     private String name;
     private Business business;
-    private CollateralStatus status;
+    private String otherDetails;
+    private CollateralStatus status = CollateralStatus.free;
     private float estimatedValue;
     private byte[] attachement;
     private String attachementLink;
@@ -86,6 +87,31 @@ public class Collateral extends BaseEntity {
 
     public void setStatus(CollateralStatus status) {
         this.status = status;
+    }
+
+     @Column(name = "other_details", columnDefinition = "TEXT")
+    public String getOtherDetails() {
+        return otherDetails;
+    }
+
+    public void setOtherDetails(String otherDetails) {
+        this.otherDetails = otherDetails;
+    }
+    
+      @Override
+    public boolean equals(Object object) {
+        return object instanceof Collateral && (super.getId() != null) ? super.getId().equals(((Collateral) object).getId())
+                : (object == this);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.getId() != null ? this.getClass().hashCode() + super.getId().hashCode() : super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return  name + " (" + estimatedValue +")";
     }
     
     

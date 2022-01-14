@@ -80,5 +80,6 @@ public class BusinessTransaction extends BaseEntity {
     public void setDate(Date date) {
         this.date = date;
     }
+   
 
 }

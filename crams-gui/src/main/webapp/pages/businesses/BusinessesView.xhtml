@@ -12,7 +12,7 @@
                 <h:form id="businessesView" enctype="multipart/form-data"
                         rendered="#{componentRenderer.administrator}">
 
-                 
+
                     <div class="card">
                         <h:outputText value="Filters" />
 
@@ -31,13 +31,24 @@
                             </div> <!-- comment -->
 
 
-                            <div class="p-col-12 p-md-6 p-lg-3" >
-                                <p:selectCheckboxMenu id="countries" label="Filter district" value="#{businessesView.selectedCountries}" 
-                                                      converter="countryConverter"  style="height: 100%" >
 
-                                    <f:selectItems value="#{businessesView.countries}"/>
+                            <div class="p-col-12 p-md-6 p-lg-3" >
+                                <p:selectOneMenu id="types" label="Filter type" value="#{businessesView.categories}" 
+                                                 style="height: 100%" >
+                                    <f:selectItem itemLabel="All types" value="#{null}" />
+                                    <f:selectItems value="#{businessesView.selectedBusinessCategory}"/>
                                     <p:ajax event="change" update="businessesView" listener="#{businessesView.reloadFilterReset()}"/>
-                                </p:selectCheckboxMenu>
+                                </p:selectOneMenu>
+                            </div>
+
+
+                            <div class="p-col-12 p-md-6 p-lg-3" >
+                                <p:selectOneMenu id="districts" label="Filter district" value="#{businessesView.districts}" 
+                                                 style="height: 100%" >
+                                    <f:selectItem itemLabel="All districts" value="#{null}" />
+                                    <f:selectItems value="#{businessesView.selectedDistrict}"/>
+                                    <p:ajax event="change" update="businessesView" listener="#{businessesView.reloadFilterReset()}"/>
+                                </p:selectOneMenu>
                             </div>
                             <div class="p-col-12 p-md-6 p-lg-3" >
                                 <p:commandButton icon="fa fa-search" styleClass="button-help"
@@ -83,7 +94,7 @@
                                                         </div>  
                                                         <div class="p-mr-2 p-mb-2">
 
-                                                      
+
                                                         </div>
                                                     </div>
 
@@ -98,7 +109,7 @@
                                         <p:column width="100" headerText="Full name">
                                             <h:outputText value="#{model.name}" />
                                         </p:column>
-                                       
+
 
                                         <p:column width="100" headerText="Type">
 
@@ -109,14 +120,14 @@
 
                                             <h:outputText value="#{model.district}" />
                                         </p:column>
-                                         <p:column width="100" headerText="Phone number">
+                                        <p:column width="100" headerText="Phone number">
                                             <h:outputText value="#{model.phoneNumber}" />
                                         </p:column>
-                                         <p:column width="200" headerText="Email">
+                                        <p:column width="200" headerText="Email">
                                             <h:outputText value="#{model.emailAddress}" />
                                         </p:column>
-                                        
-                                          <p:column width="50" headerText="Status">
+
+                                        <p:column width="50" headerText="Status">
                                             <h:outputText value="#{model.accountStatus}" />
                                         </p:column>
 

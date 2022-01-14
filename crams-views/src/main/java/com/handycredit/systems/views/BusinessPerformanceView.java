@@ -58,9 +58,7 @@ public class BusinessPerformanceView extends PaginatedTableView<BusinessTransact
     @PostConstruct
     public void init() {
 
-        this.searchFields = Arrays.asList(new SearchField[]{new SearchField("Name", "name"),
-            new SearchField("Code", "code"), new SearchField("Email", "emailAddress"), new SearchField("Address", "physcialAddress")});
-
+      
         transactionService = ApplicationContextProvider.getApplicationContext().getBean(TransactionDataService.class);
         this.business = ApplicationContextProvider.getBean(BusinessService.class).getBusinessByUserAccount(SharedAppData.getLoggedInUser());
         reloadFilterReset();

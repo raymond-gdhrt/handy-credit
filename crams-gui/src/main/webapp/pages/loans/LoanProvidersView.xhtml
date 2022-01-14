@@ -32,12 +32,12 @@
 
 
                             <div class="p-col-12 p-md-6 p-lg-3" >
-                                <p:selectCheckboxMenu id="countries" label="Filter type" value="#{loanProvidersView.selectedCountries}" 
-                                                      converter="countryConverter"  style="height: 100%" >
-
-                                    <f:selectItems value="#{loanProvidersView.countries}"/>
+                                <p:selectOneMenu id="types" label="Filter type" value="#{loanProvidersView.loanProviderTypes}" 
+                                                 style="height: 100%" >
+                                    <f:selectItem itemLabel="All types" value="#{null}" />
+                                    <f:selectItems value="#{loanProvidersView.selectedType}"/>
                                     <p:ajax event="change" update="loanProvidersView" listener="#{loanProvidersView.reloadFilterReset()}"/>
-                                </p:selectCheckboxMenu>
+                                </p:selectOneMenu>
                             </div>
                             <div class="p-col-12 p-md-6 p-lg-3" >
                                 <p:commandButton icon="fa fa-search" styleClass="ui-button-help"
@@ -121,8 +121,8 @@
 
                                             <h:outputText value="#{model.phoneNumber}" />
                                         </p:column>
-                                        
-                                        
+
+
 
                                         <p:column headerText="Date registered">
 
@@ -130,8 +130,8 @@
                                                 <f:convertDateTime pattern="dd/MMM/yyyy 'at' hh:mm a"/>
                                             </h:outputText>
                                         </p:column>
-                                        
-                                         <p:column headerText="Account status">
+
+                                        <p:column headerText="Account status">
 
                                             <h:outputText value="#{model.accountStatus}" />
                                         </p:column>

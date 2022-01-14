@@ -12,33 +12,7 @@
                 <h:form id="loansView" enctype="multipart/form-data"
                         rendered="#{componentRenderer.administrator or componentRenderer.loanProvider}">
 
-                    <div class="p-grid overlay-demo">
-                        <div class="p-col-12 p-md-3">
-                            <div class="card">
-                                <h:outputText value="Total" />
-                                <h2 class="p-text-right">267</h2>
-                            </div>
-                        </div>
-                        <div class="p-col-12 p-md-3">
-                            <div class="card">
-                                <h:outputText value="Draft" />
-                                <h2 class="p-text-right">399</h2>
-                            </div>
-                        </div>
-                        <div class="p-col-12 p-md-3">
-                            <div class="card">
-                                <h:outputText value="Approved" />
-                                <h2 class="p-text-right">20</h2>
-                            </div>
-                        </div>
-                        <div class="p-col-12 p-md-3">
-                            <div class="card">
-                                <h:outputText value="Rejected" />
-                                <h2 class="p-text-right">400</h2>
-                            </div>
-                        </div>
-
-                    </div>
+                  
                     <div class="card">
                         <h:outputText value="Filters" />
 
@@ -58,14 +32,7 @@
                             <!-- comment -->
 
 
-                            <div class="p-col-12 p-md-6 p-lg-3" >
-                                <p:selectCheckboxMenu id="countries" label="Filter country" value="#{loansView.selectedCountries}" 
-                                                      converter="countryConverter"  style="height: 100%" >
-
-                                    <f:selectItems value="#{loansView.countries}"/>
-                                    <p:ajax event="change" update="loansView" listener="#{loansView.reloadFilterReset()}"/>
-                                </p:selectCheckboxMenu>
-                            </div>
+                         
                             <div class="p-col-12 p-md-6 p-lg-3" >
                                 <p:commandButton icon="fa fa-search" styleClass="ui-button-help"
                                                  id="searchBtn" style="margin-right: 18px"
@@ -137,7 +104,7 @@
 
                                         <p:column width="100" headerText="Interest ">
 
-                                            <h:outputText value="#{model.interestRate} #{model.interestRateInterval}" />
+                                            <h:outputText value="#{model.interestRate}% #{model.interestRateInterval}" />
                                         </p:column>
                                         
                                          <p:column width="100" headerText="Amount Range ">

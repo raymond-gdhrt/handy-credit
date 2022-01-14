@@ -13,6 +13,8 @@ import org.sers.webutils.server.core.service.excel.reports.ExcelReport;
 import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 
 import com.googlecode.genericdao.search.Search;
+import com.handycredit.systems.constants.BusinessCategory;
+import com.handycredit.systems.constants.UgandanDistrict;
 import com.handycredit.systems.core.services.BusinessService;
 import com.handycredit.systems.models.Business;
 import com.handycredit.systems.security.HyperLinks;
@@ -30,36 +32,43 @@ import org.sers.webutils.server.core.service.SetupService;
 public class BusinessesView extends PaginatedTableView<Business, BusinessesView, BusinessesView> {
 
     private static final long serialVersionUID = 1L;
-    private BusinessService funderService;
+    private BusinessService businessService;
     private String searchTerm;
     private Business selectedBusiness;
     private Search search;
-    private List<SearchField> searchFields;
-    private List<Country> selectedCountries;
-    private List<Country> countries;
+    private List<UgandanDistrict> districts;
+    private UgandanDistrict selectedDistrict;
+    private List<BusinessCategory> categories;
+    private BusinessCategory selectedBusinessCategory;
     private SortField selectedSortField;
 
     @PostConstruct
     public void init() {
 
-        this.searchFields = Arrays.asList(new SearchField[]{new SearchField("Name", "name"),
-            new SearchField("Code", "code"), new SearchField("Email", "emailAddress"), new SearchField("Address", "physcialAddress")});
-
-        funderService = ApplicationContextProvider.getApplicationContext().getBean(BusinessService.class);
-        this.countries = ApplicationContextProvider.getBean(SetupService.class).getAllCountries();
+        businessService = ApplicationContextProvider.getApplicationContext().getBean(BusinessService.class);
+        this.districts = Arrays.asList(UgandanDistrict.values());
+         this.categories = Arrays.asList(BusinessCategory.values());
         reloadFilterReset();
     }
 
     @Override
     public void reloadFromDB(int offset, int limit, Map<String, Object> filters) throws Exception {
 
-        super.setDataModels(funderService.getInstances(this.search, offset, limit));
+        super.setDataModels(businessService.getInstances(this.search, offset, limit));
     }
 
     @Override
     public void reloadFilterReset() {
         this.search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE);
-        super.setTotalRecords(funderService.countInstances(this.search));
+        if (this.selectedDistrict != null) {
+            search.addFilterEqual("district", this.selectedDistrict);
+        }
+        
+         if (this.selectedBusinessCategory != null) {
+            search.addFilterEqual("type", this.selectedBusinessCategory);
+        }
+
+        super.setTotalRecords(businessService.countInstances(this.search));
         try {
             super.reloadFilterReset();
         } catch (Exception e) {
@@ -67,14 +76,14 @@ public class BusinessesView extends PaginatedTableView<Business, BusinessesView,
         }
     }
 
-    public void deleteBusiness(Business funder) {
+    public void deleteBusiness(Business business) {
 
         try {
-            funderService.deleteInstance(funder);
+            businessService.deleteInstance(business);
             UiUtils.showMessageBox("Action successfull", "Business deleted");
         } catch (OperationFailedException ex) {
             UiUtils.ComposeFailure("Action failed", ex.getLocalizedMessage());
-           }
+        }
 
     }
 
@@ -112,25 +121,7 @@ public class BusinessesView extends PaginatedTableView<Business, BusinessesView,
         this.selectedBusiness = selectedBusiness;
     }
 
-    public List<Country> getSelectedCountries() {
-        return selectedCountries;
-    }
-
-    public void setSelectedCountries(List<Country> selectedCountries) {
-        this.selectedCountries = selectedCountries;
-    }
-
-    
-
-    public List<Country> getCountries() {
-        return countries;
-    }
-
-    public void setCountries(List<Country> countries) {
-        this.countries = countries;
-    }
-
-  
+   
 
     public SortField getSelectedSortField() {
         return selectedSortField;
@@ -138,6 +129,38 @@ public class BusinessesView extends PaginatedTableView<Business, BusinessesView,
 
     public void setSelectedSortField(SortField selectedSortField) {
         this.selectedSortField = selectedSortField;
+    }
+
+    public List<UgandanDistrict> getDistricts() {
+        return districts;
+    }
+
+    public void setDistricts(List<UgandanDistrict> districts) {
+        this.districts = districts;
+    }
+
+    public UgandanDistrict getSelectedDistrict() {
+        return selectedDistrict;
+    }
+
+    public void setSelectedDistrict(UgandanDistrict selectedDistrict) {
+        this.selectedDistrict = selectedDistrict;
+    }
+
+    public List<BusinessCategory> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<BusinessCategory> categories) {
+        this.categories = categories;
+    }
+
+    public BusinessCategory getSelectedBusinessCategory() {
+        return selectedBusinessCategory;
+    }
+
+    public void setSelectedBusinessCategory(BusinessCategory selectedBusinessCategory) {
+        this.selectedBusinessCategory = selectedBusinessCategory;
     }
 
 }

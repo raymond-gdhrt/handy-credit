@@ -17,6 +17,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -38,7 +39,8 @@ public class LoanApplication extends BaseEntity {
     private LoanRequestReason loanRequestReason;
     private String reasonDescription;
     private Business business;
-    private LoanApplicationStatus status=LoanApplicationStatus.Submitted;
+    private float neededAmount;
+    private LoanApplicationStatus status = LoanApplicationStatus.Submitted;
     private Date dateSubmitted;
     private Date dateApproved;
     private Date dateRejected;
@@ -206,7 +208,7 @@ public class LoanApplication extends BaseEntity {
         this.filledFields = filledFields;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "loan_application_collaterals", joinColumns = @JoinColumn(name = "loan_application_id"), inverseJoinColumns = @JoinColumn(name = "collateral_id"))
     public Set<Collateral> getAttachedCollaterals() {
         return attachedCollaterals;
@@ -225,7 +227,25 @@ public class LoanApplication extends BaseEntity {
     public void setStatus(LoanApplicationStatus status) {
         this.status = status;
     }
+
+    @Column(name = "needed_amount", length = 100)
+    public float getNeededAmount() {
+        return neededAmount;
+    }
+
+    public void setNeededAmount(float neededAmount) {
+        this.neededAmount = neededAmount;
+    }
     
-    
+      @Override
+    public boolean equals(Object object) {
+        return object instanceof LoanApplication && (super.getId() != null) ? super.getId().equals(((LoanApplication) object).getId())
+                : (object == this);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.getId() != null ? this.getClass().hashCode() + super.getId().hashCode() : super.hashCode();
+    }
 
 }

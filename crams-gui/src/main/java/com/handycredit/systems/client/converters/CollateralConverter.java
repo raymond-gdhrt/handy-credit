@@ -7,7 +7,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import org.sers.webutils.model.security.Role;
 import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 
 @FacesConverter("collateralConverter")
@@ -26,6 +25,6 @@ public class CollateralConverter implements Converter {
 		if (object == null || object instanceof String)
 			return null;
 
-		return ((Role) object).getId();
+		return ((Collateral) object).getId();
 	}
 }

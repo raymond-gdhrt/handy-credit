@@ -21,6 +21,8 @@ public class HyperLinks {
     public static final String LOAN_PROVIDER_DIALOG_FORM = "/pages/loans/LoanProviderForm.xhtml?faces-redirect=true";
     public static final String LOAN_CREATION_FORM = "/pages/loans/LoanCreationForm.xhtml?faces-redirect=true";
     public static final String LOAN_APPLICATION_FORM = "/pages/loans/LoanApplicationForm.xhtml?faces-redirect=true";
+    public static final String LOAN_APPLICATION_FORM_DIALOG = "/pages/loans/LoanApplicationFormDialog.xhtml?faces-redirect=true";
+
     public static final String ROLE_FORM = "/pages/users/RoleForm.xhtml?faces-redirect=true";
 
     public static final String BUSINESSES_VIEW = "/Businesses";

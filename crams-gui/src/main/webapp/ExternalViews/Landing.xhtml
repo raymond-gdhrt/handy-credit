@@ -17,7 +17,7 @@
         <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,600" rel="stylesheet"/>
         <h:outputStylesheet name="css/style.css" library="freya-layout" />
         <h:outputScript library="freya-layout"  name="js/common.js" />
-       
+
 
 
         <script src="https://unpkg.com/animejs@3.0.1/lib/anime.min.js"></script>
@@ -46,10 +46,11 @@
                         <div class="hero-inner">
                             <div class="hero-copy">
                                 <h1 class="hero-title mt-0">Welcome to CRAMS</h1>
-                                <p class="hero-paragraph">Our landing page  works on all devices, so you only have to set it up once, and get beautiful results forever.</p>
+                                <p class="hero-paragraph">Credit risk analysis and profiling system enabling loan providers seamlessly asses the credit worthiness of 
+                                    SMEs. Crams also allows SMEs to apply for loans posted by the loan providers registered on the system.</p>
                                 <div class="hero-cta">
                                     <a class="button button-primary" 
-                                       href="#{request.contextPath}/ExternalViews/LoanProviderRegistrationForm.xhtml">Register loan </a>
+                                       href="#{request.contextPath}/ExternalViews/LoanProviderRegistrationForm.xhtml">Register lender </a>
                                     <a class="button button-primary" 
                                        href="#{request.contextPath}/ExternalViews/BusinessRegistrationForm.xhtml">Register business</a>
                                     <a class="button" href="#{request.contextPath}/ExternalViews/Login.xhtml">Login</a>
@@ -250,6 +251,6 @@
             </footer>
         </div>
 
- <h:outputScript library="freya-layout"  name="js/main.min.js" />
+        <h:outputScript library="freya-layout"  name="js/main.min.js" />
     </h:body>
 </html>
