@@ -28,20 +28,19 @@
     <h:body styleClass="#{guestPreferences.inputStyleClass}" >
 
         <div class="ui-g-12  layout-wrapper layout-topbar-#{guestPreferences.topbarTheme} layout-menu-#{guestPreferences.menuTheme} #{guestPreferences.menuMode}" >
-            <div class="ui-g-4 card-body" style="text-align: center">
+            <div class="ui-g-4 card" style="text-align: center;margin-top: 5%">
                 <h2>Register as SME</h2>
-                <h:link  styleClass="logo">
+                <h:link outcome="/ExternalViews/Landing"  styleClass="logo">
                     <p:graphicImage name="images/logo.png" width="200" height="200" library="freya-layout" />
                 </h:link>
-                <p style="padding: 10%;font-size: 18px;color: #35557e">Nullam non efficitur tellus. Aenean sapien magna, vulputate dictum odio quis, 
-                    ornare maximus elit. Vestibulum quis dolor eget sem lacinia consectetur. 
-                    Integer ac accumsan enim. Cras eget nunc non ipsum dignissim blandit. 
-                    Donec ex eros, lobortis eu nisi dictum, semper pulvinar ante.  </p>
+                <p style="padding: 10%;font-size: 18px;color: #35557e">Credit risk analysis and profiling system enabling loan providers seamlessly asses the credit worthiness of 
+                                    SMEs. Crams also allows SMEs to apply for loans posted by the loan providers registered 
+                                    on the system.  </p>
                 <p style="margin-top: 2px" >
                     <a href="LoanProviderRegistrationForm.xhtml">Register as loan provider instead </a>
                 </p>
             </div>   
-            <div class="ui-g-8">
+            <div class="ui-g-8 " style="margin-top: 4%">
                 <h:form id="businessRegistrationForm"  enctype="multipart/form-data">
 
                     <ui:fragment >
@@ -50,7 +49,7 @@
                             <p:fieldset rendered="#{businessRegistrationForm.showForm}" legend="SME business details" id="regForm" >
                                 <div class="ui-fluid p-formgrid p-grid">
                                     <p:outputPanel styleClass="p-field p-col-12 p-md-12" rendered="#{not businessRegistrationForm.successResponse}" 
-                                                   style="background-color:red;margin-right: 20%;margin-left: 20%">
+                                                   style="color:red;margin-right: 20%;margin-left: 20%">
                                         <h4>#{businessRegistrationForm.customUiMessage} </h4>
                                     </p:outputPanel>
                                     <div class="p-field p-col-12 p-md-6">
@@ -60,15 +59,15 @@
                                     </div>
 
                                     <div class="p-field p-col-12 p-md-6">
-                                        <p:outputLabel for="type" value="Type" />
+                                        <p:outputLabel for="type" value="Business type" />
                                         <p:selectOneMenu id="type" required="true" value="#{businessRegistrationForm.model.type}">
                                             <f:selectItem itemLabel="Select One" itemValue=""/>
-                                            <f:selectItems value="#{businessRegistrationForm.businessTypes}"/>
+                                            <f:selectItems var="type" itemLabel="#{type.uiName}" value="#{businessRegistrationForm.businessTypes}"/>
                                         </p:selectOneMenu>
                                     </div>
 
                                     <div class="p-field p-col-12 p-md-6">
-                                        <p:outputLabel for="tin" value="Registartion /TIN number" />
+                                        <p:outputLabel for="tin" value="Registration /TIN number" />
                                         <p:inputText required="true" id="tin"
                                                      value="#{businessRegistrationForm.model.registrationNumber}"/>
                                     </div>
@@ -130,7 +129,7 @@
 
                                         <p:commandButton  value="Submit" id="saveBtn1"
                                                           process="regForm"
-                                                          styleClass="green-btn" validateClient="true"
+                                                          styleClass="primary-button" validateClient="true"
                                                           style="margin-left: auto"
                                                           action="#{businessRegistrationForm.createMember()}"
                                                           update="businessRegistrationForm" />
@@ -149,7 +148,7 @@
                                         <h4>#{businessRegistrationForm.customUiMessage} </h4>
                                     </p:outputPanel>
                                     <div class="p-field p-col-12 p-md-12" style="text-align: center">
-                                        <h4 >Enter code sent to your email</h4>
+                                        <h4 >Enter code sent to your email<br></br> (<span style="opacity: 0.7; font-size: 15px">#{businessRegistrationForm.model.emailAddress}</span>)</h4>
                                     </div>
 
                                     <p:outputPanel rendered="#{not businessRegistrationForm.successResponse}" 
@@ -158,18 +157,18 @@
 
 
                                     </p:outputPanel>
-                                    <div class="p-field p-col-12 p-md-12">
+                                    <div class="p-field p-col-12 p-md-12" style="text-align: center; ">
 
-                                        <p:inputText required="true" 
+                                        <p:inputText required="true" style="width:30%;font-size: 25px; " maxlength="6"
                                                      value="#{businessRegistrationForm.verificationCode}" />
 
                                     </div>
-                                    <div class="p-field p-col-12 p-md-6" style="display: flex">
+                                    <div class="p-field p-col-12 p-md-12" style="text-align: center; ">
 
-                                        <p:commandButton  style="margin-left: auto"
+                                        <p:commandButton  style="width:30% "
                                                           process="codeSection"
                                                           value="Verify" id="saveBtn2"
-                                                          styleClass="green-btn" validateClient="true"
+                                                          styleClass="primary-button" validateClient="true"
                                                           action="#{businessRegistrationForm.verifyCode()}"
                                                           update="codeSection" />
                                     </div>

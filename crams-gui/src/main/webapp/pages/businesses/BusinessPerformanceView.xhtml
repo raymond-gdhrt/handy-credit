@@ -171,7 +171,7 @@
                                         <p:column headerText="Action" width="140" exportable="false" style="text-align: center" >
 
                                             <p:commandButton  process="@this" icon="fa fa-edit" styleClass="ui-button-help"
-                                                              immediate="true"  rendered="#{componentRenderer.administrator}"
+                                                              immediate="true"  
                                                               actionListener="#{transactionFormDialog.show}">
                                                 <f:setPropertyActionListener value="#{model}"
                                                                              target="#{transactionFormDialog.model}" />
@@ -180,19 +180,7 @@
                                             </p:commandButton>
 
 
-                                            <p:commandButton icon="fa fa-eye" title="View" 
-                                                             styleClass="ui-button-primary"  style="margin-left: 5px"
-
-                                                             action="#{transactionProfileView.getViewPath}">
-                                                <f:setPropertyActionListener value="#{model}"
-                                                                             target="#{transactionProfileView.model}" />
-
-                                            </p:commandButton>
-
-
-
-
-
+                                          
 
                                             <p:commandButton icon="fa fa-trash" title="Delete"  
                                                              styleClass="danger-button" style="margin-left: 5px"

@@ -85,6 +85,7 @@ public class LoanApplicationFormDialog extends DialogForm<LoanApplication> {
     public void calculateCreditProfile() {
         try {
             this.creditProfile = ApplicationContextProvider.getBean(BusinessCreditProfileService.class).createProfile(super.model);
+             super.model.setCreditRiskProfile(creditProfile);
         } catch (ValidationFailedException | OperationFailedException ex) {
             UiUtils.ComposeFailure("Warning", ex.getLocalizedMessage());
         }

@@ -40,6 +40,7 @@ public class Dashboard extends WebAppExceptionHandler implements Serializable {
     private List<Loan> loans;
     private BusinessCreditProfile businessCreditProfile;
     private ChartData chartData;
+    private Boolean capacityUp = true, capitalUp = true, characterUp = true, conditionsUp = true, collatearlUp = true;
 
     @PostConstruct
     public void init() {
@@ -62,7 +63,7 @@ public class Dashboard extends WebAppExceptionHandler implements Serializable {
 
     public void loadChartData() {
         List<BusinessCreditProfile> creditProfiles = ApplicationContextProvider.getBean(BusinessCreditProfileService.class)
-                .getInstances(new Search().addFilterEqual("business", this.loggedInBusiness), 0, 10);
+                .getInstances(new Search().addFilterEqual("business", this.loggedInBusiness).addSortAsc("dateCreated"), 0, 10);
 
         this.chartData = new ChartData();
         String[] labels = new String[creditProfiles.size()];
@@ -80,10 +81,33 @@ public class Dashboard extends WebAppExceptionHandler implements Serializable {
             dataCharacter[counter] = creditProfile.getCharacterScore();
             dataConditions[counter] = creditProfile.getConditionsScore();
             dataCollateral[counter] = creditProfile.getCollateralScore();
-            counter=counter+1;
+            counter = counter + 1;
 
         }
+         counter = labels.length-1;
 
+        if (counter > 1) {
+           
+            if (dataCapacity[counter] < dataCapacity[counter - 1]) {
+                capacityUp = false;
+            }
+
+            if (dataCapital[counter] < dataCapital[counter - 1]) {
+                capitalUp = false;
+            }
+            if (dataCharacter[counter] < dataCharacter[counter - 1]) {
+                characterUp = false;
+            }
+
+            if (dataCollateral[counter] < dataCollateral[counter - 1]) {
+                collatearlUp = false;
+            }
+
+            if (dataConditions[counter] < dataConditions[counter - 1]) {
+                conditionsUp = false;
+            }
+
+        }
         this.chartData.setLabels(labels);
         this.chartData.setFloatData1(dataCapacity);
         this.chartData.setFloatData2(dataCharacter);
@@ -95,10 +119,10 @@ public class Dashboard extends WebAppExceptionHandler implements Serializable {
 
     public void initBusinessData() {
         System.out.println("Initialising business....");
-        loadChartData();
-        this.loggedInBusiness = ApplicationContextProvider.getBean(BusinessService.class).getBusinessByUserAccount(loggedInUser);
-        this.businessCreditProfile = ApplicationContextProvider.getBean(BusinessCreditProfileService.class).calculateGeneralProfile(loggedInBusiness);
 
+        this.loggedInBusiness = ApplicationContextProvider.getBean(BusinessService.class).getBusinessByUserAccount(this.loggedInUser);
+        this.businessCreditProfile = ApplicationContextProvider.getBean(BusinessCreditProfileService.class).calculateGeneralProfile(this.loggedInBusiness);
+        loadChartData();
     }
 
     public void initLoanProvidersData() {
@@ -206,6 +230,46 @@ public class Dashboard extends WebAppExceptionHandler implements Serializable {
 
     public void setTotalLoanProviders(int totalLoanProviders) {
         this.totalLoanProviders = totalLoanProviders;
+    }
+
+    public Boolean getCapacityUp() {
+        return capacityUp;
+    }
+
+    public void setCapacityUp(Boolean capacityUp) {
+        this.capacityUp = capacityUp;
+    }
+
+    public Boolean getCapitalUp() {
+        return capitalUp;
+    }
+
+    public void setCapitalUp(Boolean capitalUp) {
+        this.capitalUp = capitalUp;
+    }
+
+    public Boolean getCharacterUp() {
+        return characterUp;
+    }
+
+    public void setCharacterUp(Boolean characterUp) {
+        this.characterUp = characterUp;
+    }
+
+    public Boolean getConditionsUp() {
+        return conditionsUp;
+    }
+
+    public void setConditionsUp(Boolean conditionsUp) {
+        this.conditionsUp = conditionsUp;
+    }
+
+    public Boolean getCollatearlUp() {
+        return collatearlUp;
+    }
+
+    public void setCollatearlUp(Boolean collatearlUp) {
+        this.collatearlUp = collatearlUp;
     }
 
 }

@@ -221,58 +221,59 @@
                                     <p:commandButton type="button" icon="pi pi-plus" styleClass="secondary-button text-button rounded-button" />
                                 </div>
                                 <ul>
-                                    <li class="down">
+                                    <li class="#{dashboard.capitalUp?'up':'down'}">
                                         <div class="stock-name">
                                             <h6>CAPITAL</h6>
                                         </div>
-                                        <p:graphicImage name="images/dashboard/mini-graph-1.svg" library="demo" />
+                                        <p:graphicImage name="images/dashboard/mini-graph-#{dashboard.capitalUp?3:4}.svg" library="demo" />
                                         <div class="stock-price">
-                                            <i class="pi pi-arrow-down"></i>
+                                            <i class="pi pi-circle-on"></i>
                                             <h6>#{dashboard.businessCreditProfile.capitalScore}</h6>
                                         </div>
 
                                     </li>
-                                    <li>
+                                    <li class="#{dashboard.characterUp?'up':'down'}">
                                         <div class="stock-name">
                                             <h6>CHARACTER</h6>
                                         </div>
-                                        <p:graphicImage name="images/dashboard/mini-graph-2.svg" library="demo" />
+                                        <p:graphicImage name="images/dashboard/mini-graph-#{dashboard.characterUp?3:4}.svg" library="demo" />
                                         <div class="stock-price">
-                                            <i class="pi pi-arrow-down"></i>
+                                            <i class="pi pi-circle-on"></i>
                                             <h6>#{dashboard.businessCreditProfile.characterScore}</h6>
                                         </div>
 
                                     </li>
-                                    <li>
+                                    <li class="#{dashboard.capacityUp?'up':'down'}">
                                         <div class="stock-name">
                                             <h6>CAPACITY</h6>
                                         </div>
-                                        <p:graphicImage name="images/dashboard/mini-graph-3.svg" library="demo" />
+                                        <p:graphicImage name="images/dashboard/mini-graph-#{dashboard.capacityUp?3:4}.svg" library="demo" />
                                         <div class="stock-price">
-                                            <i class="pi pi-arrow-down"></i>
+                                            <i class="pi pi-circle-on"></i>
                                             <h6>#{dashboard.businessCreditProfile.capacityScore}</h6>
                                         </div>
 
                                     </li>
-                                    <li>
+                                    <li class="#{dashboard.conditionsUp?'up':'down'}">
                                         <div class="stock-name">
                                             <h6>CONDITIONS</h6>
                                         </div>
-                                        <p:graphicImage name="images/dashboard/mini-graph-4.svg" library="demo" />
+                                        <p:graphicImage name="images/dashboard/mini-graph-#{dashboard.conditionsUp?3:4}.svg" library="demo" />
                                         <div class="stock-price">
-                                            <i class="pi pi-arrow-down"></i>
+                                            <i class="pi pi-circle-on"></i>
                                             <h6>#{dashboard.businessCreditProfile.conditionsScore}</h6>
                                         </div>
 
                                     </li>
-                                    <li class="same">
+                                    <li class="#{dashboard.collatearlUp?'up':'down'}">
                                         <div class="stock-name">
                                             <h6>COLLATERAL</h6>
                                         </div>
-                                        <p:graphicImage name="images/dashboard/mini-graph-5.svg" library="demo" />
+                                        <p:graphicImage name="images/dashboard/mini-graph-#{dashboard.collatearlUp?3:4}.svg" library="demo" />
                                         <div class="stock-price">
-                                            <i class="pi pi-minus"></i>
-                                            <h6>#{dashboard.businessCreditProfile.collateralScore}</h6>                                  </div>
+                                            <i class="pi pi-circle-on"></i>
+                                            <h6>#{dashboard.businessCreditProfile.collateralScore}</h6>                                 
+                                        </div>
 
                                     </li>
                                 </ul>

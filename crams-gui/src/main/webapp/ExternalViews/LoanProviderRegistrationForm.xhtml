@@ -28,15 +28,14 @@
     <h:body styleClass="#{guestPreferences.inputStyleClass}" >
 
         <div class="ui-g-12  layout-wrapper layout-topbar-#{guestPreferences.topbarTheme} layout-menu-#{guestPreferences.menuTheme} #{guestPreferences.menuMode}" >
-            <div class="ui-g-4 card-body" style="text-align: center">
+            <div class="ui-g-4 card" style="text-align: center;margin-top: 5%">
                 <h2>Register as loan provider</h2>
-                <h:link  styleClass="logo">
+                <h:link outcome="/ExternalViews/Landing"  styleClass="logo">
                     <p:graphicImage name="images/logo.png" width="200" height="200" library="freya-layout" />
                 </h:link>
-                <p style="padding: 10%;font-size: 18px;color: #35557e">Nullam non efficitur tellus. Aenean sapien magna, vulputate dictum odio quis, 
-                    ornare maximus elit. Vestibulum quis dolor eget sem lacinia consectetur. 
-                    Integer ac accumsan enim. Cras eget nunc non ipsum dignissim blandit. 
-                    Donec ex eros, lobortis eu nisi dictum, semper pulvinar ante.
+                <p style="padding: 10%;font-size: 18px;color: #35557e">Credit risk analysis and profiling system enabling loan providers seamlessly asses the credit worthiness of 
+                                    SMEs. Crams also allows SMEs to apply for loans posted by the loan providers registered 
+                                    on the system.
                 </p>
                 <p style="margin-top: 2px" >
                     <a href="BusinessRegistrationForm.xhtml">Register as Business instead </a>
@@ -46,7 +45,7 @@
                 <h:form id="loanProviderRegistrationForm"  enctype="multipart/form-data">
 
                     <ui:fragment >
-                        <div class="card " >
+                        <div class="card " style="margin-top: 8%" >
 
                             <p:fieldset legend="Loan provider details" id="regForm" rendered="#{loanProviderRegistrationForm.showForm}" >
                                 <div class="ui-fluid p-formgrid p-grid">
@@ -120,7 +119,7 @@
 
                                         <p:commandButton  value="Submit" id="saveBtn1"
                                                           process="regForm"
-                                                          styleClass="green-btn" validateClient="true"
+                                                          styleClass="primery-button" validateClient="true"
                                                           style="margin-left: auto"
                                                           action="#{loanProviderRegistrationForm.createMember()}"
                                                           update="loanProviderRegistrationForm" />
@@ -131,15 +130,15 @@
                                 </div>
                             </p:fieldset>
 
-                            <p:fieldset id="codeSection" rendered="#{loanProviderRegistrationForm.showCodeSection}">
-                                <div class="ui-fluid p-grid" style="padding: 20%">
+                            <p:fieldset id="codeSection" rendered="#{loanProviderRegistrationForm.showCodeSection }">
+                                <div class="ui-fluid p-formgrid p-grid" style="padding: 20%">
                                     <p:outputPanel styleClass="p-field p-col-12 p-md-12" rendered="#{not loanProviderRegistrationForm.successResponse}" 
                                                    style="background-color:red;margin-right: 20%;margin-left: 20%">
                                         <h4>#{loanProviderRegistrationForm.customUiMessage} </h4>
                                     </p:outputPanel>
                                     <div class="p-field p-col-12 p-md-12" style="text-align: center">
-                                        <h4 >Enter code sent to your email</h4>
-                                    </div>
+                                          <h4 >Enter code sent to your email<br></br> (<span style="opacity: 0.7; font-size: 15px">mail@text.com#{loanProviderRegistrationForm.model.emailAddress}</span>)</h4>
+                                  </div>
 
                                     <p:outputPanel rendered="#{not loanProviderRegistrationForm.successResponse}" 
                                                    style="background-color:red;color: white" styleClass="p-field p-col-12 p-md-12">
@@ -147,18 +146,18 @@
 
 
                                     </p:outputPanel>
-                                    <div class="p-field p-col-12 p-md-12">
+                                    <div class="p-field p-col-12 p-md-12"  style="text-align: center; ">
 
-                                        <p:inputText required="true" 
+                                        <p:inputText required="true" style="width:30%;font-size: 25px; " maxlength="6"
                                                      value="#{loanProviderRegistrationForm.verificationCode}" />
 
                                     </div>
-                                    <div class="p-field p-col-12 p-md-6" style="display: flex">
+                                    <div class="p-field p-col-12 p-md-12"  style="text-align: center; ">
 
-                                        <p:commandButton  style="margin-left: auto"
+                                        <p:commandButton  style="width:30% "
                                                           process="codeSection"
                                                           value="Verify" id="saveBtn2"
-                                                          styleClass="green-btn" validateClient="true"
+                                                          styleClass="primary-button" validateClient="true"
                                                           action="#{loanProviderRegistrationForm.verifyCode()}"
                                                           update="codeSection" />
                                     </div>
@@ -172,13 +171,13 @@
 
 
 
-                            <p:fieldset id="postMessageSection" rendered="#{loanProviderRegistrationForm.showFinalSection}">
+                            <p:fieldset id="postMessageSection" rendered="#{loanProviderRegistrationForm.showFinalSection }">
                                 <div class="ui-fluid p-grid" style="padding: 20%">
 
-                                    <div class="ui-g-12 ui-md-12 ui-lg-12" style="margin-bottom:20px">
+                                    <div class="ui-g-12 ui-md-12 ui-lg-12" style="margin-bottom:20px;color:blue;font-size: 25px">
                                         <h4>#{loanProviderRegistrationForm.customUiMessage}</h4>
 
-                                        <h:link outcome="/pages/dashboard/Dashboard" styleClass="link_404" >
+                                       <h:link outcome="/pages/dashboard/Dashboard" styleClass="link_404" >
                                             Proceed to login
                                         </h:link>
 
@@ -202,6 +201,7 @@
             </div>
 
         </div>
+        
     </h:body>
 
 </html>

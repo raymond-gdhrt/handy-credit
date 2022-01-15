@@ -15,32 +15,32 @@
         <title>Application for #{loanApplicationFormDialog.loan.title}</title>
         <h:form id="loanApplicationFormDialog" styleClass="card" style="border-radius: 2px !important">
             <div class="p-grid ui-fluid" style="">
-                <p:outputPanel styleClass="ui-col-12 ui-md-12" rendered="#{loanApplicationFormDialog.creditProfile !=null}"  id="credit_profile">
+                <p:outputPanel styleClass="ui-col-12 ui-md-12" rendered="#{loanApplicationFormDialog.creditProfile !=null or loanApplicationFormDialog.model.creditRiskProfile!=null}"  id="credit_profile">
                     <div class="ui-g" style="">
                         <div class="ui-col-12 ui-md-12">
                             <p style="opacity: .7;font-size: 20px; font-weight: bolder" >Credit scores</p>
 
                         </div>
                         <div class="ui-col-12 ui-md-4">
-                            <h5>Capacity: <span style="color:blue">#{loanApplicationFormDialog.creditProfile.capacityScore}</span></h5>
+                            <h5>Capacity: <span style="color:blue">#{loanApplicationFormDialog.model.creditRiskProfile.capacityScore}</span></h5>
 
                         </div>
 
 
                         <div class="ui-col-12 ui-md-4">
-                            <h5>Capital: <span style="color:pink">#{loanApplicationFormDialog.creditProfile.capitalScore}</span></h5>
+                            <h5>Capital: <span style="color:pink">#{loanApplicationFormDialog.model.creditRiskProfile.capitalScore}</span></h5>
 
                         </div>
                         <div class="ui-col-12 ui-md-4">
-                            <h5>Character: <span style="color:green">#{loanApplicationFormDialog.creditProfile.characterScore}</span></h5>
+                            <h5>Character: <span style="color:green">#{loanApplicationFormDialog.model.creditRiskProfile.characterScore}</span></h5>
 
                         </div>
                         <div class="ui-col-12 ui-md-4">
-                            <h5>Conditions: <span style="color:purple">#{loanApplicationFormDialog.creditProfile.conditionsScore}</span></h5>
+                            <h5>Conditions: <span style="color:purple">#{loanApplicationFormDialog.model.creditRiskProfile.conditionsScore}</span></h5>
 
                         </div>
                         <div class="ui-col-12 ui-md-4">
-                            <h5>Collateral: <span style="color:orange">#{loanApplicationFormDialog.creditProfile.collateralScore}</span></h5>
+                            <h5>Collateral: <span style="color:orange">#{loanApplicationFormDialog.model.creditRiskProfile.collateralScore}</span></h5>
 
                         </div>
                     </div>
