@@ -31,7 +31,7 @@ public class BusinessTransaction extends BaseEntity {
     private float amount;
 
     private Date date;
-    private Transactiontype transactiontype;
+    private Transactiontype transactiontype ;
 
     @ManyToOne
     @JoinColumn(name = "business_id")

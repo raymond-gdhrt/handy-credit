@@ -19,6 +19,10 @@ import java.util.List;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
+/**
+ * Handles Excel/CSV file uploads. 
+ * @author HP
+ */
 public class ExcelUploadHelper implements Serializable {
 
     /**

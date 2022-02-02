@@ -60,7 +60,7 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
         if (loanApplication.getLoan() == null) {
             throw new ValidationFailedException("Missing loan details");
         }
-        
+
         if (loanApplication.getNeededAmount() < loanApplication.getAmount()) {
             throw new ValidationFailedException("Amount higher than the needed amount");
         }
@@ -97,12 +97,12 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
         if (collateralValue == 0) {
             return 1;
         }
-       
-        float ratio =collateralValue / loanAmount;
-        if(ratio>1){
-         return 92;
+
+        float ratio = collateralValue / loanAmount;
+        if (ratio > 0.9) {
+            return 90;
         }
-        return ratio*100;
+        return ratio * 100;
     }
 
     @Override
@@ -117,11 +117,11 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
         }
         float needToCapitalRatio = (loanApplication.getNeededAmount() - loanApplication.getAmount()) / loanApplication.getNeededAmount();
 
-        if (needToCapitalRatio >= 1) {
-            needToCapitalRatio = 80;
+        if (needToCapitalRatio > 0.9) {
 
+            needToCapitalRatio = 0.9f;
         }
-        return needToCapitalRatio + loanApplication.getLoanRequestReason().getScore();
+        return needToCapitalRatio * 100 + loanApplication.getLoanRequestReason().getScore();
     }
 
     @Override
@@ -131,6 +131,8 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
         List<BusinessTransaction> transactions = ApplicationContextProvider.getBean(TransactionDataService.class).getInstances(
                 new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE)
                         .addFilterEqual("business", business), 0, 0);
+
+        // loop through transactions
         for (BusinessTransaction transaction : transactions) {
             if (transaction.getTransactiontype().equals(Transactiontype.Expense)) {
                 expenses = expenses + transaction.getAmount();
@@ -151,12 +153,30 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
     }
 
     @Override
+    public List<BusinessCreditProfile> getInstances(Search search, int offeset, int limit) {
+
+        if (search == null) {
+            search = new Search();
+
+        }
+        search.setMaxResults(limit);
+        search.setFirstResult(offeset);
+
+        return super.search(search);
+
+    }
+
+    @Override
     public float calculateCharacterScore(float loanAmount, Business business) {
         System.out.println("Calculating character score...");
         float cleared = 0, numberCleared, numberDefaulted, defaiulted = 0, ongoing = 0.0f;
+
+        //Fetch credit histories
         List<BusinessCreditHistory> transactions = ApplicationContextProvider.getBean(BusinessCreditHistoryService.class).getInstances(
                 new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE)
                         .addFilterEqual("business", business), 0, 0);
+
+//Loop through credit histories
         for (BusinessCreditHistory transaction : transactions) {
             if (LoanApplicationStatus.Cleared.equals(transaction.getLoanApplicationStatus())) {
                 cleared = cleared + transaction.getAmountBorrowed();
@@ -173,7 +193,7 @@ public class BusinessCreditProfileServiceImpl extends GenericServiceImpl<Busines
             return 1;
         }
 
-        if (cleared > defaiulted) {
+        if (cleared < defaiulted) {
             return 1;
         }
 

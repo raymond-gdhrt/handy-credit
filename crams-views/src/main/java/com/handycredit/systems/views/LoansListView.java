@@ -13,6 +13,7 @@ import org.sers.webutils.server.core.service.excel.reports.ExcelReport;
 import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 
 import com.googlecode.genericdao.search.Search;
+import com.handycredit.systems.constants.LoanApplicationStatus;
 import com.handycredit.systems.constants.LoanRequestReason;
 import com.handycredit.systems.core.services.BusinessCreditProfileService;
 import com.handycredit.systems.core.services.BusinessService;
@@ -73,7 +74,10 @@ public class LoansListView extends PaginatedTableView<Loan, LoansListView, Dashb
     public void reloadFilterReset() {
         this.search = new Search().addFilterEqual("recordStatus", RecordStatus.ACTIVE);
         List<LoanApplication> applications = ApplicationContextProvider.getBean(LoanApplicationService.class)
-                .getInstances(new Search().addFilterEqual("business", this.business), 0, 0);
+                .getInstances(new Search().addFilterEqual("business", this.business)
+                       
+                        .addFilterEqual("status", LoanApplicationStatus.Running),
+                         0, 0);
         List<String> appliedLoans = new ArrayList<>();
         applications.forEach(application -> {
             appliedLoans.add(application.getLoan().getId());
